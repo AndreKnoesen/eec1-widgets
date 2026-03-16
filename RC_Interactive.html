@@ -17,6 +17,9 @@
     --color-info-tint: #EFF6FF;
     --color-neutral-tint: #F9FAFB;
     --color-accent: #D97706;
+    /* ADA FIX: darker accent for small text on light backgrounds (card-result, etc.)
+       #92400E gives ≥ 6.5:1 contrast on #EFF6FF and #F9FAFB */
+    --color-accent-text: #92400E;
     --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-mono: "Fira Mono", "Cascadia Code", "Consolas", monospace;
     --border-radius-md: 6px;
@@ -35,6 +38,8 @@
       --color-info-tint: #1E3A5F;
       --color-neutral-tint: #1F2937;
       --color-accent: #F59E0B;
+      /* In dark mode the standard accent has ≥ 7:1 on dark backgrounds — OK */
+      --color-accent-text: #F59E0B;
     }
   }
 
@@ -65,12 +70,14 @@
     border-top: 0.5px solid var(--color-border-tertiary);
   }
 
+  /* ADA FIX: was color-text-muted (#9CA3AF, contrast ≈ 2.5:1 on white — FAIL).
+     Now uses color-text-secondary (#6B7280, contrast ≈ 4.8:1 on white — PASS). */
   .panel-title {
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     margin-bottom: 14px;
   }
 
@@ -100,9 +107,10 @@
     min-width: 140px;
   }
 
+  /* ADA FIX: was color-text-muted (≈ 2.5:1) — now color-text-secondary (≈ 4.8:1) */
   .vi-equation .label {
     font-size: 11px;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     margin-bottom: 6px;
   }
 
@@ -148,10 +156,12 @@
     margin-bottom: 4px;
   }
 
+  /* ADA FIX: was color-accent (#D97706, contrast ≈ 3.2:1 on light card backgrounds — FAIL for 12px text).
+     Now uses --color-accent-text which is #92400E in light mode (≥ 6.5:1) and #F59E0B in dark (≥ 7:1). */
   .vi-card .card-result {
     font-size: 12px;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     font-family: var(--font-mono);
   }
 
@@ -170,11 +180,13 @@
     flex-wrap: wrap;
   }
 
+  /* ADA FIX: was <span>, now styled <label> — same visual, proper semantics */
   .control-label {
     font-family: var(--font-mono);
     font-size: 13px;
     color: var(--color-text-secondary);
-    min-width: 20px;
+    min-width: 32px;
+    cursor: pointer;
   }
 
   .control-row input[type="range"] {
@@ -182,6 +194,13 @@
     accent-color: var(--color-accent);
     cursor: pointer;
     height: 4px;
+  }
+
+  /* ADA FIX: explicit focus ring for sliders — browsers strip defaults inconsistently */
+  .control-row input[type="range"]:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
   .control-value {
@@ -209,6 +228,8 @@
     color: var(--color-text-secondary);
   }
 
+  /* tau-value is 22px bold — qualifies as WCAG "large text" (≥18.67px bold).
+     Large text needs only 3:1. #D97706 on #F9FAFB ≈ 3.05:1 — passes. */
   .tau-value {
     font-family: var(--font-mono);
     font-size: 22px;
@@ -245,11 +266,12 @@
     margin: 16px 0;
   }
 
+  /* ADA FIX: was color-text-muted (≈ 2.5:1) — now color-text-secondary (≈ 4.8:1) */
   .chart-subtitle {
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     margin-bottom: 8px;
   }
 
@@ -271,17 +293,16 @@
 
   <!-- ── Panel 1: Physical intuition ── -->
   <div class="panel">
-    <div class="panel-title">RC circuit setup and capacitor physics</div>
+    <!-- ADA FIX: div → h2 for semantic document structure (WCAG 1.3.1) -->
+    <h2 class="panel-title">RC circuit setup and capacitor physics</h2>
     <div class="capacitor-svg-wrap">
       <!--
-        Two-panel inline SVG matching the reference layout:
-          Left  — RC schematic (switch S open, resistor R, battery Vs, capacitor C)
-          Right — Parallel-plate cross-section (+ plate, E-field arrows, − plate)
-        All strokes/text use CSS custom properties so dark-mode works automatically.
+        ADA FIX: Added role="img" to SVG (aria-label was already present but role was missing).
+        role="img" + aria-label together fully satisfy WCAG 1.1.1 for complex SVGs.
       -->
-      <svg viewBox="0 0 720 268" width="100%" style="display:block;max-width:720px;margin:0 auto"
+      <svg role="img" viewBox="0 0 720 268" width="100%" style="display:block;max-width:720px;margin:0 auto"
            xmlns="http://www.w3.org/2000/svg"
-           aria-label="RC circuit schematic on the left; parallel-plate capacitor detail on the right">
+           aria-label="RC circuit schematic on the left showing a battery Vs, open switch S, resistor R, and capacitor C in a loop. On the right, a parallel-plate capacitor cross-section showing positive charges on the top plate, electric field arrows pointing downward, and negative charges on the bottom plate, with initial charge voltage V0 labeled in the gap.">
         <defs>
           <marker id="rcArrowDn" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
             <path d="M0,0 L7,3.5 L0,7 Z" style="fill:var(--color-text-primary,#111827)"/>
@@ -289,51 +310,39 @@
         </defs>
 
         <!-- ══════ LEFT: RC circuit schematic ══════ -->
-        <!-- Loop rectangle corners: (36,36) top-left → (284,36) top-right → (284,208) btm-right → (36,208) btm-left -->
-
-        <!-- Top wire segments -->
         <line x1="36"  y1="36"  x2="66"  y2="36"  style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
         <line x1="112" y1="36"  x2="148" y2="36"  style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
         <line x1="212" y1="36"  x2="284" y2="36"  style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
-        <!-- Right side wires (above and below cap) -->
         <line x1="284" y1="36"  x2="284" y2="103" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
         <line x1="284" y1="153" x2="284" y2="208" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
-        <!-- Bottom wire -->
         <line x1="284" y1="208" x2="36"  y2="208" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
-        <!-- Left side wires (above and below battery) -->
         <line x1="36"  y1="36"  x2="36"  y2="100" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
         <line x1="36"  y1="148" x2="36"  y2="208" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
 
         <!-- Switch S (open knife switch) -->
         <circle cx="66"  cy="36" r="5" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8;fill:var(--color-background-primary,#fff)"/>
         <circle cx="112" cy="36" r="5" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8;fill:var(--color-background-primary,#fff)"/>
-        <!-- Blade: tilted ~28° upward from left terminal, not reaching right terminal -->
         <line x1="66" y1="36" x2="106" y2="19" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2"/>
-        <!-- Labels -->
         <text x="80" y="12"  style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)">S</text>
         <text x="88" y="55"  style="font-family:sans-serif;font-size:11px;fill:var(--color-text-primary,#111827)" text-anchor="middle">OPEN</text>
 
-        <!-- Resistor R (US box symbol) -->
+        <!-- Resistor R -->
         <rect x="148" y="27" width="64" height="18" style="stroke:var(--color-text-primary,#111827);stroke-width:2;fill:var(--color-background-primary,#fff)"/>
         <text x="180" y="17" style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)" text-anchor="middle">R</text>
 
-        <!-- Battery Vs (4 alternating long/short bars on left side) -->
+        <!-- Battery Vs -->
         <line x1="20" y1="107" x2="52" y2="107" style="stroke:var(--color-text-primary,#111827);stroke-width:3"/>
         <line x1="26" y1="118" x2="46" y2="118" style="stroke:var(--color-text-primary,#111827);stroke-width:2"/>
         <line x1="20" y1="129" x2="52" y2="129" style="stroke:var(--color-text-primary,#111827);stroke-width:3"/>
         <line x1="26" y1="140" x2="46" y2="140" style="stroke:var(--color-text-primary,#111827);stroke-width:2"/>
-        <!-- Vs label -->
         <text x="6" y="127" style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)">V<tspan dy="3" font-size="12" font-style="normal">s</tspan></text>
 
-        <!-- Capacitor C (two horizontal parallel plates on right side) -->
+        <!-- Capacitor C -->
         <line x1="266" y1="106" x2="302" y2="106" style="stroke:var(--color-text-primary,#111827);stroke-width:5.5"/>
         <line x1="266" y1="150" x2="302" y2="150" style="stroke:var(--color-text-primary,#111827);stroke-width:5.5"/>
-        <!-- Polarity markers -->
         <text x="258" y="111" style="font-family:sans-serif;font-size:15px;fill:var(--color-text-primary,#111827)" text-anchor="end">+</text>
         <text x="258" y="157" style="font-family:sans-serif;font-size:19px;fill:var(--color-text-primary,#111827)" text-anchor="end">−</text>
-        <!-- C label (left of symbol) -->
         <text x="247" y="132" style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)" text-anchor="end">C</text>
-        <!-- VC label (right of symbol) -->
         <text x="308" y="126" style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)">V<tspan dy="3" font-size="11" font-style="normal">C</tspan></text>
 
         <!-- Circuit caption -->
@@ -343,10 +352,7 @@
         <line x1="344" y1="8" x2="344" y2="252" style="stroke:var(--color-border-tertiary,#D1D5DB);stroke-width:0.5"/>
 
         <!-- ══════ RIGHT: Parallel-plate cross-section ══════ -->
-
-        <!-- Top plate (gray filled rect with + symbols) -->
         <rect x="376" y="46" width="292" height="32" style="fill:#9CA3AF;stroke:var(--color-text-primary,#111827);stroke-width:1.5"/>
-        <!-- Individual + symbols inside top plate at even spacing -->
         <text x="396" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
         <text x="424" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
         <text x="452" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
@@ -357,10 +363,9 @@
         <text x="592" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
         <text x="620" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
         <text x="648" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
-        <!-- +q label -->
         <text x="674" y="68" style="font-family:serif;font-size:14px;fill:var(--color-text-primary,#111827)">+<tspan font-style="italic">q</tspan></text>
 
-        <!-- E-field arrows (10 downward arrows, evenly spaced) -->
+        <!-- E-field arrows -->
         <line x1="400" y1="78" x2="400" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
         <line x1="428" y1="78" x2="428" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
         <line x1="456" y1="78" x2="456" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
@@ -371,19 +376,16 @@
         <line x1="596" y1="78" x2="596" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
         <line x1="624" y1="78" x2="624" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
         <line x1="652" y1="78" x2="652" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
-        <!-- E label (italic, right side, vertically centered between plates) -->
         <text x="674" y="120" style="font-family:serif;font-style:italic;font-size:20px;fill:var(--color-text-primary,#111827)">E</text>
 
-        <!-- "initial charge: V₀" label in gap, left side -->
+        <!-- "initial charge: V₀" label in gap -->
         <text x="379" y="102" style="font-family:sans-serif;font-size:9.5px;fill:var(--color-text-secondary,#6B7280)">initial</text>
         <text x="379" y="114" style="font-family:sans-serif;font-size:9.5px;fill:var(--color-text-secondary,#6B7280)">charge:</text>
         <text x="379" y="127" style="font-family:sans-serif;font-size:9.5px;fill:var(--color-text-secondary,#6B7280)"><tspan font-style="italic">V</tspan><tspan dy="2" font-size="7">0</tspan></text>
 
-        <!-- Bottom plate (gray filled rect with dashed interior line) -->
+        <!-- Bottom plate -->
         <rect x="376" y="148" width="292" height="32" style="fill:#9CA3AF;stroke:var(--color-text-primary,#111827);stroke-width:1.5"/>
-        <!-- Dashed line inside bottom plate representing − charges -->
         <line x1="390" y1="164" x2="660" y2="164" style="stroke:var(--color-text-primary,#111827);stroke-width:2;stroke-dasharray:9 6"/>
-        <!-- -q label -->
         <text x="674" y="168" style="font-family:serif;font-size:14px;fill:var(--color-text-primary,#111827)">−<tspan font-style="italic">q</tspan></text>
 
         <!-- Plate caption -->
@@ -395,7 +397,8 @@
 
   <!-- ── Panel 2: V-I relationship ── -->
   <div class="panel">
-    <div class="panel-title">V-I relationship</div>
+    <!-- ADA FIX: div → h2 -->
+    <h2 class="panel-title">V-I relationship</h2>
     <div class="vi-layout">
       <div class="vi-equation">
         <div class="label">current–voltage law</div>
@@ -418,49 +421,83 @@
 
   <!-- ── Panel 3: Interactive charging curve ── -->
   <div class="panel">
-    <div class="panel-title">Charging curve — V<sub>C</sub>(t) = V<sub>f</sub> + (V<sub>0</sub> − V<sub>f</sub>)e<sup>−t/RC</sup></div>
+    <!-- ADA FIX: div → h2 -->
+    <h2 class="panel-title">Charging curve — V<sub>C</sub>(t) = V<sub>f</sub> + (V<sub>0</sub> − V<sub>f</sub>)e<sup>−t/RC</sup></h2>
 
     <div class="controls">
+      <!--
+        ADA FIX: <span class="control-label"> → <label class="control-label" for="...">
+        This creates a programmatic label association (WCAG 1.3.1 / 4.1.2).
+        aria-label on each input also provides a full descriptive name for AT.
+        aria-valuetext is updated by JS to announce the human-readable value.
+      -->
       <div class="control-row">
-        <span class="control-label">R</span>
-        <input type="range" id="sliderR" min="0" max="100" value="50">
+        <label class="control-label" for="sliderR">R</label>
+        <input type="range" id="sliderR" min="0" max="100" value="50"
+               aria-label="Resistance R"
+               aria-valuetext="1.0 kilohms">
         <span class="control-value" id="valR">1.0 kΩ</span>
       </div>
       <div class="control-row">
-        <span class="control-label">C</span>
-        <input type="range" id="sliderC" min="0" max="100" value="50">
+        <label class="control-label" for="sliderC">C</label>
+        <input type="range" id="sliderC" min="0" max="100" value="50"
+               aria-label="Capacitance C"
+               aria-valuetext="100 microfarads">
         <span class="control-value" id="valC">100 µF</span>
       </div>
       <div class="control-row">
-        <span class="control-label">V<sub>f</sub></span>
-        <input type="range" id="sliderV" min="1" max="12" step="0.5" value="5">
+        <label class="control-label" for="sliderV">V<sub>f</sub></label>
+        <input type="range" id="sliderV" min="1" max="12" step="0.5" value="5"
+               aria-label="Final (target) voltage Vf"
+               aria-valuetext="5.00 volts">
         <span class="control-value" id="valV">5.00 V</span>
       </div>
       <div class="control-row">
-        <span class="control-label">V<sub>0</sub></span>
-        <input type="range" id="sliderV0" min="-12" max="12" step="0.5" value="0">
+        <label class="control-label" for="sliderV0">V<sub>0</sub></label>
+        <input type="range" id="sliderV0" min="-12" max="12" step="0.5" value="0"
+               aria-label="Initial capacitor voltage V0"
+               aria-valuetext="0.0 volts">
         <span class="control-value" id="valV0">0.0 V</span>
       </div>
     </div>
 
-    <div class="tau-display">
+    <!--
+      ADA FIX: role="status" gives the tau display an implicit aria-live="polite" region.
+      Screen readers will announce the updated τ value after slider changes settle.
+    -->
+    <div class="tau-display" role="status" aria-label="Time constant tau">
       <span class="tau-label">τ = RC =</span>
       <span class="tau-value" id="tauValue">100.0</span>
       <span class="tau-unit">ms</span>
     </div>
 
+    <!--
+      ADA FIX: role="img" + aria-label on both Chart.js canvases (WCAG 1.1.1 / 4.1.2).
+      The aria-label is updated dynamically in JS to reflect current R, C, Vf, V0 values.
+    -->
     <div class="chart-wrap">
-      <canvas id="rcChart"></canvas>
+      <canvas id="rcChart"
+              role="img"
+              aria-label="RC voltage charging curve. Loading…"></canvas>
     </div>
 
-    <div class="summary-sentence" id="summaryText"></div>
+    <!--
+      ADA FIX: aria-live="polite" + aria-atomic="true" on both summary divs (WCAG 4.1.3).
+      Screen readers will announce the full updated sentence after each slider interaction.
+    -->
+    <div class="summary-sentence" id="summaryText"
+         aria-live="polite" aria-atomic="true"></div>
 
     <div class="chart-divider"></div>
-    <div class="chart-subtitle">Capacitor current i(t)</div>
+    <!-- ADA FIX: div → h3 (sub-section heading within panel 3) -->
+    <h3 class="chart-subtitle">Capacitor current i(t)</h3>
     <div class="chart-wrap-sm">
-      <canvas id="rcCurrentChart"></canvas>
+      <canvas id="rcCurrentChart"
+              role="img"
+              aria-label="Capacitor current decay curve. Loading…"></canvas>
     </div>
-    <div class="summary-sentence" id="currentSummaryText"></div>
+    <div class="summary-sentence" id="currentSummaryText"
+         aria-live="polite" aria-atomic="true"></div>
   </div>
 
 </div>
@@ -483,6 +520,16 @@
     if (uf >= 1000) return (uf / 1000).toPrecision(3).replace(/\.?0+$/, '') + ' mF';
     return uf.toPrecision(3).replace(/\.?0+$/, '') + ' µF';
   }
+  // ADA: spoken versions for aria-valuetext (no symbols that TTS mispronounces)
+  function fmtR_spoken(ohms) {
+    if (ohms >= 1000) return (ohms / 1000).toPrecision(3).replace(/\.?0+$/, '') + ' kilohms';
+    return Math.round(ohms) + ' ohms';
+  }
+  function fmtC_spoken(farads) {
+    const uf = farads * 1e6;
+    if (uf >= 1000) return (uf / 1000).toPrecision(3).replace(/\.?0+$/, '') + ' millifarads';
+    return uf.toPrecision(3).replace(/\.?0+$/, '') + ' microfarads';
+  }
 
   // ── State ──
   let R = 1000;   // Ω
@@ -490,23 +537,18 @@
   let Vf = 5;     // V
   let V0 = 0;     // V — initial capacitor voltage
 
-  // Fixed display window = 5 × default τ (1 kΩ × 100 µF = 100 ms → window = 500 ms).
-  // Keeping this constant means a faster RC curve plateaus early (left),
-  // and a slower RC curve barely rises — giving clear visual contrast.
-  const DEFAULT_TAU = 1000 * 100e-6; // 0.1 s
-  const X_WINDOW    = 5 * DEFAULT_TAU; // 0.5 s — fixed x-axis max
+  const DEFAULT_TAU = 1000 * 100e-6;
+  const X_WINDOW    = 5 * DEFAULT_TAU;
 
   // ── Chart setup ──
   const ctx = document.getElementById('rcChart').getContext('2d');
 
-  const LANDMARKS = [1, 2, 3, 4]; // multiples of tau
+  const LANDMARKS = [1, 2, 3, 4];
   const LANDMARK_PCT = ['63.2%', '86.5%', '95.0%', '98.2%'];
   const N_POINTS = 400;
 
   function buildDataset() {
     const tau = R * C;
-    // Draw curve to at least X_WINDOW so fast curves stay flat to the right edge.
-    // For slow τ, draw to 5τ; Chart.js clips what falls outside the fixed axis.
     const tDraw = Math.max(5 * tau, X_WINDOW);
     const data = [];
     for (let i = 0; i <= N_POINTS; i++) {
@@ -526,17 +568,16 @@
 
   function buildCurrentDataset() {
     const tau   = R * C;
-    const iPeak = Math.abs(Vf - V0) / R; // A
+    const iPeak = Math.abs(Vf - V0) / R;
     const tDraw = Math.max(5 * tau, X_WINDOW);
     const data  = [];
     for (let i = 0; i <= N_POINTS; i++) {
       const t = (i / N_POINTS) * tDraw;
-      data.push({ x: t, y: iPeak * Math.exp(-t / tau) * 1000 }); // mA
+      data.push({ x: t, y: iPeak * Math.exp(-t / tau) * 1000 });
     }
     return data;
   }
 
-  // Detect dark mode for chart colors
   function isDark() {
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
@@ -547,22 +588,11 @@
       : { grid: '#E5E7EB', tick: '#6B7280', vfLine: '#9CA3AF', bg: '#FFFFFF' };
   }
 
-  function buildXLabels() {
-    const tau = R * C;
-    const tMax = 5 * tau;
-    const labels = [];
-    for (let i = 0; i <= N_POINTS; i++) {
-      labels.push((i / N_POINTS) * tMax);
-    }
-    return labels;
-  }
-
   const chart = new Chart(ctx, {
     type: 'line',
     data: {
       datasets: [
         {
-          // Main charging curve
           label: 'V_C(t)',
           data: buildDataset(),
           borderColor: '#D97706',
@@ -573,7 +603,6 @@
           parsing: false,
         },
         {
-          // Landmark scatter points
           label: 'Landmarks',
           data: buildLandmarkDataset(),
           type: 'scatter',
@@ -595,7 +624,6 @@
       plugins: {
         legend: { display: false },
         tooltip: { enabled: false },
-        // Custom plugin: landmark labels + Vf dashed line drawn via afterDraw
       },
       scales: {
         x: {
@@ -637,7 +665,6 @@
         const colors = chartColors();
         ctx.save();
 
-        // Dashed horizontal line at Vf
         const yVf = yScale.getPixelForValue(Vf);
         ctx.beginPath();
         ctx.setLineDash([6, 4]);
@@ -652,7 +679,6 @@
         ctx.textAlign = 'right';
         ctx.fillText('V\u1D69 = ' + Vf.toFixed(2) + ' V', chartArea.right - 4, yVf - 5);
 
-        // Dashed horizontal line at V0 (only when V0 ≠ 0)
         if (Math.abs(V0) > 0.001) {
           const yV0 = yScale.getPixelForValue(V0);
           ctx.beginPath();
@@ -669,7 +695,6 @@
           ctx.fillText('V\u2080 = ' + V0.toFixed(2) + ' V', chartArea.right - 4, yV0 - 5);
         }
 
-        // Solid zero line (when V0 < 0 so y=0 appears mid-chart)
         if (V0 < -0.001) {
           const yZero = yScale.getPixelForValue(0);
           if (yZero >= chartArea.top && yZero <= chartArea.bottom) {
@@ -683,8 +708,6 @@
           }
         }
 
-        // Landmark drop lines + percentage labels
-        // Drop lines go from marker down to V0 level (showing gap closed from V0 toward Vf)
         const gapDefined = Math.abs(Vf - V0) > 0.001;
         const yV0px = yScale.getPixelForValue(V0);
         LANDMARKS.forEach((k, idx) => {
@@ -695,7 +718,6 @@
 
           if (xPx < chartArea.left || xPx > chartArea.right) return;
 
-          // Vertical drop line: marker → V0 level
           ctx.beginPath();
           ctx.setLineDash([4, 3]);
           ctx.strokeStyle = '#9CA3AF';
@@ -705,7 +727,6 @@
           ctx.stroke();
           ctx.setLineDash([]);
 
-          // Percentage label above marker
           if (gapDefined) {
             ctx.fillStyle = isDark() ? '#F9FAFB' : '#111827';
             ctx.font = '600 11px monospace';
@@ -713,7 +734,6 @@
             ctx.fillText(LANDMARK_PCT[idx], xPx, yPx - 10);
           }
 
-          // τ-multiple label at bottom of chart area
           ctx.fillStyle = colors.tick;
           ctx.font = '10px monospace';
           ctx.fillText(k + 'τ', xPx, chartArea.bottom + 13);
@@ -724,7 +744,7 @@
     }]
   });
 
-  // ── Current chart (i(t)) ──
+  // ── Current chart ──
   const ctxCurrent = document.getElementById('rcCurrentChart').getContext('2d');
 
   const chartCurrent = new Chart(ctxCurrent, {
@@ -783,7 +803,6 @@
         const { ctx, scales: { y: yScale }, chartArea } = chart;
         const colors = chartColors();
         ctx.save();
-        // Dashed asymptote at i = 0
         const yZero = yScale.getPixelForValue(0);
         ctx.beginPath();
         ctx.setLineDash([6, 4]);
@@ -809,7 +828,6 @@
     chart.data.datasets[0].data = buildDataset();
     chart.data.datasets[1].data = buildLandmarkDataset();
 
-    // Y-axis: include V0, 0, and Vf; 10% padding each side
     const yMin   = Math.min(V0, 0, Vf);
     const yMax   = Math.max(V0, Vf);
     const yRange = yMax - yMin || 1;
@@ -818,18 +836,17 @@
 
     chart.update('none');
 
-    // Current chart
-    const iPeakMa = Math.abs(Vf - V0) / R * 1000; // mA
+    const iPeakMa = Math.abs(Vf - V0) / R * 1000;
     chartCurrent.data.datasets[0].data = buildCurrentDataset();
     chartCurrent.options.scales.y.max  = iPeakMa > 0 ? iPeakMa * 1.1 : 1;
     chartCurrent.update('none');
 
-    // τ display
     const tauMs = tau * 1000;
     document.getElementById('tauValue').textContent = tauMs.toFixed(1);
 
-    // V_C summary sentence
     const gapDefined = Math.abs(Vf - V0) > 0.001;
+
+    // Summary sentence — aria-live region handles screen-reader announcement
     if (gapDefined) {
       const vAtTau = Vf + (V0 - Vf) * Math.exp(-1);
       document.getElementById('summaryText').innerHTML =
@@ -841,7 +858,6 @@
         `V\u2080 = V<sub>f</sub> — no transient; voltage stays at <strong>${Vf.toFixed(2)} V</strong>.`;
     }
 
-    // Current summary sentence
     if (!gapDefined) {
       document.getElementById('currentSummaryText').innerHTML =
         `No transient — initial current is zero.`;
@@ -851,30 +867,57 @@
         `At t = 0, the initial current is <strong>${iPeakMa.toFixed(1)} mA</strong>. ` +
         `At t = τ, it has decayed to <strong>${iAtTau.toFixed(1)} mA</strong> (36.8% remaining).`;
     }
+
+    // ADA FIX: Update canvas aria-label with current parameter values and key result
+    // so screen readers always have a meaningful text description of the chart content.
+    const vAtTauStr = gapDefined
+      ? `At one time-constant (${tauMs.toFixed(1)} ms) the voltage reaches ${(Vf + (V0 - Vf) * Math.exp(-1)).toFixed(2)} V, 63.2 percent of the way from V0 to Vf.`
+      : `No transient — voltage is constant at ${Vf.toFixed(2)} V.`;
+    document.getElementById('rcChart').setAttribute('aria-label',
+      `Capacitor voltage charging curve. R = ${fmtR(R)}, C = ${fmtC(C)}, ` +
+      `V0 = ${V0.toFixed(2)} V, Vf = ${Vf.toFixed(2)} V, tau = ${tauMs.toFixed(1)} ms. ` +
+      vAtTauStr
+    );
+
+    const iPeakStr = gapDefined
+      ? `Peak current at t=0 is ${iPeakMa.toFixed(1)} mA, decaying to zero as capacitor charges.`
+      : `No current — capacitor already at target voltage.`;
+    document.getElementById('rcCurrentChart').setAttribute('aria-label',
+      `Capacitor current decay curve. ${iPeakStr}`
+    );
   }
 
   // ── Slider event listeners ──
   document.getElementById('sliderR').addEventListener('input', function() {
     R = logVal(+this.value, 100, 10000);
-    document.getElementById('valR').textContent = fmtR(R);
+    const label = fmtR(R);
+    document.getElementById('valR').textContent = label;
+    // ADA FIX: aria-valuetext provides spoken value without Ω symbol (TTS may say "ohm sign")
+    this.setAttribute('aria-valuetext', fmtR_spoken(R));
     update();
   });
 
   document.getElementById('sliderC').addEventListener('input', function() {
     C = logVal(+this.value, 1e-6, 1000e-6);
-    document.getElementById('valC').textContent = fmtC(C);
+    const label = fmtC(C);
+    document.getElementById('valC').textContent = label;
+    this.setAttribute('aria-valuetext', fmtC_spoken(C));
     update();
   });
 
   document.getElementById('sliderV').addEventListener('input', function() {
     Vf = +this.value;
-    document.getElementById('valV').textContent = Vf.toFixed(2) + ' V';
+    const label = Vf.toFixed(2) + ' V';
+    document.getElementById('valV').textContent = label;
+    this.setAttribute('aria-valuetext', Vf.toFixed(2) + ' volts');
     update();
   });
 
   document.getElementById('sliderV0').addEventListener('input', function() {
     V0 = +this.value;
-    document.getElementById('valV0').textContent = V0.toFixed(1) + ' V';
+    const label = V0.toFixed(1) + ' V';
+    document.getElementById('valV0').textContent = label;
+    this.setAttribute('aria-valuetext', V0.toFixed(1) + ' volts');
     update();
   });
 

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complex Number Visualizer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  h1 {
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2rem;
+    color: #a0c4ff;
+    background: #16213e;
+    border-bottom: 1px solid #0f3460;
+    letter-spacing: 1px;
+  }
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    gap: 0;
+  }
+
+  /* ── LEFT PANEL ── */
+  .left-panel {
+    width: 300px;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: #16213e;
+    border-right: 1px solid #0f3460;
+    overflow-y: auto;
+  }
+  .panel-box {
+    background: #0f3460;
+    border: 1px solid #1a4a7a;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .panel-box h2 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a0c4ff;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #1a4a7a;
+    padding-bottom: 4px;
+  }
+
+  /* ── input rows ── */
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+  }
+  /* visually-hidden keeps the label in the a11y tree without taking layout space */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .input-row .z-label { width: 60px; color: #b0c4de; aria-hidden: true; }
+  .input-field-wrap {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .input-field-wrap .part-label {
+    font-size: 0.7rem;
+    color: #7ec8e3;
+    width: 18px;
+    text-align: right;
+  }
+  .input-row input[type="number"] {
+    width: 58px;
+    padding: 4px 5px;
+    background: #1a1a2e;
+    border: 2px solid #3a5a8a;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  /* Accessible focus ring — do NOT use outline:none */
+  .input-row input[type="number"]:focus {
+    outline: 3px solid #a0c4ff;
+    outline-offset: 2px;
+    border-color: #a0c4ff;
+  }
+  .input-row .sep { color: #a0c4ff; font-weight: bold; padding: 0 2px; }
+  .input-row .unit { color: #7ec8e3; }
+
+  /* ── radio buttons ── */
+  .radio-list { display: flex; flex-direction: column; gap: 5px; }
+  .radio-list label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.83rem;
+    cursor: pointer;
+    padding: 5px 6px;
+    border-radius: 4px;
+    transition: background 0.15s;
+    border: 2px solid transparent; /* reserves space so focus doesn't shift layout */
+  }
+  .radio-list label:hover { background: #1a4a7a; }
+  .radio-list input[type="radio"] { accent-color: #a0c4ff; cursor: pointer; }
+  .radio-list input[type="radio"]:focus-visible + span {
+    text-decoration: underline;
+  }
+  .radio-list label.selected { background: #1a4a7a; color: #a0c4ff; }
+
+  /* ── results ── */
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 4px;
+    font-size: 0.78rem;
+  }
+  .results-grid .entry { background: #1a1a2e; border-radius: 4px; padding: 5px 7px; }
+  .results-grid .entry .entry-label { color: #7ec8e3; font-size: 0.7rem; margin-bottom: 2px; }
+  .results-grid .entry .val  { color: #e0e0e0; font-weight: bold; }
+  .results-grid .entry .val2 { color: #a0c4ff; font-size: 0.72rem; }
+  .result-full { grid-column: 1 / -1; background: #0a2040; border: 1px solid #3a7a5a; }
+  .result-full .entry-label { color: #7ec8e3; }
+  .result-full .val  { color: #7dffb3; }
+  .result-full .val2 { color: #a0ffcc; }
+
+  /* ── CANVAS PANEL ── */
+  .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 6px;
+    overflow: hidden;
+  }
+  .canvas-wrap {
+    flex: 1;
+    position: relative;
+    background: #0d1b2a;
+    border: 1px solid #1a4a7a;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  canvas {
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  /* ── legend ── */
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-size: 0.82rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  /* Use SVG mini-icons so the legend encodes shape AND color */
+  .legend-item svg { flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<h1>Complex Number Visualizer</h1>
+
+<div class="main">
+
+  <!-- ── LEFT PANEL ── -->
+  <div class="left-panel">
+
+    <!-- Inputs -->
+    <div class="panel-box">
+      <h2>Input Complex Numbers</h2>
+
+      <!-- z1 -->
+      <div class="input-row">
+        <span class="z-label" aria-hidden="true">z&#x2081; =</span>
+        <div class="input-field-wrap">
+          <label for="z1r" class="sr-only">z1 real part</label>
+          <span class="part-label" aria-hidden="true">Re:</span>
+          <input type="number" id="z1r" value="3" step="0.5" aria-label="z1 real part">
+        </div>
+        <span class="sep" aria-hidden="true">+</span>
+        <div class="input-field-wrap">
+          <label for="z1i" class="sr-only">z1 imaginary part</label>
+          <span class="part-label" aria-hidden="true">Im:</span>
+          <input type="number" id="z1i" value="4" step="0.5" aria-label="z1 imaginary part">
+        </div>
+        <span class="unit" aria-hidden="true">j</span>
+      </div>
+
+      <!-- z2 -->
+      <div class="input-row">
+        <span class="z-label" aria-hidden="true">z&#x2082; =</span>
+        <div class="input-field-wrap">
+          <label for="z2r" class="sr-only">z2 real part</label>
+          <span class="part-label" aria-hidden="true">Re:</span>
+          <input type="number" id="z2r" value="2" step="0.5" aria-label="z2 real part">
+        </div>
+        <span class="sep" aria-hidden="true">+</span>
+        <div class="input-field-wrap">
+          <label for="z2i" class="sr-only">z2 imaginary part</label>
+          <span class="part-label" aria-hidden="true">Im:</span>
+          <input type="number" id="z2i" value="-3" step="0.5" aria-label="z2 imaginary part">
+        </div>
+        <span class="unit" aria-hidden="true">j</span>
+      </div>
+    </div>
+
+    <!-- Operations -->
+    <div class="panel-box">
+      <h2 id="ops-label">Operation</h2>
+      <div class="radio-list" id="ops" role="radiogroup" aria-labelledby="ops-label">
+        <label><input type="radio" name="op" value="add" checked><span>Addition (z&#x2081; + z&#x2082;)</span></label>
+        <label><input type="radio" name="op" value="sub"><span>Subtraction (z&#x2081; &minus; z&#x2082;)</span></label>
+        <label><input type="radio" name="op" value="mul"><span>Multiplication (z&#x2081; &times; z&#x2082;)</span></label>
+        <label><input type="radio" name="op" value="div"><span>Division (z&#x2081; &divide; z&#x2082;)</span></label>
+        <label><input type="radio" name="op" value="conj"><span>Conjugate (z&#x2081;*)</span></label>
+        <label><input type="radio" name="op" value="rot"><span>Rotate z&#x2081; by &ang;z&#x2082;</span></label>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="panel-box">
+      <h2>Results</h2>
+      <!-- aria-live announces updates to screen readers automatically -->
+      <div class="results-grid" id="results" aria-live="polite" aria-atomic="true">
+        <div class="entry">
+          <div class="entry-label">z&#x2081; rectangular</div>
+          <div class="val"  id="z1-rect">—</div>
+          <div class="val2" id="z1-polar">—</div>
+        </div>
+        <div class="entry">
+          <div class="entry-label">z&#x2082; rectangular</div>
+          <div class="val"  id="z2-rect">—</div>
+          <div class="val2" id="z2-polar">—</div>
+        </div>
+        <div class="entry result-full">
+          <div class="entry-label" id="res-label">Result</div>
+          <div class="val"  id="res-rect">—</div>
+          <div class="val2" id="res-polar">—</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end left-panel -->
+
+  <!-- ── RIGHT PANEL ── -->
+  <div class="right-panel">
+    <div class="canvas-wrap" id="canvasWrap">
+      <!--
+        role="img" + aria-label gives screen readers a text description.
+        The label is updated by JS on every draw so it always reflects
+        the current numbers and result.
+      -->
+      <canvas id="plot" role="img" aria-label="Complex plane plot — loading"></canvas>
+    </div>
+
+    <!-- Legend uses both color AND shape (solid / dashed / dotted) -->
+    <div class="legend" aria-label="Plot legend">
+      <div class="legend-item">
+        <!-- solid line -->
+        <svg width="28" height="12" aria-hidden="true">
+          <line x1="0" y1="6" x2="28" y2="6" stroke="#4a9eff" stroke-width="2.5"/>
+          <polygon points="28,6 20,2 20,10" fill="#4a9eff"/>
+        </svg>
+        z&#x2081; (solid)
+      </div>
+      <div class="legend-item">
+        <!-- dashed line -->
+        <svg width="28" height="12" aria-hidden="true">
+          <line x1="0" y1="6" x2="28" y2="6" stroke="#4ddd6e" stroke-width="2"
+                stroke-dasharray="5,3"/>
+          <polygon points="28,6 20,2 20,10" fill="#4ddd6e"/>
+        </svg>
+        z&#x2082; (dashed)
+      </div>
+      <div class="legend-item">
+        <!-- dotted / thick line -->
+        <svg width="28" height="12" aria-hidden="true">
+          <line x1="0" y1="6" x2="28" y2="6" stroke="#ff5f5f" stroke-width="3"
+                stroke-dasharray="2,3"/>
+          <polygon points="28,6 20,2 20,10" fill="#ff5f5f"/>
+        </svg>
+        Result (dotted)
+      </div>
+      <div class="legend-item">
+        <svg width="28" height="12" aria-hidden="true">
+          <line x1="0" y1="6" x2="28" y2="6" stroke="#8ab4d4" stroke-width="1"
+                stroke-dasharray="4,4"/>
+        </svg>
+        Unit circle
+      </div>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<script>
+// ── Complex number math ──────────────────────────────────────────────────────
+const C = {
+  make: (r, i) => ({ r: +r, i: +i }),
+  add:  (a, b) => ({ r: a.r + b.r, i: a.i + b.i }),
+  sub:  (a, b) => ({ r: a.r - b.r, i: a.i - b.i }),
+  mul:  (a, b) => ({ r: a.r*b.r - a.i*b.i, i: a.r*b.i + a.i*b.r }),
+  div:  (a, b) => {
+    const d = b.r*b.r + b.i*b.i;
+    return d === 0 ? { r: NaN, i: NaN }
+                   : { r: (a.r*b.r + a.i*b.i)/d, i: (a.i*b.r - a.r*b.i)/d };
+  },
+  conj: (a)       => ({ r: a.r, i: -a.i }),
+  abs:  (a)       => Math.sqrt(a.r*a.r + a.i*a.i),
+  arg:  (a)       => Math.atan2(a.i, a.r),
+  rot:  (a, theta) => {
+    const mag = C.abs(a), phi = C.arg(a) + theta;
+    return { r: mag * Math.cos(phi), i: mag * Math.sin(phi) };
+  }
+};
+
+function fmt(n) {
+  if (!isFinite(n)) return 'undefined';
+  return parseFloat(n.toFixed(3)).toString();
+}
+
+function fmtRectText(z) {
+  const sign = z.i < 0 ? '−' : '+';
+  return `${fmt(z.r)} ${sign} ${fmt(Math.abs(z.i))}j`;
+}
+function fmtPolarText(z) {
+  return `${fmt(C.abs(z))} ∠ ${fmt(C.arg(z) * 180 / Math.PI)}°`;
+}
+
+// ── Canvas setup ─────────────────────────────────────────────────────────────
+const canvas = document.getElementById('plot');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  const wrap = document.getElementById('canvasWrap');
+  canvas.width  = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+  draw();
+}
+
+function worldToCanvas(wx, wy, cx, cy, scale) {
+  return [cx + wx * scale, cy - wy * scale];
+}
+
+// Draw an arrow using a given dash pattern ([] = solid, [n,m] = dashed, etc.)
+function drawArrow(wx1, wy1, cx, cy, scale, color, lw, headLen, dashPat) {
+  const [x0, y0] = worldToCanvas(0, 0, cx, cy, scale);
+  const [x1, y1] = worldToCanvas(wx1, wy1, cx, cy, scale);
+  const angle = Math.atan2(y1 - y0, x1 - x0);
+  const hl = headLen || 12;
+  const ha = 0.38;
+
+  ctx.save();
+  ctx.setLineDash(dashPat || []);
+  ctx.beginPath();
+  ctx.moveTo(x0, y0);
+  ctx.lineTo(x1, y1);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lw;
+  ctx.stroke();
+  ctx.restore();
+
+  // Arrowhead is always solid regardless of line dash
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x1 - hl * Math.cos(angle - ha), y1 - hl * Math.sin(angle - ha));
+  ctx.lineTo(x1 - hl * Math.cos(angle + ha), y1 - hl * Math.sin(angle + ha));
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2;
+
+  const z1 = C.make(document.getElementById('z1r').value,
+                    document.getElementById('z1i').value);
+  const z2 = C.make(document.getElementById('z2r').value,
+                    document.getElementById('z2i').value);
+
+  const op = document.querySelector('input[name="op"]:checked').value;
+  let result, opLabel, opLabelLong;
+  switch (op) {
+    case 'add':  result = C.add(z1, z2);        opLabel = 'z\u2081 + z\u2082';           opLabelLong = 'Addition';       break;
+    case 'sub':  result = C.sub(z1, z2);        opLabel = 'z\u2081 \u2212 z\u2082';      opLabelLong = 'Subtraction';    break;
+    case 'mul':  result = C.mul(z1, z2);        opLabel = 'z\u2081 \u00D7 z\u2082';      opLabelLong = 'Multiplication'; break;
+    case 'div':  result = C.div(z1, z2);        opLabel = 'z\u2081 \u00F7 z\u2082';      opLabelLong = 'Division';       break;
+    case 'conj': result = C.conj(z1);           opLabel = 'z\u2081*';                    opLabelLong = 'Conjugate';      break;
+    case 'rot':  result = C.rot(z1, C.arg(z2)); opLabel = 'Rotate z\u2081 by \u2220z\u2082'; opLabelLong = 'Rotation';  break;
+    default:     result = z1;                   opLabel = 'z\u2081';                     opLabelLong = '';
+  }
+
+  // ── Update results panel ──────────────────────────────────────────────────
+  document.getElementById('z1-rect').textContent  = fmtRectText(z1);
+  document.getElementById('z1-polar').textContent = fmtPolarText(z1);
+  document.getElementById('z2-rect').textContent  = fmtRectText(z2);
+  document.getElementById('z2-polar').textContent = fmtPolarText(z2);
+  document.getElementById('res-label').textContent = opLabelLong + ' result';
+  document.getElementById('res-rect').textContent  = isFinite(result.r) ? fmtRectText(result)  : 'Undefined (division by zero)';
+  document.getElementById('res-polar').textContent = isFinite(result.r) ? fmtPolarText(result) : '';
+
+  // ── Update canvas aria-label (screen reader description) ─────────────────
+  const ariaDesc =
+    `Complex plane showing ${opLabelLong}. ` +
+    `z1 = ${fmtRectText(z1)} = ${fmtPolarText(z1)}, drawn as solid blue arrow. ` +
+    `z2 = ${fmtRectText(z2)} = ${fmtPolarText(z2)}, drawn as dashed green arrow. ` +
+    `Result (${opLabel}) = ${isFinite(result.r) ? fmtRectText(result) + ' = ' + fmtPolarText(result) : 'undefined'}, drawn as dotted red arrow.`;
+  canvas.setAttribute('aria-label', ariaDesc);
+
+  // ── Highlight selected radio label ────────────────────────────────────────
+  document.querySelectorAll('#ops label').forEach(l => l.classList.remove('selected'));
+  const checked = document.querySelector('input[name="op"]:checked');
+  if (checked) checked.closest('label').classList.add('selected');
+
+  // ── Scale ─────────────────────────────────────────────────────────────────
+  const maxMag = Math.max(C.abs(z1), C.abs(z2), C.abs(result), 1.0);
+  const scale = (Math.min(W, H) / 2) * 0.82 / maxMag;
+
+  // ── Background ────────────────────────────────────────────────────────────
+  ctx.fillStyle = '#0d1b2a';
+  ctx.fillRect(0, 0, W, H);
+
+  // ── Grid ──────────────────────────────────────────────────────────────────
+  const niceStep = niceGridStep(maxMag);
+  ctx.strokeStyle = '#1e3a5f';
+  ctx.lineWidth = 0.7;
+  const nMax = Math.ceil(maxMag / niceStep) * niceStep;
+  for (let v = -nMax; v <= nMax; v += niceStep) {
+    const [gx] = worldToCanvas(v, 0, cx, cy, scale);
+    const [, gy] = worldToCanvas(0, v, cx, cy, scale);
+    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+  }
+
+  // ── Axis tick labels — colour #8ab4d4 gives ≥ 4.5:1 on #0d1b2a ──────────
+  ctx.fillStyle = '#8ab4d4';
+  ctx.font = '10px Arial';
+  ctx.textAlign = 'center';
+  for (let v = -nMax; v <= nMax; v += niceStep) {
+    if (Math.abs(v) < 1e-9) continue;
+    const [gx] = worldToCanvas(v, 0, cx, cy, scale);
+    const [, gy] = worldToCanvas(0, v, cx, cy, scale);
+    ctx.textAlign = 'center';
+    ctx.fillText(fmt(v), gx, cy + 14);
+    ctx.textAlign = 'right';
+    ctx.fillText(fmt(v), cx - 5, gy + 4);
+  }
+
+  // ── Main axes ─────────────────────────────────────────────────────────────
+  ctx.strokeStyle = '#3a6a9a';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle = '#8ab4d4';
+  ctx.font = '12px Segoe UI, Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('Real Axis', W / 2, H - 4);
+  ctx.save();
+  ctx.translate(12, H / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText('Imaginary Axis', 0, 0);
+  ctx.restore();
+
+  // ── Unit circle (dashed) ──────────────────────────────────────────────────
+  ctx.beginPath();
+  ctx.setLineDash([5, 5]);
+  ctx.strokeStyle = '#8ab4d4';
+  ctx.lineWidth = 1;
+  ctx.arc(cx, cy, scale, 0, 2 * Math.PI);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // ── Canvas title ──────────────────────────────────────────────────────────
+  ctx.fillStyle = '#a0c4ff';
+  ctx.font = 'bold 14px Segoe UI, Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('Complex Operation: ' + opLabel, W / 2, 22);
+
+  // ── Vectors (color + distinct dash pattern) ───────────────────────────────
+  // z2 — green, dashed  [6, 4]
+  if (C.abs(z2) > 1e-10)
+    drawArrow(z2.r, z2.i, cx, cy, scale, '#4ddd6e', 2,   11, [6, 4]);
+
+  // z1 — blue, solid    []
+  if (C.abs(z1) > 1e-10)
+    drawArrow(z1.r, z1.i, cx, cy, scale, '#4a9eff', 2.5, 11, []);
+
+  // result — red, dotted [2, 4]
+  if (isFinite(result.r) && isFinite(result.i) && C.abs(result) > 1e-10)
+    drawArrow(result.r, result.i, cx, cy, scale, '#ff5f5f', 3, 14, [2, 4]);
+
+  // Parallelogram helper lines for addition
+  if (op === 'add' && isFinite(result.r)) {
+    ctx.save();
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(160,160,160,0.35)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    const [ax0, ay0] = worldToCanvas(z1.r, z1.i, cx, cy, scale);
+    const [ax1, ay1] = worldToCanvas(result.r, result.i, cx, cy, scale);
+    const [bx0, by0] = worldToCanvas(z2.r, z2.i, cx, cy, scale);
+    ctx.moveTo(ax0, ay0); ctx.lineTo(ax1, ay1);
+    ctx.moveTo(bx0, by0); ctx.lineTo(ax1, ay1);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // ── Origin dot ────────────────────────────────────────────────────────────
+  ctx.beginPath();
+  ctx.arc(cx, cy, 4, 0, 2 * Math.PI);
+  ctx.fillStyle = '#e0e0e0';
+  ctx.fill();
+
+  // ── Point labels ──────────────────────────────────────────────────────────
+  ctx.textAlign = 'left';
+  if (C.abs(z1) > 1e-10) {
+    const [lx, ly] = worldToCanvas(z1.r, z1.i, cx, cy, scale);
+    ctx.font = 'bold 13px Segoe UI, Arial';
+    ctx.fillStyle = '#4a9eff';
+    ctx.fillText('z\u2081', lx + 8, ly - 8);
+  }
+  if (C.abs(z2) > 1e-10) {
+    const [lx, ly] = worldToCanvas(z2.r, z2.i, cx, cy, scale);
+    ctx.font = 'bold 13px Segoe UI, Arial';
+    ctx.fillStyle = '#4ddd6e';
+    ctx.fillText('z\u2082', lx + 8, ly - 8);
+  }
+  if (isFinite(result.r) && isFinite(result.i) && C.abs(result) > 1e-10) {
+    const [lx, ly] = worldToCanvas(result.r, result.i, cx, cy, scale);
+    ctx.font = 'bold 13px Segoe UI, Arial';
+    ctx.fillStyle = '#ff5f5f';
+    ctx.fillText('Result', lx + 8, ly - 8);
+  }
+}
+
+function niceGridStep(maxVal) {
+  const raw = maxVal / 4;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const norm = raw / mag;
+  if (norm < 1.5) return mag;
+  if (norm < 3.5) return 2 * mag;
+  if (norm < 7.5) return 5 * mag;
+  return 10 * mag;
+}
+
+// ── Event wiring ─────────────────────────────────────────────────────────────
+document.querySelectorAll('input').forEach(el => el.addEventListener('input', draw));
+window.addEventListener('resize', resize);
+
+resize();
+</script>
+</body>
+</html>
