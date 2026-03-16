@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RC Time Constant — Interactive Widget</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --color-text-primary: #111827;
+    --color-text-secondary: #6B7280;
+    --color-text-muted: #9CA3AF;
+    --color-background-primary: #FFFFFF;
+    --color-background-secondary: #F9FAFB;
+    --color-background-tertiary: #F3F4F6;
+    --color-border-tertiary: #D1D5DB;
+    --color-info-tint: #EFF6FF;
+    --color-neutral-tint: #F9FAFB;
+    --color-accent: #D97706;
+    --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "Fira Mono", "Cascadia Code", "Consolas", monospace;
+    --border-radius-md: 6px;
+    --border-radius-lg: 10px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-text-primary: #F9FAFB;
+      --color-text-secondary: #D1D5DB;
+      --color-text-muted: #9CA3AF;
+      --color-background-primary: #111827;
+      --color-background-secondary: #1F2937;
+      --color-background-tertiary: #374151;
+      --color-border-tertiary: #374151;
+      --color-info-tint: #1E3A5F;
+      --color-neutral-tint: #1F2937;
+      --color-accent: #F59E0B;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    background: var(--color-background-primary);
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .widget {
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    background: var(--color-background-primary);
+  }
+
+  .panel {
+    padding: 20px 24px;
+  }
+
+  .panel + .panel {
+    border-top: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 14px;
+  }
+
+  /* Panel 1 — Physical picture */
+  .capacitor-svg-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Panel 2 — V-I relationship */
+  .vi-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .vi-equation {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px 16px;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-secondary);
+    min-width: 140px;
+  }
+
+  .vi-equation .label {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-bottom: 6px;
+  }
+
+  .vi-equation .eq {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--color-text-primary);
+  }
+
+  .vi-cards {
+    flex: 1 1 220px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .vi-card {
+    flex: 1 1 140px;
+    padding: 12px 14px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .vi-card.ac {
+    background: var(--color-info-tint);
+  }
+
+  .vi-card.dc {
+    background: var(--color-neutral-tint);
+  }
+
+  .vi-card .card-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .vi-card .card-arrow {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .vi-card .card-result {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+  }
+
+  /* Panel 3 — Interactive */
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .control-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    min-width: 20px;
+  }
+
+  .control-row input[type="range"] {
+    flex: 1 1 160px;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+    height: 4px;
+  }
+
+  .control-value {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-text-primary);
+    min-width: 80px;
+    text-align: right;
+  }
+
+  .tau-display {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-secondary);
+    margin-bottom: 16px;
+  }
+
+  .tau-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .tau-value {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .tau-unit {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+    height: 280px;
+  }
+
+  .summary-sentence {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .summary-sentence strong {
+    color: var(--color-text-primary);
+    font-family: var(--font-mono);
+  }
+
+  .chart-divider {
+    border-top: 0.5px solid var(--color-border-tertiary);
+    margin: 16px 0;
+  }
+
+  .chart-subtitle {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+  }
+
+  .chart-wrap-sm {
+    position: relative;
+    width: 100%;
+    height: 180px;
+  }
+
+  @media (max-width: 420px) {
+    .panel { padding: 14px 14px; }
+    .vi-layout { flex-direction: column; }
+    .vi-equation { min-width: unset; width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="widget">
+
+  <!-- ── Panel 1: Physical intuition ── -->
+  <div class="panel">
+    <div class="panel-title">RC circuit setup and capacitor physics</div>
+    <div class="capacitor-svg-wrap">
+      <!--
+        Two-panel inline SVG matching the reference layout:
+          Left  — RC schematic (switch S open, resistor R, battery Vs, capacitor C)
+          Right — Parallel-plate cross-section (+ plate, E-field arrows, − plate)
+        All strokes/text use CSS custom properties so dark-mode works automatically.
+      -->
+      <svg viewBox="0 0 720 268" width="100%" style="display:block;max-width:720px;margin:0 auto"
+           xmlns="http://www.w3.org/2000/svg"
+           aria-label="RC circuit schematic on the left; parallel-plate capacitor detail on the right">
+        <defs>
+          <marker id="rcArrowDn" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" style="fill:var(--color-text-primary,#111827)"/>
+          </marker>
+        </defs>
+
+        <!-- ══════ LEFT: RC circuit schematic ══════ -->
+        <!-- Loop rectangle corners: (36,36) top-left → (284,36) top-right → (284,208) btm-right → (36,208) btm-left -->
+
+        <!-- Top wire segments -->
+        <line x1="36"  y1="36"  x2="66"  y2="36"  style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
+        <line x1="112" y1="36"  x2="148" y2="36"  style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
+        <line x1="212" y1="36"  x2="284" y2="36"  style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
+        <!-- Right side wires (above and below cap) -->
+        <line x1="284" y1="36"  x2="284" y2="103" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
+        <line x1="284" y1="153" x2="284" y2="208" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
+        <!-- Bottom wire -->
+        <line x1="284" y1="208" x2="36"  y2="208" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
+        <!-- Left side wires (above and below battery) -->
+        <line x1="36"  y1="36"  x2="36"  y2="100" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
+        <line x1="36"  y1="148" x2="36"  y2="208" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2;fill:none"/>
+
+        <!-- Switch S (open knife switch) -->
+        <circle cx="66"  cy="36" r="5" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8;fill:var(--color-background-primary,#fff)"/>
+        <circle cx="112" cy="36" r="5" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8;fill:var(--color-background-primary,#fff)"/>
+        <!-- Blade: tilted ~28° upward from left terminal, not reaching right terminal -->
+        <line x1="66" y1="36" x2="106" y2="19" style="stroke:var(--color-text-primary,#111827);stroke-width:2.2"/>
+        <!-- Labels -->
+        <text x="80" y="12"  style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)">S</text>
+        <text x="88" y="55"  style="font-family:sans-serif;font-size:11px;fill:var(--color-text-primary,#111827)" text-anchor="middle">OPEN</text>
+
+        <!-- Resistor R (US box symbol) -->
+        <rect x="148" y="27" width="64" height="18" style="stroke:var(--color-text-primary,#111827);stroke-width:2;fill:var(--color-background-primary,#fff)"/>
+        <text x="180" y="17" style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)" text-anchor="middle">R</text>
+
+        <!-- Battery Vs (4 alternating long/short bars on left side) -->
+        <line x1="20" y1="107" x2="52" y2="107" style="stroke:var(--color-text-primary,#111827);stroke-width:3"/>
+        <line x1="26" y1="118" x2="46" y2="118" style="stroke:var(--color-text-primary,#111827);stroke-width:2"/>
+        <line x1="20" y1="129" x2="52" y2="129" style="stroke:var(--color-text-primary,#111827);stroke-width:3"/>
+        <line x1="26" y1="140" x2="46" y2="140" style="stroke:var(--color-text-primary,#111827);stroke-width:2"/>
+        <!-- Vs label -->
+        <text x="6" y="127" style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)">V<tspan dy="3" font-size="12" font-style="normal">s</tspan></text>
+
+        <!-- Capacitor C (two horizontal parallel plates on right side) -->
+        <line x1="266" y1="106" x2="302" y2="106" style="stroke:var(--color-text-primary,#111827);stroke-width:5.5"/>
+        <line x1="266" y1="150" x2="302" y2="150" style="stroke:var(--color-text-primary,#111827);stroke-width:5.5"/>
+        <!-- Polarity markers -->
+        <text x="258" y="111" style="font-family:sans-serif;font-size:15px;fill:var(--color-text-primary,#111827)" text-anchor="end">+</text>
+        <text x="258" y="157" style="font-family:sans-serif;font-size:19px;fill:var(--color-text-primary,#111827)" text-anchor="end">−</text>
+        <!-- C label (left of symbol) -->
+        <text x="247" y="132" style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)" text-anchor="end">C</text>
+        <!-- VC label (right of symbol) -->
+        <text x="308" y="126" style="font-family:serif;font-style:italic;font-size:16px;fill:var(--color-text-primary,#111827)">V<tspan dy="3" font-size="11" font-style="normal">C</tspan></text>
+
+        <!-- Circuit caption -->
+        <text x="160" y="238" style="font-family:sans-serif;font-size:13px;fill:var(--color-text-primary,#111827)" text-anchor="middle">Switch open → <tspan font-style="italic">V</tspan><tspan dy="2" font-size="10">C</tspan><tspan dy="-2"> = </tspan><tspan font-style="italic">V</tspan><tspan dy="2" font-size="10">0</tspan></text>
+
+        <!-- ══════ DIVIDER ══════ -->
+        <line x1="344" y1="8" x2="344" y2="252" style="stroke:var(--color-border-tertiary,#D1D5DB);stroke-width:0.5"/>
+
+        <!-- ══════ RIGHT: Parallel-plate cross-section ══════ -->
+
+        <!-- Top plate (gray filled rect with + symbols) -->
+        <rect x="376" y="46" width="292" height="32" style="fill:#9CA3AF;stroke:var(--color-text-primary,#111827);stroke-width:1.5"/>
+        <!-- Individual + symbols inside top plate at even spacing -->
+        <text x="396" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="424" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="452" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="480" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="508" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="536" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="564" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="592" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="620" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <text x="648" y="68" style="font-family:sans-serif;font-size:13px;font-weight:700;fill:var(--color-text-primary,#111827)">+</text>
+        <!-- +q label -->
+        <text x="674" y="68" style="font-family:serif;font-size:14px;fill:var(--color-text-primary,#111827)">+<tspan font-style="italic">q</tspan></text>
+
+        <!-- E-field arrows (10 downward arrows, evenly spaced) -->
+        <line x1="400" y1="78" x2="400" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="428" y1="78" x2="428" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="456" y1="78" x2="456" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="484" y1="78" x2="484" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="512" y1="78" x2="512" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="540" y1="78" x2="540" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="568" y1="78" x2="568" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="596" y1="78" x2="596" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="624" y1="78" x2="624" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <line x1="652" y1="78" x2="652" y2="144" style="stroke:var(--color-text-primary,#111827);stroke-width:1.8" marker-end="url(#rcArrowDn)"/>
+        <!-- E label (italic, right side, vertically centered between plates) -->
+        <text x="674" y="120" style="font-family:serif;font-style:italic;font-size:20px;fill:var(--color-text-primary,#111827)">E</text>
+
+        <!-- "initial charge: V₀" label in gap, left side -->
+        <text x="379" y="102" style="font-family:sans-serif;font-size:9.5px;fill:var(--color-text-secondary,#6B7280)">initial</text>
+        <text x="379" y="114" style="font-family:sans-serif;font-size:9.5px;fill:var(--color-text-secondary,#6B7280)">charge:</text>
+        <text x="379" y="127" style="font-family:sans-serif;font-size:9.5px;fill:var(--color-text-secondary,#6B7280)"><tspan font-style="italic">V</tspan><tspan dy="2" font-size="7">0</tspan></text>
+
+        <!-- Bottom plate (gray filled rect with dashed interior line) -->
+        <rect x="376" y="148" width="292" height="32" style="fill:#9CA3AF;stroke:var(--color-text-primary,#111827);stroke-width:1.5"/>
+        <!-- Dashed line inside bottom plate representing − charges -->
+        <line x1="390" y1="164" x2="660" y2="164" style="stroke:var(--color-text-primary,#111827);stroke-width:2;stroke-dasharray:9 6"/>
+        <!-- -q label -->
+        <text x="674" y="168" style="font-family:serif;font-size:14px;fill:var(--color-text-primary,#111827)">−<tspan font-style="italic">q</tspan></text>
+
+        <!-- Plate caption -->
+        <text x="522" y="204" style="font-family:sans-serif;font-size:13px;fill:var(--color-text-primary,#111827)" text-anchor="middle"><tspan font-style="italic">V</tspan><tspan dy="2" font-size="10">C</tspan><tspan dy="-2"> builds as charge</tspan></text>
+        <text x="522" y="221" style="font-family:sans-serif;font-size:13px;fill:var(--color-text-primary,#111827)" text-anchor="middle">accumulates</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Panel 2: V-I relationship ── -->
+  <div class="panel">
+    <div class="panel-title">V-I relationship</div>
+    <div class="vi-layout">
+      <div class="vi-equation">
+        <div class="label">current–voltage law</div>
+        <div class="eq">i = C dv/dt</div>
+      </div>
+      <div class="vi-cards">
+        <div class="vi-card ac">
+          <div class="card-title">AC / changing V</div>
+          <div class="card-arrow">dv/dt ≠ 0</div>
+          <div class="card-result">→ i ≠ 0 — current flows</div>
+        </div>
+        <div class="vi-card dc">
+          <div class="card-title">DC steady state</div>
+          <div class="card-arrow">dv/dt = 0</div>
+          <div class="card-result">→ i = 0 — open circuit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Panel 3: Interactive charging curve ── -->
+  <div class="panel">
+    <div class="panel-title">Charging curve — V<sub>C</sub>(t) = V<sub>f</sub> + (V<sub>0</sub> − V<sub>f</sub>)e<sup>−t/RC</sup></div>
+
+    <div class="controls">
+      <div class="control-row">
+        <span class="control-label">R</span>
+        <input type="range" id="sliderR" min="0" max="100" value="50">
+        <span class="control-value" id="valR">1.0 kΩ</span>
+      </div>
+      <div class="control-row">
+        <span class="control-label">C</span>
+        <input type="range" id="sliderC" min="0" max="100" value="50">
+        <span class="control-value" id="valC">100 µF</span>
+      </div>
+      <div class="control-row">
+        <span class="control-label">V<sub>f</sub></span>
+        <input type="range" id="sliderV" min="1" max="12" step="0.5" value="5">
+        <span class="control-value" id="valV">5.00 V</span>
+      </div>
+      <div class="control-row">
+        <span class="control-label">V<sub>0</sub></span>
+        <input type="range" id="sliderV0" min="-12" max="12" step="0.5" value="0">
+        <span class="control-value" id="valV0">0.0 V</span>
+      </div>
+    </div>
+
+    <div class="tau-display">
+      <span class="tau-label">τ = RC =</span>
+      <span class="tau-value" id="tauValue">100.0</span>
+      <span class="tau-unit">ms</span>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="rcChart"></canvas>
+    </div>
+
+    <div class="summary-sentence" id="summaryText"></div>
+
+    <div class="chart-divider"></div>
+    <div class="chart-subtitle">Capacitor current i(t)</div>
+    <div class="chart-wrap-sm">
+      <canvas id="rcCurrentChart"></canvas>
+    </div>
+    <div class="summary-sentence" id="currentSummaryText"></div>
+  </div>
+
+</div>
+
+<script>
+  // ── Log-scale slider mapping ──
+  function logVal(sliderVal, min, max) {
+    const logMin = Math.log10(min);
+    const logMax = Math.log10(max);
+    return Math.pow(10, logMin + (sliderVal / 100) * (logMax - logMin));
+  }
+
+  // ── Format helpers ──
+  function fmtR(ohms) {
+    if (ohms >= 1000) return (ohms / 1000).toPrecision(3).replace(/\.?0+$/, '') + ' kΩ';
+    return Math.round(ohms) + ' Ω';
+  }
+  function fmtC(farads) {
+    const uf = farads * 1e6;
+    if (uf >= 1000) return (uf / 1000).toPrecision(3).replace(/\.?0+$/, '') + ' mF';
+    return uf.toPrecision(3).replace(/\.?0+$/, '') + ' µF';
+  }
+
+  // ── State ──
+  let R = 1000;   // Ω
+  let C = 100e-6; // F
+  let Vf = 5;     // V
+  let V0 = 0;     // V — initial capacitor voltage
+
+  // Fixed display window = 5 × default τ (1 kΩ × 100 µF = 100 ms → window = 500 ms).
+  // Keeping this constant means a faster RC curve plateaus early (left),
+  // and a slower RC curve barely rises — giving clear visual contrast.
+  const DEFAULT_TAU = 1000 * 100e-6; // 0.1 s
+  const X_WINDOW    = 5 * DEFAULT_TAU; // 0.5 s — fixed x-axis max
+
+  // ── Chart setup ──
+  const ctx = document.getElementById('rcChart').getContext('2d');
+
+  const LANDMARKS = [1, 2, 3, 4]; // multiples of tau
+  const LANDMARK_PCT = ['63.2%', '86.5%', '95.0%', '98.2%'];
+  const N_POINTS = 400;
+
+  function buildDataset() {
+    const tau = R * C;
+    // Draw curve to at least X_WINDOW so fast curves stay flat to the right edge.
+    // For slow τ, draw to 5τ; Chart.js clips what falls outside the fixed axis.
+    const tDraw = Math.max(5 * tau, X_WINDOW);
+    const data = [];
+    for (let i = 0; i <= N_POINTS; i++) {
+      const t = (i / N_POINTS) * tDraw;
+      data.push({ x: t, y: Vf + (V0 - Vf) * Math.exp(-t / tau) });
+    }
+    return data;
+  }
+
+  function buildLandmarkDataset() {
+    const tau = R * C;
+    return LANDMARKS.map(k => ({
+      x: k * tau,
+      y: Vf + (V0 - Vf) * Math.exp(-k)
+    }));
+  }
+
+  function buildCurrentDataset() {
+    const tau   = R * C;
+    const iPeak = Math.abs(Vf - V0) / R; // A
+    const tDraw = Math.max(5 * tau, X_WINDOW);
+    const data  = [];
+    for (let i = 0; i <= N_POINTS; i++) {
+      const t = (i / N_POINTS) * tDraw;
+      data.push({ x: t, y: iPeak * Math.exp(-t / tau) * 1000 }); // mA
+    }
+    return data;
+  }
+
+  // Detect dark mode for chart colors
+  function isDark() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function chartColors() {
+    return isDark()
+      ? { grid: '#374151', tick: '#9CA3AF', vfLine: '#6B7280', bg: '#111827' }
+      : { grid: '#E5E7EB', tick: '#6B7280', vfLine: '#9CA3AF', bg: '#FFFFFF' };
+  }
+
+  function buildXLabels() {
+    const tau = R * C;
+    const tMax = 5 * tau;
+    const labels = [];
+    for (let i = 0; i <= N_POINTS; i++) {
+      labels.push((i / N_POINTS) * tMax);
+    }
+    return labels;
+  }
+
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [
+        {
+          // Main charging curve
+          label: 'V_C(t)',
+          data: buildDataset(),
+          borderColor: '#D97706',
+          borderWidth: 2.5,
+          pointRadius: 0,
+          tension: 0.4,
+          fill: false,
+          parsing: false,
+        },
+        {
+          // Landmark scatter points
+          label: 'Landmarks',
+          data: buildLandmarkDataset(),
+          type: 'scatter',
+          pointRadius: 6,
+          pointHoverRadius: 7,
+          pointBackgroundColor: '#D97706',
+          pointBorderColor: '#FFFFFF',
+          pointBorderWidth: 1.5,
+          showLine: false,
+          parsing: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      layout: { padding: { top: 28, right: 20, bottom: 8, left: 8 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },
+        // Custom plugin: landmark labels + Vf dashed line drawn via afterDraw
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          min: 0,
+          max: X_WINDOW,
+          title: {
+            display: true,
+            text: 'time (ms)  —  dashed line marks each τ multiple',
+            color: chartColors().tick,
+            font: { size: 10, family: 'monospace' }
+          },
+          ticks: {
+            color: chartColors().tick,
+            callback: val => (val * 1000).toFixed(0) + ' ms',
+            maxTicksLimit: 6,
+            font: { family: 'monospace', size: 11 },
+          },
+          grid: { color: chartColors().grid },
+          border: { color: chartColors().grid }
+        },
+        y: {
+          title: { display: true, text: 'V_C (V)', color: chartColors().tick, font: { size: 11 } },
+          ticks: {
+            color: chartColors().tick,
+            font: { family: 'monospace', size: 11 },
+            callback: v => v.toFixed(1) + ' V',
+          },
+          grid: { color: chartColors().grid },
+          border: { color: chartColors().grid }
+        }
+      }
+    },
+    plugins: [{
+      id: 'rcAnnotations',
+      afterDraw(chart) {
+        const { ctx, scales: { x: xScale, y: yScale }, chartArea } = chart;
+        const tau = R * C;
+        const colors = chartColors();
+        ctx.save();
+
+        // Dashed horizontal line at Vf
+        const yVf = yScale.getPixelForValue(Vf);
+        ctx.beginPath();
+        ctx.setLineDash([6, 4]);
+        ctx.strokeStyle = colors.vfLine;
+        ctx.lineWidth = 1;
+        ctx.moveTo(chartArea.left, yVf);
+        ctx.lineTo(chartArea.right, yVf);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = colors.tick;
+        ctx.font = '11px monospace';
+        ctx.textAlign = 'right';
+        ctx.fillText('V\u1D69 = ' + Vf.toFixed(2) + ' V', chartArea.right - 4, yVf - 5);
+
+        // Dashed horizontal line at V0 (only when V0 ≠ 0)
+        if (Math.abs(V0) > 0.001) {
+          const yV0 = yScale.getPixelForValue(V0);
+          ctx.beginPath();
+          ctx.setLineDash([4, 4]);
+          ctx.strokeStyle = colors.vfLine;
+          ctx.lineWidth = 1;
+          ctx.moveTo(chartArea.left, yV0);
+          ctx.lineTo(chartArea.right, yV0);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = colors.tick;
+          ctx.font = '11px monospace';
+          ctx.textAlign = 'right';
+          ctx.fillText('V\u2080 = ' + V0.toFixed(2) + ' V', chartArea.right - 4, yV0 - 5);
+        }
+
+        // Solid zero line (when V0 < 0 so y=0 appears mid-chart)
+        if (V0 < -0.001) {
+          const yZero = yScale.getPixelForValue(0);
+          if (yZero >= chartArea.top && yZero <= chartArea.bottom) {
+            ctx.beginPath();
+            ctx.setLineDash([]);
+            ctx.strokeStyle = colors.grid;
+            ctx.lineWidth = 1.5;
+            ctx.moveTo(chartArea.left, yZero);
+            ctx.lineTo(chartArea.right, yZero);
+            ctx.stroke();
+          }
+        }
+
+        // Landmark drop lines + percentage labels
+        // Drop lines go from marker down to V0 level (showing gap closed from V0 toward Vf)
+        const gapDefined = Math.abs(Vf - V0) > 0.001;
+        const yV0px = yScale.getPixelForValue(V0);
+        LANDMARKS.forEach((k, idx) => {
+          const t   = k * tau;
+          const v   = Vf + (V0 - Vf) * Math.exp(-k);
+          const xPx = xScale.getPixelForValue(t);
+          const yPx = yScale.getPixelForValue(v);
+
+          if (xPx < chartArea.left || xPx > chartArea.right) return;
+
+          // Vertical drop line: marker → V0 level
+          ctx.beginPath();
+          ctx.setLineDash([4, 3]);
+          ctx.strokeStyle = '#9CA3AF';
+          ctx.lineWidth = 1;
+          ctx.moveTo(xPx, yPx);
+          ctx.lineTo(xPx, yV0px);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Percentage label above marker
+          if (gapDefined) {
+            ctx.fillStyle = isDark() ? '#F9FAFB' : '#111827';
+            ctx.font = '600 11px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(LANDMARK_PCT[idx], xPx, yPx - 10);
+          }
+
+          // τ-multiple label at bottom of chart area
+          ctx.fillStyle = colors.tick;
+          ctx.font = '10px monospace';
+          ctx.fillText(k + 'τ', xPx, chartArea.bottom + 13);
+        });
+
+        ctx.restore();
+      }
+    }]
+  });
+
+  // ── Current chart (i(t)) ──
+  const ctxCurrent = document.getElementById('rcCurrentChart').getContext('2d');
+
+  const chartCurrent = new Chart(ctxCurrent, {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: 'i(t)',
+        data: buildCurrentDataset(),
+        borderColor: '#D97706',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        tension: 0.4,
+        fill: false,
+        parsing: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      layout: { padding: { top: 16, right: 20, bottom: 8, left: 8 } },
+      plugins: {
+        legend:  { display: false },
+        tooltip: { enabled: false },
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          min: 0,
+          max: X_WINDOW,
+          ticks: {
+            color: chartColors().tick,
+            callback: val => (val * 1000).toFixed(0) + ' ms',
+            maxTicksLimit: 6,
+            font: { family: 'monospace', size: 11 },
+          },
+          grid:   { color: chartColors().grid },
+          border: { color: chartColors().grid }
+        },
+        y: {
+          min: 0,
+          title: { display: true, text: 'i (mA)', color: chartColors().tick, font: { size: 11 } },
+          ticks: {
+            color: chartColors().tick,
+            font: { family: 'monospace', size: 11 },
+            callback: v => v.toFixed(1) + ' mA',
+          },
+          grid:   { color: chartColors().grid },
+          border: { color: chartColors().grid }
+        }
+      }
+    },
+    plugins: [{
+      id: 'currentAnnotations',
+      afterDraw(chart) {
+        const { ctx, scales: { y: yScale }, chartArea } = chart;
+        const colors = chartColors();
+        ctx.save();
+        // Dashed asymptote at i = 0
+        const yZero = yScale.getPixelForValue(0);
+        ctx.beginPath();
+        ctx.setLineDash([6, 4]);
+        ctx.strokeStyle = colors.vfLine;
+        ctx.lineWidth = 1;
+        ctx.moveTo(chartArea.left, yZero);
+        ctx.lineTo(chartArea.right, yZero);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = colors.tick;
+        ctx.font = '11px monospace';
+        ctx.textAlign = 'right';
+        ctx.fillText('0 mA (steady state)', chartArea.right - 4, yZero - 5);
+        ctx.restore();
+      }
+    }]
+  });
+
+  // ── Update function ──
+  function update() {
+    const tau = R * C;
+
+    chart.data.datasets[0].data = buildDataset();
+    chart.data.datasets[1].data = buildLandmarkDataset();
+
+    // Y-axis: include V0, 0, and Vf; 10% padding each side
+    const yMin   = Math.min(V0, 0, Vf);
+    const yMax   = Math.max(V0, Vf);
+    const yRange = yMax - yMin || 1;
+    chart.options.scales.y.min = yMin - 0.1 * yRange;
+    chart.options.scales.y.max = yMax + 0.1 * yRange;
+
+    chart.update('none');
+
+    // Current chart
+    const iPeakMa = Math.abs(Vf - V0) / R * 1000; // mA
+    chartCurrent.data.datasets[0].data = buildCurrentDataset();
+    chartCurrent.options.scales.y.max  = iPeakMa > 0 ? iPeakMa * 1.1 : 1;
+    chartCurrent.update('none');
+
+    // τ display
+    const tauMs = tau * 1000;
+    document.getElementById('tauValue').textContent = tauMs.toFixed(1);
+
+    // V_C summary sentence
+    const gapDefined = Math.abs(Vf - V0) > 0.001;
+    if (gapDefined) {
+      const vAtTau = Vf + (V0 - Vf) * Math.exp(-1);
+      document.getElementById('summaryText').innerHTML =
+        `At t = τ (<strong>${tauMs.toFixed(1)} ms</strong>), the capacitor voltage has moved ` +
+        `<strong>63.2%</strong> of the way from V\u2080 (<strong>${V0.toFixed(2)} V</strong>) ` +
+        `to V<sub>f</sub> (<strong>${Vf.toFixed(2)} V</strong>).`;
+    } else {
+      document.getElementById('summaryText').innerHTML =
+        `V\u2080 = V<sub>f</sub> — no transient; voltage stays at <strong>${Vf.toFixed(2)} V</strong>.`;
+    }
+
+    // Current summary sentence
+    if (!gapDefined) {
+      document.getElementById('currentSummaryText').innerHTML =
+        `No transient — initial current is zero.`;
+    } else {
+      const iAtTau = iPeakMa * Math.exp(-1);
+      document.getElementById('currentSummaryText').innerHTML =
+        `At t = 0, the initial current is <strong>${iPeakMa.toFixed(1)} mA</strong>. ` +
+        `At t = τ, it has decayed to <strong>${iAtTau.toFixed(1)} mA</strong> (36.8% remaining).`;
+    }
+  }
+
+  // ── Slider event listeners ──
+  document.getElementById('sliderR').addEventListener('input', function() {
+    R = logVal(+this.value, 100, 10000);
+    document.getElementById('valR').textContent = fmtR(R);
+    update();
+  });
+
+  document.getElementById('sliderC').addEventListener('input', function() {
+    C = logVal(+this.value, 1e-6, 1000e-6);
+    document.getElementById('valC').textContent = fmtC(C);
+    update();
+  });
+
+  document.getElementById('sliderV').addEventListener('input', function() {
+    Vf = +this.value;
+    document.getElementById('valV').textContent = Vf.toFixed(2) + ' V';
+    update();
+  });
+
+  document.getElementById('sliderV0').addEventListener('input', function() {
+    V0 = +this.value;
+    document.getElementById('valV0').textContent = V0.toFixed(1) + ' V';
+    update();
+  });
+
+  // ── Initialize display labels ──
+  document.getElementById('valR').textContent  = fmtR(R);
+  document.getElementById('valC').textContent  = fmtC(C);
+  document.getElementById('valV').textContent  = Vf.toFixed(2) + ' V';
+  document.getElementById('valV0').textContent = V0.toFixed(1) + ' V';
+
+  // ── Initial render ──
+  update();
+
+  // ── Recolor on dark-mode toggle ──
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    const c = chartColors();
+    chart.options.scales.x.ticks.color = c.tick;
+    chart.options.scales.x.grid.color  = c.grid;
+    chart.options.scales.y.ticks.color = c.tick;
+    chart.options.scales.y.grid.color  = c.grid;
+    chart.options.scales.y.title.color = c.tick;
+    chart.update('none');
+    chartCurrent.options.scales.x.ticks.color = c.tick;
+    chartCurrent.options.scales.x.grid.color  = c.grid;
+    chartCurrent.options.scales.y.ticks.color = c.tick;
+    chartCurrent.options.scales.y.grid.color  = c.grid;
+    chartCurrent.options.scales.y.title.color = c.tick;
+    chartCurrent.update('none');
+  });
+</script>
+</body>
+</html>
