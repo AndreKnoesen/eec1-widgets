@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complex Number Traps — ECE Pre-Lab</title>
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #2a3a5c;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --red: #f87171;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --focus-ring: #60a5fa;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  /* Progress */
+  .progress-bar-wrap {
+    background: var(--surface2);
+    border-radius: 999px;
+    height: 6px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .trap-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .trap-badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+  }
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  /* Step-by-step */
+  .steps {
+    background: var(--surface2);
+    border-left: 3px solid var(--border);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
+  }
+  .steps p { margin-bottom: 0.3rem; }
+  .steps p:last-child { margin-bottom: 0; }
+  .wrong { color: var(--red); }
+  .right { color: var(--green); }
+  .pause-prompt {
+    color: var(--yellow);
+    font-style: italic;
+    font-size: 0.95rem;
+    margin: 1rem 0 0.75rem;
+  }
+  /* Reveal */
+  .reveal-region {
+    margin-top: 1rem;
+  }
+  .reveal-content {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin-top: 0.75rem;
+  }
+  .reveal-content h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--green);
+    margin-bottom: 0.5rem;
+  }
+  .reveal-content p { margin-bottom: 0.5rem; }
+  .reveal-content p:last-child { margin-bottom: 0; }
+  .reveal-content .steps {
+    border-left-color: var(--green);
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+  /* SVG wrapper */
+  .svg-wrap {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+  }
+  svg { overflow: visible; }
+  /* Self-check */
+  .selfcheck {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .selfcheck-label {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+  .selfcheck-label span {
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  .text-input-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  input[type="text"] {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 1rem;
+    padding: 0.45rem 0.75rem;
+    width: 180px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus {
+    border-color: var(--focus-ring);
+    box-shadow: 0 0 0 3px rgba(96,165,250,0.3);
+  }
+  /* Checkbox group */
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    transition: border-color 0.15s;
+    user-select: none;
+  }
+  .checkbox-option:hover { border-color: var(--accent); }
+  .checkbox-option input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .checkbox-option:focus-within {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+  /* Feedback */
+  .feedback {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    min-height: 1.4em;
+  }
+  .feedback.correct { color: var(--green); }
+  .feedback.incorrect { color: var(--red); }
+  /* Buttons */
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.55rem 1.2rem;
+    transition: background 0.15s, transform 0.1s;
+    outline: none;
+  }
+  button:focus-visible {
+    box-shadow: 0 0 0 3px var(--focus-ring);
+  }
+  button:active { transform: scale(0.97); }
+  .btn-reveal {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-reveal:hover { background: var(--border); }
+  .btn-check {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-check:hover { background: var(--accent-hover); }
+  .btn-check:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-next {
+    background: var(--green);
+    color: #0a0f1e;
+    margin-top: 1rem;
+    padding: 0.6rem 1.6rem;
+  }
+  .btn-next:hover { background: #22c55e; }
+  .hidden { display: none !important; }
+  /* Locked state */
+  .trap-locked-notice {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+  /* Final card */
+  .final-screen { display: none; }
+  .final-screen.visible { display: block; }
+  .summary-table-wrap {
+    overflow-x: auto;
+    margin-top: 1rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--accent);
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--yellow); font-weight: 600; }
+  td:nth-child(2) { color: var(--red); }
+  td:nth-child(3) { color: var(--green); }
+  .congrats {
+    text-align: center;
+    padding: 1.5rem 0 0.75rem;
+  }
+  .congrats .big { font-size: 2rem; margin-bottom: 0.25rem; }
+  .congrats p { color: var(--text-muted); font-size: 0.95rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Complex Number Traps</h1>
+  <p class="subtitle">Four errors that catch everyone once. Work through them before your lab.</p>
+
+  <!-- Progress -->
+  <div class="progress-bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" id="progressBar" aria-label="Trap 1 of 4">
+    <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+  </div>
+  <p class="progress-label" id="progressLabel" aria-live="polite">Trap 1 of 4</p>
+
+  <!-- ═══════════════════════════════════════════ TRAP 1 ═══ -->
+  <div class="card" id="trap1" aria-labelledby="trap1-title">
+    <div class="trap-header">
+      <span class="trap-badge">Trap 1</span>
+      <h2 id="trap1-title">Quadrant Error</h2>
+    </div>
+    <p>A student needs to find the angle of <strong>z = −3 + 4j</strong>.</p>
+
+    <div class="steps" aria-label="Worked example with error">
+      <p>θ = tan⁻¹(b/a)</p>
+      <p>θ = tan⁻¹(4 / −3)</p>
+      <p class="wrong">θ = −53.1° ✗</p>
+    </div>
+
+    <!-- SVG diagram -->
+    <div class="svg-wrap">
+      <svg width="300" height="300" viewBox="-5 -5 10 10"
+           aria-label="Complex plane diagram showing vector z equals negative 3 plus 4j in the second quadrant. Red arc shows incorrect angle of negative 53 degrees. Green arc shows correct angle of 126.9 degrees."
+           role="img" id="trap1-svg">
+        <!-- Axes -->
+        <line x1="-4.5" y1="0" x2="4.5" y2="0" stroke="#4a5568" stroke-width="0.08"/>
+        <line x1="0" y1="-4.5" x2="0" y2="4.5" stroke="#4a5568" stroke-width="0.08"/>
+        <!-- Axis labels -->
+        <text x="4.6" y="0.35" fill="#94a3b8" font-size="0.45" font-family="sans-serif">Re</text>
+        <text x="0.15" y="-4.4" fill="#94a3b8" font-size="0.45" font-family="sans-serif">Im</text>
+        <!-- Tick marks -->
+        <line x1="-3" y1="-0.12" x2="-3" y2="0.12" stroke="#4a5568" stroke-width="0.06"/>
+        <line x1="3" y1="-0.12" x2="3" y2="0.12" stroke="#4a5568" stroke-width="0.06"/>
+        <line x1="-0.12" y1="-4" x2="0.12" y2="-4" stroke="#4a5568" stroke-width="0.06"/>
+        <line x1="-0.12" y1="4" x2="0.12" y2="4" stroke="#4a5568" stroke-width="0.06"/>
+        <!-- Origin dot -->
+        <circle cx="0" cy="0" r="0.1" fill="#94a3b8"/>
+
+        <!-- RED group: wrong angle indicator -->
+        <!-- Vector in red (always visible, same vector) -->
+        <line x1="0" y1="0" x2="-3" y2="-4" stroke="#f87171" stroke-width="0.12" marker-end="url(#arrowRed)"/>
+        <!-- Point z -->
+        <circle cx="-3" cy="-4" r="0.15" fill="#f87171"/>
+        <!-- Label z -->
+        <text x="-3.5" y="-4.4" fill="#f87171" font-size="0.45" font-family="sans-serif">z = −3+4j</text>
+        <!-- Wrong angle arc: small arc from 0° toward -53.1° (shown as dashed line at -53.1°) -->
+        <!-- arc from (1,0) sweeping to angle -53.1° (clockwise), radius 1 -->
+        <!-- -53.1° → endpoint: (cos(-53.1°), sin(-53.1°)) ≈ (0.6, -0.8) -->
+        <path d="M 1 0 A 1 1 0 0 0 0.6 0.8" fill="none" stroke="#f87171" stroke-width="0.07" stroke-dasharray="0.2 0.15"/>
+        <!-- Note: SVG y-axis is flipped (positive y goes down), so Im+ is up meaning y coordinate is negated -->
+        <!-- For angle -53.1° in math coords: endpoint in SVG is (cos(-53.1°), -sin(-53.1°)) = (0.6, 0.8) -->
+        <!-- The arc sweeps from (1,0) going clockwise in SVG to (0.6, 0.8) — that's actually going into Q4 of screen = Q4 mathematically wrong -->
+        <!-- Label wrong angle -->
+        <text x="0.7" y="1.3" fill="#f87171" font-size="0.4" font-family="sans-serif">−53.1° ✗</text>
+
+        <!-- GREEN group: correct angle (hidden until reveal) -->
+        <g id="trap1-green" style="display:none">
+          <!-- Correct angle arc: from (1,0) sweeping to 126.9° -->
+          <!-- 126.9° in math coords: (cos(126.9°), sin(126.9°)) ≈ (-0.6, 0.8) -->
+          <!-- In SVG coords: (-0.6, -0.8) -->
+          <path d="M 1 0 A 1 1 0 0 0 -0.6 -0.8" fill="none" stroke="#4ade80" stroke-width="0.07" stroke-dasharray="0.2 0.15"/>
+          <!-- Label correct angle -->
+          <text x="-1.8" y="-1.1" fill="#4ade80" font-size="0.4" font-family="sans-serif">126.9° ✓</text>
+        </g>
+
+        <!-- Arrow markers -->
+        <defs>
+          <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#f87171"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <p class="pause-prompt">↑ What's wrong here?</p>
+
+    <div class="reveal-region">
+      <button class="btn-reveal" id="reveal1" aria-expanded="false" aria-controls="reveal1-content">
+        Show what went wrong
+      </button>
+      <div id="reveal1-content" class="reveal-content hidden" aria-live="polite" tabindex="-1">
+        <h3>The problem</h3>
+        <p>The basic arctangent ignores which quadrant the vector is in. <code>tan⁻¹</code> only returns values in Q1 or Q4 (between −90° and +90°).</p>
+        <p>Since the real part is <strong>negative</strong> and the imaginary part is <strong>positive</strong>, z is in <strong>Q2</strong>. Add 180°.</p>
+        <div class="steps">
+          <p>θ = tan⁻¹(|b/a|) = tan⁻¹(4/3) = 53.1°</p>
+          <p class="right">θ = 180° − 53.1° = 126.9° ✓</p>
+          <p style="color:var(--text-muted); font-size:0.85rem;">Rule: if Re(z) &lt; 0, add 180° to the raw tan⁻¹ result.</p>
+          <p style="color:var(--text-muted); font-size:0.85rem;">Better: use atan2(b, a) which handles all quadrants automatically.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Self-check -->
+    <div class="selfcheck hidden" id="selfcheck1" aria-labelledby="sc1-label">
+      <p class="selfcheck-label" id="sc1-label">Self-check <span>(answer correctly to continue)</span></p>
+      <p style="margin-bottom:0.6rem; font-size:0.95rem;">z = −1 + 1j. What is the correct angle in degrees?</p>
+      <div class="text-input-row">
+        <input type="text" id="sc1-input" aria-label="Enter angle in degrees for z equals negative 1 plus 1j" placeholder="e.g. 135" autocomplete="off"/>
+        <button class="btn-check" id="sc1-btn" aria-label="Check your answer">Check</button>
+      </div>
+      <div class="feedback" id="sc1-feedback" aria-live="polite" role="alert"></div>
+    </div>
+
+    <button class="btn-next hidden" id="next1" aria-label="Proceed to Trap 2">Next Trap →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ TRAP 2 ═══ -->
+  <div class="card" id="trap2" aria-labelledby="trap2-title">
+    <div class="trap-header">
+      <span class="trap-badge">Trap 2</span>
+      <h2 id="trap2-title">Wrong Form for Addition</h2>
+    </div>
+    <div class="trap-locked-notice" id="trap2-lock" aria-label="Locked — complete Trap 1 first">
+      🔒 Complete Trap 1 to unlock.
+    </div>
+    <div id="trap2-content" class="hidden">
+      <p>A student needs to add <strong>5∠30°</strong> and <strong>3∠60°</strong>.</p>
+      <div class="steps" aria-label="Worked example with error">
+        <p>5∠30° + 3∠60°</p>
+        <p>= (5 + 3)∠(30° + 60°)</p>
+        <p class="wrong">= 8∠90° ✗</p>
+      </div>
+      <p class="pause-prompt">↑ What's wrong here?</p>
+
+      <div class="reveal-region">
+        <button class="btn-reveal" id="reveal2" aria-expanded="false" aria-controls="reveal2-content">
+          Show what went wrong
+        </button>
+        <div id="reveal2-content" class="reveal-content hidden" aria-live="polite" tabindex="-1">
+          <h3>The problem</h3>
+          <p>Polar form only supports <strong>direct multiplication and division</strong>. You cannot add or subtract angles or magnitudes directly — it simply doesn't work that way geometrically.</p>
+          <p>Convert to rectangular form first, then add components:</p>
+          <div class="steps">
+            <p>5∠30°  = 5·cos(30°) + 5·sin(30°)j = 4.33 + 2.5j</p>
+            <p>3∠60°  = 3·cos(60°) + 3·sin(60°)j = 1.5  + 2.6j</p>
+            <p>─────────────────────────────────</p>
+            <p>Sum    = 5.83 + 5.1j</p>
+            <p class="right">       = 7.73∠41.2° ✓</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="selfcheck hidden" id="selfcheck2" aria-labelledby="sc2-label">
+        <p class="selfcheck-label" id="sc2-label">Self-check <span>(select all that apply)</span></p>
+        <p style="margin-bottom:0.6rem; font-size:0.95rem;">Which operations can be performed directly in polar form without converting first?</p>
+        <div class="checkbox-group" role="group" aria-labelledby="sc2-label">
+          <label class="checkbox-option">
+            <input type="checkbox" name="sc2" value="add" aria-label="Addition"/> Addition
+          </label>
+          <label class="checkbox-option">
+            <input type="checkbox" name="sc2" value="sub" aria-label="Subtraction"/> Subtraction
+          </label>
+          <label class="checkbox-option">
+            <input type="checkbox" name="sc2" value="mul" aria-label="Multiplication"/> Multiplication
+          </label>
+          <label class="checkbox-option">
+            <input type="checkbox" name="sc2" value="div" aria-label="Division"/> Division
+          </label>
+        </div>
+        <button class="btn-check" id="sc2-btn" aria-label="Check your answer">Check</button>
+        <div class="feedback" id="sc2-feedback" aria-live="polite" role="alert"></div>
+      </div>
+
+      <button class="btn-next hidden" id="next2" aria-label="Proceed to Trap 3">Next Trap →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ TRAP 3 ═══ -->
+  <div class="card" id="trap3" aria-labelledby="trap3-title">
+    <div class="trap-header">
+      <span class="trap-badge">Trap 3</span>
+      <h2 id="trap3-title">Multiplication Cross-Terms Dropped</h2>
+    </div>
+    <div class="trap-locked-notice" id="trap3-lock" aria-label="Locked — complete Trap 2 first">
+      🔒 Complete Trap 2 to unlock.
+    </div>
+    <div id="trap3-content" class="hidden">
+      <p>A student multiplies <strong>(2 + 3j)(1 + 2j)</strong>.</p>
+      <div class="steps" aria-label="Worked example with error">
+        <p>(2 + 3j)(1 + 2j)</p>
+        <p>= 2×1 + 3j×2j</p>
+        <p>= 2 + 6j²</p>
+        <p>= 2 + 6(−1)</p>
+        <p class="wrong">= −4 ✗</p>
+      </div>
+      <p class="pause-prompt">↑ What's wrong here?</p>
+
+      <div class="reveal-region">
+        <button class="btn-reveal" id="reveal3" aria-expanded="false" aria-controls="reveal3-content">
+          Show what went wrong
+        </button>
+        <div id="reveal3-content" class="reveal-content hidden" aria-live="polite" tabindex="-1">
+          <h3>The problem</h3>
+          <p>Complex multiplication requires <strong>FOIL — all four terms</strong>. Two cross-terms were dropped.</p>
+          <div class="steps">
+            <p>(2)(1) + (2)(2j) + (3j)(1) + (3j)(2j)</p>
+            <p>= 2 + 4j + 3j + 6j²</p>
+            <p>= 2 + 7j + 6(−1)</p>
+            <p class="right">= −4 + 7j ✓</p>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.5rem;">j² = −1 always. The real and imaginary parts mix through the cross-terms.</p>
+        </div>
+      </div>
+
+      <div class="selfcheck hidden" id="selfcheck3" aria-labelledby="sc3-label">
+        <p class="selfcheck-label" id="sc3-label">Self-check <span>(answer correctly to continue)</span></p>
+        <p style="margin-bottom:0.6rem; font-size:0.95rem;">What is (1 + 2j)(3 + j)?</p>
+        <div class="text-input-row">
+          <input type="text" id="sc3-input" aria-label="Enter result of 1 plus 2j times 3 plus j in rectangular form" placeholder="e.g. 1+7j" autocomplete="off"/>
+          <button class="btn-check" id="sc3-btn" aria-label="Check your answer">Check</button>
+        </div>
+        <div class="feedback" id="sc3-feedback" aria-live="polite" role="alert"></div>
+      </div>
+
+      <button class="btn-next hidden" id="next3" aria-label="Proceed to Trap 4">Next Trap →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ TRAP 4 ═══ -->
+  <div class="card" id="trap4" aria-labelledby="trap4-title">
+    <div class="trap-header">
+      <span class="trap-badge">Trap 4</span>
+      <h2 id="trap4-title">Conjugate Misconception</h2>
+    </div>
+    <div class="trap-locked-notice" id="trap4-lock" aria-label="Locked — complete Trap 3 first">
+      🔒 Complete Trap 3 to unlock.
+    </div>
+    <div id="trap4-content" class="hidden">
+      <p>A student needs the complex conjugate of <strong>z = 3 + 4j</strong>.</p>
+      <div class="steps" aria-label="Worked example with error">
+        <p>z = 3 + 4j</p>
+        <p class="wrong">z* = −3 − 4j ✗</p>
+      </div>
+      <p class="pause-prompt">↑ What's wrong here?</p>
+
+      <div class="reveal-region">
+        <button class="btn-reveal" id="reveal4" aria-expanded="false" aria-controls="reveal4-content">
+          Show what went wrong
+        </button>
+        <div id="reveal4-content" class="reveal-content hidden" aria-live="polite" tabindex="-1">
+          <h3>The problem</h3>
+          <p>The conjugate <strong>only flips the sign of the imaginary part</strong>. The real part is unchanged. Flipping both signs gives the negative of z, not the conjugate.</p>
+          <div class="steps">
+            <p>z  = 3 + 4j</p>
+            <p class="right">z* = 3 − 4j ✓</p>
+          </div>
+          <p style="color:var(--yellow); margin-top:0.6rem; font-weight:600;">Bonus fact:</p>
+          <div class="steps">
+            <p>z × z* = (3 + 4j)(3 − 4j)</p>
+            <p>     = 9 − 12j + 12j − 16j²</p>
+            <p>     = 9 + 16 = 25 = |z|²</p>
+            <p class="right">Always real. Always positive. ✓</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="selfcheck hidden" id="selfcheck4" aria-labelledby="sc4-label">
+        <p class="selfcheck-label" id="sc4-label">Self-check <span>(answer correctly to continue)</span></p>
+        <p style="margin-bottom:0.6rem; font-size:0.95rem;">What is the complex conjugate of −2 + 5j?</p>
+        <div class="text-input-row">
+          <input type="text" id="sc4-input" aria-label="Enter complex conjugate of negative 2 plus 5j" placeholder="e.g. a+bj or a-bj" autocomplete="off"/>
+          <button class="btn-check" id="sc4-btn" aria-label="Check your answer">Check</button>
+        </div>
+        <div class="feedback" id="sc4-feedback" aria-live="polite" role="alert"></div>
+      </div>
+
+      <button class="btn-next hidden" id="next4" aria-label="View summary reference card">See Summary →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ FINAL ═══ -->
+  <div class="card final-screen" id="finalScreen" aria-labelledby="final-title">
+    <div class="congrats">
+      <div class="big" aria-hidden="true">✓</div>
+      <h2 id="final-title" style="font-size:1.3rem; margin-bottom:0.3rem;">All four traps cleared.</h2>
+      <p>Keep this reference handy during your lab.</p>
+    </div>
+    <div class="summary-table-wrap">
+      <table aria-label="Summary of four complex number traps and their fixes">
+        <thead>
+          <tr>
+            <th scope="col">Trap</th>
+            <th scope="col">The mistake</th>
+            <th scope="col">The fix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Quadrant error</td>
+            <td>θ = tan⁻¹(b/a) for all quadrants</td>
+            <td>Check the quadrant; add 180° if the real part is negative</td>
+          </tr>
+          <tr>
+            <td>Wrong form</td>
+            <td>Adding directly in polar form</td>
+            <td>Convert to rectangular before adding or subtracting</td>
+          </tr>
+          <tr>
+            <td>Dropped cross-terms</td>
+            <td>Skipping FOIL in multiplication</td>
+            <td>Expand all four terms; remember j² = −1</td>
+          </tr>
+          <tr>
+            <td>Conjugate</td>
+            <td>Flipping both signs</td>
+            <td>Only flip the imaginary sign</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── Utility ──────────────────────────────────────────────────────────────────
+function norm(s) {
+  return s.trim().toLowerCase()
+    .replace(/\s+/g, '')
+    .replace(/[−–]/g, '-')    // normalise minus signs
+    .replace(/\*/g, '');
+}
+
+function moveFocus(el) {
+  el.setAttribute('tabindex', '-1');
+  el.focus();
+}
+
+// ── Progress ─────────────────────────────────────────────────────────────────
+let completed = 0;
+function updateProgress(n) {
+  completed = n;
+  const bar = document.getElementById('progressBar');
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const shown = Math.min(n + 1, 4);
+  if (n >= 4) {
+    bar.setAttribute('aria-valuenow', 4);
+    bar.setAttribute('aria-label', 'All 4 traps complete');
+    fill.style.width = '100%';
+    label.textContent = 'All traps complete';
+  } else {
+    bar.setAttribute('aria-valuenow', n);
+    bar.setAttribute('aria-label', `Trap ${shown} of 4`);
+    fill.style.width = `${(n / 4) * 100}%`;
+    label.textContent = `Trap ${shown} of 4`;
+  }
+}
+
+// ── Unlock helper ─────────────────────────────────────────────────────────────
+function unlockTrap(n) {
+  const lock = document.getElementById(`trap${n}-lock`);
+  const content = document.getElementById(`trap${n}-content`);
+  if (lock) lock.remove();
+  if (content) content.classList.remove('hidden');
+}
+
+// ── Reveal buttons ────────────────────────────────────────────────────────────
+function setupReveal(num, onReveal) {
+  const btn = document.getElementById(`reveal${num}`);
+  const content = document.getElementById(`reveal${num}-content`);
+  const selfcheck = document.getElementById(`selfcheck${num}`);
+  btn.addEventListener('click', () => {
+    content.classList.remove('hidden');
+    btn.setAttribute('aria-expanded', 'true');
+    btn.disabled = true;
+    btn.textContent = 'Revealed';
+    selfcheck.classList.remove('hidden');
+    moveFocus(content);
+    if (onReveal) onReveal();
+  });
+}
+
+// ── TRAP 1 ────────────────────────────────────────────────────────────────────
+setupReveal(1, () => {
+  // Show green SVG elements
+  document.getElementById('trap1-green').style.display = '';
+});
+
+document.getElementById('sc1-btn').addEventListener('click', () => {
+  const val = norm(document.getElementById('sc1-input').value);
+  const fb = document.getElementById('sc1-feedback');
+  if (val === '135') {
+    fb.textContent = '✓ Correct! −1+1j is in Q2, so 180° − 45° = 135°.';
+    fb.className = 'feedback correct';
+    document.getElementById('sc1-btn').disabled = true;
+    document.getElementById('sc1-input').disabled = true;
+    document.getElementById('next1').classList.remove('hidden');
+    moveFocus(document.getElementById('next1'));
+  } else {
+    fb.textContent = '✗ Not quite. Hint: which quadrant is −1+1j in? How much do you add?';
+    fb.className = 'feedback incorrect';
+  }
+});
+
+document.getElementById('sc1-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('sc1-btn').click();
+});
+
+document.getElementById('next1').addEventListener('click', () => {
+  updateProgress(1);
+  unlockTrap(2);
+  moveFocus(document.getElementById('trap2'));
+});
+
+// ── TRAP 2 ────────────────────────────────────────────────────────────────────
+setupReveal(2, null);
+
+document.getElementById('sc2-btn').addEventListener('click', () => {
+  const boxes = document.querySelectorAll('input[name="sc2"]');
+  const selected = Array.from(boxes).filter(b => b.checked).map(b => b.value);
+  const fb = document.getElementById('sc2-feedback');
+  const correct = selected.length === 2 && selected.includes('mul') && selected.includes('div');
+  if (correct) {
+    fb.textContent = '✓ Correct! Multiplication and division work directly in polar form. Addition and subtraction require rectangular form.';
+    fb.className = 'feedback correct';
+    document.getElementById('sc2-btn').disabled = true;
+    boxes.forEach(b => b.disabled = true);
+    document.getElementById('next2').classList.remove('hidden');
+    moveFocus(document.getElementById('next2'));
+  } else {
+    fb.textContent = '✗ Not quite. Think about how polar multiplication works: magnitudes multiply, angles add.';
+    fb.className = 'feedback incorrect';
+  }
+});
+
+document.getElementById('next2').addEventListener('click', () => {
+  updateProgress(2);
+  unlockTrap(3);
+  moveFocus(document.getElementById('trap3'));
+});
+
+// ── TRAP 3 ────────────────────────────────────────────────────────────────────
+setupReveal(3, null);
+
+document.getElementById('sc3-btn').addEventListener('click', () => {
+  const val = norm(document.getElementById('sc3-input').value);
+  const fb = document.getElementById('sc3-feedback');
+  // Accept: 1+7j
+  const accepted = ['1+7j'];
+  if (accepted.includes(val)) {
+    fb.textContent = '✓ Correct! (1)(3) + (1)(j) + (2j)(3) + (2j)(j) = 3 + j + 6j + 2j² = 3 + 7j − 2 = 1 + 7j.';
+    fb.className = 'feedback correct';
+    document.getElementById('sc3-btn').disabled = true;
+    document.getElementById('sc3-input').disabled = true;
+    document.getElementById('next3').classList.remove('hidden');
+    moveFocus(document.getElementById('next3'));
+  } else {
+    fb.textContent = '✗ Not quite. Expand all four FOIL terms, then collect real and imaginary parts.';
+    fb.className = 'feedback incorrect';
+  }
+});
+
+document.getElementById('sc3-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('sc3-btn').click();
+});
+
+document.getElementById('next3').addEventListener('click', () => {
+  updateProgress(3);
+  unlockTrap(4);
+  moveFocus(document.getElementById('trap4'));
+});
+
+// ── TRAP 4 ────────────────────────────────────────────────────────────────────
+setupReveal(4, null);
+
+document.getElementById('sc4-btn').addEventListener('click', () => {
+  const val = norm(document.getElementById('sc4-input').value);
+  const fb = document.getElementById('sc4-feedback');
+  // Accept: -2-5j  (after norm: -2-5j)
+  const accepted = ['-2-5j'];
+  if (accepted.includes(val)) {
+    fb.textContent = '✓ Correct! Only the imaginary sign flips: −2 + 5j → −2 − 5j.';
+    fb.className = 'feedback correct';
+    document.getElementById('sc4-btn').disabled = true;
+    document.getElementById('sc4-input').disabled = true;
+    document.getElementById('next4').classList.remove('hidden');
+    moveFocus(document.getElementById('next4'));
+  } else {
+    fb.textContent = '✗ Not quite. Keep the real part the same; only change the sign on the j term.';
+    fb.className = 'feedback incorrect';
+  }
+});
+
+document.getElementById('sc4-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('sc4-btn').click();
+});
+
+document.getElementById('next4').addEventListener('click', () => {
+  updateProgress(4);
+  const final = document.getElementById('finalScreen');
+  final.classList.add('visible');
+  moveFocus(final);
+  // Scroll to final
+  final.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+updateProgress(0);
+</script>
+</body>
+</html>
