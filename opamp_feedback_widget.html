@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Op-Amp Open-Loop Gain: Why Large A Matters</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f4f4f5;
+    --border: #d4d4d8;
+    --text: #18181b;
+    --text-muted: #71717a;
+    --accent: #2563eb;
+    --accent-text: #ffffff;
+    --error-high: #dc2626;
+    --error-med: #d97706;
+    --error-low: #16a34a;
+    --card-bg: #ffffff;
+    --track-bg: #e4e4e7;
+    --focus-ring: #2563eb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #09090b;
+      --surface: #18181b;
+      --border: #3f3f46;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --accent: #3b82f6;
+      --accent-text: #ffffff;
+      --error-high: #f87171;
+      --error-med: #fbbf24;
+      --error-low: #4ade80;
+      --card-bg: #18181b;
+      --track-bg: #27272a;
+      --focus-ring: #3b82f6;
+    }
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 1.5rem 1rem;
+    min-width: 320px;
+  }
+
+  .widget {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text);
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Metric cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.875rem 1rem;
+  }
+
+  .card-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .card-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+
+  .card-value.ideal {
+    color: var(--accent);
+  }
+
+  .card-value.error-high { color: var(--error-high); }
+  .card-value.error-med  { color: var(--error-med); }
+  .card-value.error-low  { color: var(--error-low); }
+
+  .card-unit {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.125rem;
+  }
+
+  /* Error gauge */
+  .gauge-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .gauge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .gauge-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .gauge-legend {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .gauge-track {
+    background: var(--track-bg);
+    border-radius: 4px;
+    height: 24px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border);
+  }
+
+  .gauge-fill {
+    height: 100%;
+    border-radius: 3px 0 0 3px;
+    transition: width 0.15s ease, background-color 0.3s ease;
+    min-width: 2px;
+  }
+
+  .gauge-fill.error-high { background: var(--error-high); }
+  .gauge-fill.error-med  { background: var(--error-med); }
+  .gauge-fill.error-low  { background: var(--error-low); }
+
+  .gauge-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+  }
+
+  .gauge-labels span {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  /* Slider */
+  .slider-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .slider-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .slider-value {
+    font-size: 1rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    min-width: 4rem;
+    text-align: right;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--track-bg);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid var(--border);
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--accent-text);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--accent-text);
+  }
+
+  input[type="range"]:focus {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.375rem;
+  }
+
+  .slider-ticks span {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  /* Callout */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text);
+    transition: border-left-color 0.3s ease;
+  }
+
+  .callout.error-high { border-left-color: var(--error-high); }
+  .callout.error-med  { border-left-color: var(--error-med); }
+  .callout.error-low  { border-left-color: var(--error-low); }
+
+  .callout strong {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  /* Formula reference */
+  .formula-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.875rem 1rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .formula-box code {
+    font-family: 'Courier New', monospace;
+    color: var(--text);
+    background: var(--track-bg);
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-size: 0.875em;
+  }
+
+  .formula-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .formula-row span {
+    white-space: nowrap;
+  }
+
+  /* Screen-reader only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+<main class="widget" role="main">
+  <h1>Why Open-Loop Gain Must Be Large</h1>
+  <p class="subtitle">Negative feedback op-amp circuit &mdash; closed-loop target gain = 10, &beta; = 0.1</p>
+
+  <!-- Metric cards -->
+  <section aria-label="Gain metrics">
+    <div class="cards">
+      <div class="card" role="group" aria-labelledby="card-ideal-label">
+        <div class="card-label" id="card-ideal-label">Ideal Gain</div>
+        <div class="card-value ideal" aria-label="Ideal gain: 10.000">10.000</div>
+        <div class="card-unit">1 / &beta; &nbsp;(fixed reference)</div>
+      </div>
+
+      <div class="card" role="group" aria-labelledby="card-actual-label">
+        <div class="card-label" id="card-actual-label">Actual Gain</div>
+        <div class="card-value" id="actual-gain-display"
+             aria-live="polite" aria-atomic="true"
+             aria-label="Actual gain value">--</div>
+        <div class="card-unit">A / (1 + A&beta;)</div>
+      </div>
+
+      <div class="card" role="group" aria-labelledby="card-error-label">
+        <div class="card-label" id="card-error-label">Error</div>
+        <div class="card-value" id="error-display"
+             aria-live="polite" aria-atomic="true"
+             aria-label="Error percentage">--</div>
+        <div class="card-unit">% deviation from ideal</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Error gauge -->
+  <section class="gauge-section" aria-labelledby="gauge-title-id">
+    <div class="gauge-header">
+      <span class="gauge-title" id="gauge-title-id">Error magnitude</span>
+      <span class="gauge-legend">0% &rarr; 100%</span>
+    </div>
+    <div class="gauge-track"
+         role="progressbar"
+         aria-labelledby="gauge-title-id"
+         aria-valuenow="0"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         id="gauge-bar-container">
+      <div class="gauge-fill error-high" id="gauge-fill" style="width: 0%;"></div>
+    </div>
+    <div class="gauge-labels" aria-hidden="true">
+      <span>0% (perfect)</span>
+      <span>50%</span>
+      <span>100% (worst)</span>
+    </div>
+  </section>
+
+  <!-- Slider -->
+  <section class="slider-section" aria-labelledby="slider-section-label">
+    <div class="slider-header">
+      <label class="slider-label" id="slider-section-label" for="gain-slider">
+        Open-loop gain <em>A</em>
+      </label>
+      <span class="slider-value" id="slider-display" aria-live="polite" aria-atomic="true">100</span>
+    </div>
+    <input
+      type="range"
+      id="gain-slider"
+      min="1"
+      max="6"
+      step="0.001"
+      value="2"
+      aria-label="Open-loop gain A, logarithmic scale from 10 to 1 million"
+      aria-valuemin="10"
+      aria-valuemax="1000000"
+      aria-valuenow="100"
+      aria-valuetext="A equals 100"
+    >
+    <div class="slider-ticks" aria-hidden="true">
+      <span>10</span>
+      <span>100</span>
+      <span>1k</span>
+      <span>10k</span>
+      <span>100k</span>
+      <span>1M</span>
+    </div>
+  </section>
+
+  <!-- Callout -->
+  <div class="callout" id="callout" role="status" aria-live="polite" aria-atomic="true">
+    <strong>Insight</strong>
+    <span id="callout-text">Move the slider to explore how open-loop gain controls accuracy.</span>
+  </div>
+
+  <!-- Formula reference -->
+  <div class="formula-box" aria-label="Formula reference">
+    <div class="formula-row">
+      <span>Closed-loop gain: <code>A<sub>CL</sub> = A / (1 + A&beta;)</code></span>
+      <span>Error: <code>(10 &minus; A<sub>CL</sub>) / 10 &times; 100%</code></span>
+      <span>&beta; = 0.1 &nbsp;|&nbsp; Ideal = 1/&beta; = 10</span>
+    </div>
+  </div>
+
+  <!-- Hidden live region for screen reader announcements -->
+  <div id="sr-announce" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var BETA = 0.1;
+  var IDEAL = 1 / BETA; // 10
+
+  var slider = document.getElementById('gain-slider');
+  var sliderDisplay = document.getElementById('slider-display');
+  var actualGainDisplay = document.getElementById('actual-gain-display');
+  var errorDisplay = document.getElementById('error-display');
+  var gaugeFill = document.getElementById('gauge-fill');
+  var gaugeContainer = document.getElementById('gauge-bar-container');
+  var callout = document.getElementById('callout');
+  var calloutText = document.getElementById('callout-text');
+  var srAnnounce = document.getElementById('sr-announce');
+
+  var lastAnnouncedThreshold = null;
+  var announceTimer = null;
+
+  function formatA(a) {
+    if (a >= 1e6)  return (a / 1e6).toPrecision(3).replace(/\.?0+$/, '') + 'M';
+    if (a >= 1e3)  return (a / 1e3).toPrecision(3).replace(/\.?0+$/, '') + 'k';
+    return a.toPrecision(3).replace(/\.?0+$/, '');
+  }
+
+  function getColorClass(errorPct) {
+    if (errorPct > 5)   return 'error-high';
+    if (errorPct > 0.5) return 'error-med';
+    return 'error-low';
+  }
+
+  function setColorClass(el, colorClass) {
+    el.classList.remove('error-high', 'error-med', 'error-low');
+    el.classList.add(colorClass);
+  }
+
+  function getCalloutInfo(a) {
+    if (a < 50) {
+      return {
+        text: 'At very low A, the op-amp barely amplifies. The feedback loop has no authority — gain is far below the resistor-set target.',
+        cls: 'error-high',
+        threshold: 'very-low'
+      };
+    }
+    if (a < 500) {
+      return {
+        text: 'A = 100 range: ~9% error — the resistors are attempting to set gain, but A is too small to enforce it.',
+        cls: 'error-high',
+        threshold: 'low'
+      };
+    }
+    if (a < 5000) {
+      return {
+        text: 'A = 1k range: ~1% error — resistors not yet in full control. Gain is visibly below the ideal target.',
+        cls: 'error-med',
+        threshold: 'mid-low'
+      };
+    }
+    if (a < 50000) {
+      return {
+        text: 'A = 10k range: ~0.1% error — resistors nearly in control. The large A\u03b2 product is dominating the denominator.',
+        cls: 'error-med',
+        threshold: 'mid'
+      };
+    }
+    if (a < 500000) {
+      return {
+        text: 'A = 100k range: ~0.01% error — resistors are in complete control. Gain is set almost entirely by \u03b2 = R\u2081/R\u2082.',
+        cls: 'error-low',
+        threshold: 'high'
+      };
+    }
+    return {
+      text: 'A = 1M: ~0.001% error — the ideal limit. Gain = 1/\u03b2 = 10 to extreme precision. This is why real op-amps are designed with A \u2265 10\u2075.',
+      cls: 'error-low',
+      threshold: 'very-high'
+    };
+  }
+
+  function update() {
+    var logVal = parseFloat(slider.value);
+    var a = Math.pow(10, logVal);
+
+    var acl = a / (1 + a * BETA);
+    var errorPct = Math.abs((IDEAL - acl) / IDEAL) * 100;
+
+    var colorClass = getColorClass(errorPct);
+    var aLabel = formatA(a);
+
+    // Slider display
+    sliderDisplay.textContent = aLabel;
+    slider.setAttribute('aria-valuenow', Math.round(a));
+    slider.setAttribute('aria-valuetext', 'A equals ' + aLabel);
+
+    // Actual gain card
+    actualGainDisplay.textContent = acl.toFixed(3);
+    setColorClass(actualGainDisplay, colorClass);
+
+    // Error card
+    errorDisplay.textContent = errorPct.toFixed(4) + '%';
+    setColorClass(errorDisplay, colorClass);
+
+    // Gauge: use log scale so small errors are still visible
+    // Map errorPct [0, 100] linearly but cap at 100
+    var gaugeWidth = Math.min(errorPct, 100);
+    gaugeFill.style.width = gaugeWidth.toFixed(2) + '%';
+    setColorClass(gaugeFill, colorClass);
+    gaugeContainer.setAttribute('aria-valuenow', gaugeWidth.toFixed(1));
+
+    // Callout
+    var info = getCalloutInfo(a);
+    calloutText.textContent = info.text;
+    callout.className = 'callout ' + info.cls;
+
+    // Announce to screen readers on threshold change (debounced)
+    if (info.threshold !== lastAnnouncedThreshold) {
+      lastAnnouncedThreshold = info.threshold;
+      clearTimeout(announceTimer);
+      announceTimer = setTimeout(function () {
+        srAnnounce.textContent = 'A is ' + aLabel + '. Actual gain: ' + acl.toFixed(3) + '. Error: ' + errorPct.toFixed(4) + '%. ' + info.text;
+      }, 600);
+    }
+  }
+
+  slider.addEventListener('input', update);
+  slider.addEventListener('change', update);
+
+  // Initial render
+  update();
+})();
+</script>
+</body>
+</html>

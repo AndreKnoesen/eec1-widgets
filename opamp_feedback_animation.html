@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Op-Amp Feedback Loop: Settling Animation</title>
+<style>
+/* ── Design tokens ─────────────────────────────────────────────── */
+:root {
+  --bg:           #ffffff;
+  --surface:      #f4f4f5;
+  --surface2:     #e4e4e7;
+  --border:       #d4d4d8;
+  --text:         #18181b;
+  --text-muted:   #71717a;
+  --accent:       #2563eb;
+  --accent-dim:   #dbeafe;
+  --neg:          #16a34a;
+  --neg-dim:      #dcfce7;
+  --pos:          #dc2626;
+  --pos-dim:      #fee2e2;
+  --warn:         #d97706;
+  --track:        #e4e4e7;
+  --thumb:        #2563eb;
+  --pulse-neg:    #16a34a;
+  --pulse-pos:    #dc2626;
+  --node-stroke:  #52525b;
+  --wire:         #52525b;
+  --block-fill:   #f4f4f5;
+  --block-stroke: #52525b;
+  --label-color:  #18181b;
+  --focus:        #2563eb;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:           #09090b;
+    --surface:      #18181b;
+    --surface2:     #27272a;
+    --border:       #3f3f46;
+    --text:         #fafafa;
+    --text-muted:   #a1a1aa;
+    --accent:       #3b82f6;
+    --accent-dim:   #1e3a5f;
+    --neg:          #4ade80;
+    --neg-dim:      #14532d;
+    --pos:          #f87171;
+    --pos-dim:      #7f1d1d;
+    --warn:         #fbbf24;
+    --track:        #3f3f46;
+    --thumb:        #3b82f6;
+    --pulse-neg:    #4ade80;
+    --pulse-pos:    #f87171;
+    --node-stroke:  #a1a1aa;
+    --wire:         #a1a1aa;
+    --block-fill:   #27272a;
+    --block-stroke: #a1a1aa;
+    --label-color:  #fafafa;
+  }
+}
+
+/* ── Reset ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 1.25rem 1rem;
+  min-width: 320px;
+}
+.widget { max-width: 720px; margin: 0 auto; }
+
+/* ── Header ────────────────────────────────────────────────────── */
+h1 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.2rem; }
+.subtitle { font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1.25rem; }
+
+/* ── Mode badge ────────────────────────────────────────────────── */
+.mode-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  background: var(--neg-dim);
+  color: var(--neg);
+  transition: background 0.3s, color 0.3s;
+}
+.mode-badge.positive { background: var(--pos-dim); color: var(--pos); }
+
+/* ── SVG diagram ───────────────────────────────────────────────── */
+.diagram-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+#schematic {
+  display: block;
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* SVG element styles (applied via class on SVG elements) */
+.wire        { stroke: var(--wire);        stroke-width: 2.5; fill: none; }
+.block-rect  { fill: var(--block-fill);    stroke: var(--block-stroke); stroke-width: 2; }
+.block-label { fill: var(--label-color);   font-family: system-ui, sans-serif; font-size: 14px; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+.sub-label   { fill: var(--text-muted);    font-family: system-ui, sans-serif; font-size: 12px; font-weight: 600; text-anchor: middle; dominant-baseline: central; }
+.wire-label  { fill: var(--label-color);   font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; }
+/* Signal node labels: V+, V−, ε, V_out — largest, never on a wire */
+.sig-label   { fill: var(--label-color);   font-family: system-ui, sans-serif; font-size: 15px; font-weight: 700; }
+/* Summing junction port signs (+ and −) — full contrast, bold, large */
+.port-label  { fill: var(--label-color);   font-family: system-ui, sans-serif; font-size: 17px; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+.node-dot    { fill: var(--node-stroke); }
+.arrow       { fill: var(--wire); stroke: none; }
+
+/* Pulse token on SVG */
+.pulse-token {
+  r: 7;
+  fill: var(--pulse-neg);
+  opacity: 0;
+  transition: fill 0.3s;
+}
+.pulse-token.active { opacity: 1; }
+
+/* Block highlight */
+.block-rect.lit { stroke: var(--pulse-neg); stroke-width: 3; }
+
+/* ── Iteration counter ─────────────────────────────────────────── */
+.iter-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.875rem;
+  flex-wrap: wrap;
+}
+.iter-label {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.iter-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+.iter-status {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Step description ──────────────────────────────────────────── */
+.step-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 0.6rem 0.875rem;
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+  min-height: 2.4rem;
+  transition: border-left-color 0.3s;
+}
+.step-box strong { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.15rem; }
+#step-desc { color: var(--text); }
+
+/* ── Voltage bars ──────────────────────────────────────────────── */
+.bars-section { margin-bottom: 1rem; }
+.bars-grid {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr 3.5rem;
+  gap: 0.4rem 0.6rem;
+  align-items: center;
+}
+.bar-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+.bar-track {
+  height: 18px;
+  background: var(--track);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+/* Fixed ±5 V scale markers on V+, V−, Vout bars only */
+#bar-vplus-track::before,  #bar-vminus-track::before,  #bar-vout-track::before,
+#bar-vplus-track::after,   #bar-vminus-track::after,   #bar-vout-track::after {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
+  z-index: 2;
+  line-height: 1;
+}
+#bar-vplus-track::before,  #bar-vminus-track::before,  #bar-vout-track::before {
+  content: '\2212 5V';
+  left: 3px;
+}
+#bar-vplus-track::after,   #bar-vminus-track::after,   #bar-vout-track::after {
+  content: '+5V';
+  right: 3px;
+}
+/* Zero-centered bar: fill element is absolutely positioned */
+.bar-fill {
+  position: absolute;
+  top: 0; bottom: 0;
+  border-radius: 2px;
+  transition: left 0.25s ease, width 0.25s ease, background 0.3s;
+}
+.bar-fill.vplus  { background: var(--accent); }
+.bar-fill.vminus { background: var(--neg); }
+.bar-fill.error  { background: var(--warn); }
+.bar-fill.vout   { background: var(--accent); }
+/* negative-mode vout same accent; positive-mode override in JS */
+.bar-fill.vout.saturating { background: var(--pos); }
+
+.bar-zero {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--border);
+}
+.bar-val {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* ── Controls ──────────────────────────────────────────────────── */
+.controls {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.ctrl-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+.ctrl-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 4rem;
+}
+
+/* Buttons */
+.btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.4rem 0.875rem;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.btn:hover  { background: var(--surface2); }
+.btn:focus  { outline: 2px solid var(--focus); outline-offset: 2px; }
+.btn:active { background: var(--surface2); }
+.btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn.primary:hover { filter: brightness(1.1); }
+.btn.toggle-active {
+  background: var(--pos-dim);
+  color: var(--pos);
+  border-color: var(--pos);
+}
+
+/* Speed slider */
+input[type="range"].speed-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px;
+  height: 5px;
+  background: var(--track);
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+input[type="range"].speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--thumb);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--thumb);
+}
+input[type="range"].speed-slider::-moz-range-thumb {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--thumb);
+  border: 2px solid #fff;
+}
+input[type="range"].speed-slider:focus { outline: 2px solid var(--focus); outline-offset: 3px; }
+.speed-val { font-size: 0.8rem; color: var(--text-muted); font-variant-numeric: tabular-nums; min-width: 2.5rem; }
+
+/* ── SR-only ───────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .bars-grid { grid-template-columns: 4rem 1fr 3rem; }
+  .ctrl-row  { gap: 0.4rem; }
+  .btn       { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+<main class="widget" role="main">
+
+  <h1>Op-Amp Feedback Loop: Settling Process</h1>
+  <p class="subtitle">Trace the cause-and-effect chain — each iteration drives the output toward (or away from) the target.&ensp;&#x7C;&ensp;&#x03B2;&thinsp;=&thinsp;0.5&ensp;&rarr;&ensp;closed-loop gain&thinsp;=&thinsp;1/&#x03B2;&thinsp;=&thinsp;<strong>2</strong></p>
+
+  <!-- Mode badge -->
+  <div id="mode-badge" class="mode-badge" aria-live="polite" aria-atomic="true">Negative feedback</div>
+
+  <!-- ── Block diagram ── -->
+  <div class="diagram-wrap" aria-label="Op-amp feedback block diagram">
+    <!-- coordinate reference now in the SVG comment block below -->
+    <!--
+      Coordinate layout (viewBox 0 0 700 262):
+        Main signal wire:      y = 130
+        Feedback return wire:  y = 235
+        Summing junction:      cx=125, cy=130, r=30
+        Op-amp block:          x=257, y=94,  w=126, h=72
+        Beta block:            x=256, y=215, w=94,  h=40
+        V_out branch node:     cx=490, cy=130
+        Corner dot:            cx=125, cy=235
+
+        Signal labels are placed 17 px ABOVE the main wire (y=113)
+        or 17 px to the LEFT of vertical wires — never on a wire.
+    -->
+    <svg id="schematic" viewBox="0 0 700 262" xmlns="http://www.w3.org/2000/svg"
+         role="img" aria-labelledby="svg-title svg-desc">
+      <title id="svg-title">Op-amp feedback block diagram</title>
+      <desc id="svg-desc">V+ input enters a summing junction which computes the error epsilon equals V+ minus V−. The error feeds the op-amp with gain A producing V_out. A feedback path returns beta times V_out as V− to the inverting input of the summing junction.</desc>
+
+      <!-- ── Wires ── -->
+      <line class="wire" x1="10"  y1="130" x2="94"  y2="130"/>  <!-- V+ input → summing junction -->
+      <line class="wire" x1="156" y1="130" x2="256" y2="130"/>  <!-- summing junction → op-amp (ε wire) -->
+      <line class="wire" x1="384" y1="130" x2="572" y2="130"/>  <!-- op-amp → V_out node and beyond -->
+      <line class="wire" x1="490" y1="130" x2="490" y2="235"/>  <!-- V_out node → feedback down leg -->
+      <line class="wire" x1="490" y1="235" x2="351" y2="235"/>  <!-- feedback → beta block (right) -->
+      <line class="wire" x1="256" y1="235" x2="125" y2="235"/>  <!-- beta block (left) → corner -->
+      <line class="wire" x1="125" y1="235" x2="125" y2="161"/>  <!-- corner → summing junction (−) input -->
+
+      <!-- ── Arrowheads ── -->
+      <polygon class="arrow" points="88,123 88,137 103,130"/>   <!-- into summing junction -->
+      <polygon class="arrow" points="250,123 250,137 259,130"/> <!-- summing junction → op-amp -->
+      <polygon class="arrow" points="565,123 565,137 574,130"/> <!-- op-amp → V_out -->
+      <polygon class="arrow" points="119,168 131,168 125,160"/> <!-- feedback → summing junction (−) -->
+
+      <!-- ── Summing junction ── -->
+      <circle id="blk-sum" class="block-rect" cx="125" cy="130" r="30"/>
+      <text class="block-label" x="125" y="130" font-size="22">&#x03A3;</text>
+      <!-- + and − port labels: full-contrast, bold, away from wire crossing points.
+           Left wire enters at (95,130); bottom wire enters at (125,160).
+           + sits in upper-left quadrant, clear above the horizontal wire.
+           − sits in lower-right quadrant, clear of both wires and the circle edge. -->
+      <text class="port-label" x="108" y="120">+</text>
+      <text class="port-label" x="140" y="151">&#x2212;</text>
+
+      <!-- ── Op-amp block ── -->
+      <rect id="blk-amp" class="block-rect" x="257" y="94" width="126" height="72" rx="6"/>
+      <text class="block-label" x="320" y="123">Op-Amp</text>
+      <text class="sub-label"   x="320" y="143">A = 100 000</text>
+
+      <!-- ── Beta (feedback) block ── -->
+      <rect id="blk-beta" class="block-rect" x="256" y="215" width="94" height="40" rx="6"/>
+      <text class="block-label" x="303" y="235">&#x03B2; = 0.5</text>
+
+      <!-- ── Node dots ── -->
+      <circle class="node-dot" cx="490" cy="130" r="5"/>
+      <circle class="node-dot" cx="125" cy="235" r="5"/>
+
+      <!-- ── Signal labels — all placed CLEAR of wire lines ──
+           V+ : 17 px above the input wire (wire at y=130, label at y=113)
+           ε  : 17 px above the error wire, centred between sum and amp
+           V_out: 17 px above the output wire, right of the branch node
+           V− : 17 px LEFT of the feedback up-wire (wire at x=125, label ends at x=107)
+      ── -->
+      <text class="sig-label" x="55"  y="113" text-anchor="middle">V<tspan dy="4" font-size="12">+</tspan></text>
+      <text class="sig-label" x="206" y="113" text-anchor="middle">&#x03B5;</text>
+      <text class="sig-label" x="530" y="113" text-anchor="middle">V<tspan dy="4" font-size="12">out</tspan></text>
+      <text class="sig-label" x="107" y="204" text-anchor="end">V<tspan dy="4" font-size="12">&#x2212;</tspan></text>
+
+      <!-- ── Pulse token (animated, travels the loop) ── -->
+      <circle id="pulse" class="pulse-token" cx="30" cy="130" r="8"/>
+
+    </svg>
+  </div>
+
+  <!-- ── Iteration counter ── -->
+  <div class="iter-row">
+    <span class="iter-label">Iteration</span>
+    <span class="iter-value" id="iter-display"
+          aria-live="polite" aria-atomic="true">0</span>
+    <span class="iter-status" id="iter-status"
+          aria-live="polite" aria-atomic="true">Press Play or Step to begin</span>
+  </div>
+
+  <!-- ── Step description callout ── -->
+  <div class="step-box" role="status" aria-live="polite" aria-atomic="true">
+    <strong>Current step</strong>
+    <span id="step-desc">Waiting to start. Use Play or Step to trace the feedback loop.</span>
+  </div>
+
+  <!-- ── Voltage bar indicators ── -->
+  <section class="bars-section" aria-label="Voltage levels">
+    <div class="bars-grid">
+
+      <!-- V+ -->
+      <span class="bar-name" id="bar-vplus-label">V<sub>+</sub></span>
+      <div class="bar-track" role="meter" aria-labelledby="bar-vplus-label"
+           aria-valuemin="-12" aria-valuemax="12" aria-valuenow="0" id="bar-vplus-track">
+        <div class="bar-zero" aria-hidden="true"></div>
+        <div class="bar-fill vplus" id="bar-vplus" style="left:50%;width:0%"></div>
+      </div>
+      <span class="bar-val" id="val-vplus" aria-live="polite" aria-atomic="true">0.00 V</span>
+
+      <!-- V- -->
+      <span class="bar-name" id="bar-vminus-label">V<sub>&#x2212;</sub></span>
+      <div class="bar-track" role="meter" aria-labelledby="bar-vminus-label"
+           aria-valuemin="-12" aria-valuemax="12" aria-valuenow="0" id="bar-vminus-track">
+        <div class="bar-zero" aria-hidden="true"></div>
+        <div class="bar-fill vminus" id="bar-vminus" style="left:50%;width:0%"></div>
+      </div>
+      <span class="bar-val" id="val-vminus" aria-live="polite" aria-atomic="true">0.00 V</span>
+
+      <!-- Error -->
+      <span class="bar-name" id="bar-error-label">&#x03B5; = V<sub>+</sub>&#x2212;V<sub>&#x2212;</sub></span>
+      <div class="bar-track" role="meter" aria-labelledby="bar-error-label"
+           aria-valuemin="-12" aria-valuemax="12" aria-valuenow="0" id="bar-error-track">
+        <div class="bar-zero" aria-hidden="true"></div>
+        <div class="bar-fill error" id="bar-error" style="left:50%;width:0%"></div>
+      </div>
+      <span class="bar-val" id="val-error" aria-live="polite" aria-atomic="true">0.00 V</span>
+
+      <!-- V_out -->
+      <span class="bar-name" id="bar-vout-label">V<sub>out</sub></span>
+      <div class="bar-track" role="meter" aria-labelledby="bar-vout-label"
+           aria-valuemin="-12" aria-valuemax="12" aria-valuenow="0" id="bar-vout-track">
+        <div class="bar-zero" aria-hidden="true"></div>
+        <div class="bar-fill vout" id="bar-vout" style="left:50%;width:0%"></div>
+      </div>
+      <span class="bar-val" id="val-vout" aria-live="polite" aria-atomic="true">0.00 V</span>
+
+    </div>
+  </section>
+
+  <!-- ── Controls ── -->
+  <div class="controls" role="group" aria-label="Animation controls">
+
+    <!-- Play / Pause / Reset / Step -->
+    <div class="ctrl-row">
+      <span class="ctrl-label" id="playback-label">Playback</span>
+      <button class="btn primary" id="btn-play"
+              aria-label="Play animation"
+              aria-describedby="playback-label">Play</button>
+      <button class="btn" id="btn-reset"
+              aria-label="Reset animation to initial state">Reset</button>
+      <button class="btn" id="btn-step"
+              aria-label="Step forward one loop iteration">Step</button>
+    </div>
+
+    <!-- Feedback mode toggle -->
+    <div class="ctrl-row">
+      <span class="ctrl-label" id="mode-label">Mode</span>
+      <button class="btn" id="btn-mode"
+              aria-pressed="false"
+              aria-label="Switch to positive feedback mode"
+              aria-describedby="mode-label">Negative feedback</button>
+    </div>
+
+    <!-- Speed -->
+    <div class="ctrl-row">
+      <label class="ctrl-label" for="speed-slider">Speed</label>
+      <input type="range" class="speed-slider" id="speed-slider"
+             min="1" max="5" step="1" value="3"
+             aria-label="Animation speed, 1 is slowest, 5 is fastest"
+             aria-valuemin="1" aria-valuemax="5" aria-valuenow="3">
+      <span class="speed-val" id="speed-display" aria-live="polite" aria-atomic="true">3 / 5</span>
+    </div>
+
+  </div>
+
+  <!-- Hidden screen-reader live region -->
+  <div id="sr-announce" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
+</main>
+<script>
+/* ================================================================
+   Op-Amp Feedback Loop — Animation Engine
+   ================================================================
+   Circuit parameters:
+     A = 100,000  β = 0.5  Vin = 1.0 V  V_SAT = ±5 V
+     V_out_final = Vin / β = 2.0 V  (comfortably within the ±5 V rail)
+
+   Two-track model (negative feedback):
+     Track 1 — what the op-amp ATTEMPTS (sub-step 2 display only):
+       V_out_attempt = clamp(A × ε, ±V_SAT)
+       With A = 100,000 this rails to 5 V on iteration 1. The railing
+       is intentional and pedagogically critical.
+
+     Track 2 — CONVERGENCE trajectory (drives V− and all subsequent math):
+       V_out_final  = Vin / β  (= 2.0 V)
+       V_out_actual = V_out_final × (1 − e^{−5n / maxIter})
+       V_out_actual is clamped to ±V_SAT and used to update V−.
+
+     At sub-step 3 the V_out bar transitions from V_out_attempt → V_out_actual,
+     showing the student that the railing is an instantaneous peak — the
+     closed-loop system actually converges to 2.0 V over ~20 iterations.
+
+   Settled: |ε| < 0.01 V  →  "V+ = V− — Golden Rule 1 achieved"
+   Max iter: 20 iterations without settling  →  "Max iterations reached"
+   ================================================================ */
+(function () {
+'use strict';
+
+/* ── Circuit parameters ──────────────────────────────────────── */
+var A           = 100000;  // open-loop gain
+var BETA        = 0.5;     // feedback fraction (Vout_final = Vin/β = 2.0 V)
+var VIN         = 1.0;     // step input (V)
+var V_SAT       = 5.0;     // saturation rail (V)
+var SAT_THR     = 4.8;     // |Vout| above which positive-mode "saturated" declared
+var SETTLE_THR  = 0.01;    // |ε| below which "settled" is declared
+var MAX_ITER    = 20;      // iterations before "max iterations reached"
+var VRANGE      = 5;       // bar full-scale ± (V)
+
+/* Speed table: milliseconds per waypoint dwell */
+var SPEED_MS = [0, 820, 520, 330, 180, 85];
+
+/* ── Sub-step waypoint groups ────────────────────────────────────
+ * One array per sub-step (index 0 = sub-step 1).
+ * Pulse visits each position in sequence at SPEED_MS cadence.
+ *
+ *   Sub-step 1  Summing junction  V+ and epsilon displayed
+ *   Sub-step 2  Beta feedback     V_out and V- updated
+ *   Sub-step 3  Return wire       highlights clear, counter increments
+ *
+ * The op-amp block is not animated as a separate step — the output
+ * is computed internally but the pulse jumps straight to the β block.
+ */
+var SUBSTEP_WPS = [
+  /* sub-step 1: V+ input wire -> summing junction (main wire y=130) */
+  [ { x:  40, y: 130, blockId: null       },
+    { x: 125, y: 130, blockId: 'blk-sum'  } ],
+  /* sub-step 2: output node -> feedback corner (y=235) -> beta block */
+  [ { x: 490, y: 130, blockId: null       },
+    { x: 490, y: 235, blockId: null       },
+    { x: 303, y: 235, blockId: 'blk-beta' } ],
+  /* sub-step 3: return wire -> back up to summing junction */
+  [ { x: 125, y: 235, blockId: null       },
+    { x: 125, y: 165, blockId: null       } ],
+];
+
+/* ── State ───────────────────────────────────────────────────────
+ *  subStep:      1-3, the sub-step about to execute (wraps 3->1)
+ *  pending:      computeNextState(), pre-computed at sub-step 1
+ *  ssActionDone: true after the data action for the current sub-step
+ *                has fired — prevents double-execution if play resumes
+ *                after a pause that aborted a waypoint walk mid-flight
+ */
+var state = {
+  running:      false,
+  mode:         'negative',   // 'negative' | 'positive'
+  iteration:    0,
+  subStep:      1,
+  ssActionDone: false,
+  pending:      null,
+  vplus: 0, vminus: 0, vout: 0, error: 0,
+  settled:      false,
+  saturated:    false,
+  speed:        3,
+  animTimer:    null,
+  wpTimer:      null,
+  iterCallout:  'Waiting to start. Use Play or Step to trace the feedback loop.',
+};
+
+/* ── DOM refs ────────────────────────────────────────────────── */
+var btnPlay     = document.getElementById('btn-play');
+var btnReset    = document.getElementById('btn-reset');
+var btnStep     = document.getElementById('btn-step');
+var btnMode     = document.getElementById('btn-mode');
+var speedSlider = document.getElementById('speed-slider');
+var speedDisp   = document.getElementById('speed-display');
+var iterDisp    = document.getElementById('iter-display');
+var iterStatus  = document.getElementById('iter-status');
+var stepDesc    = document.getElementById('step-desc');
+var modeBadge   = document.getElementById('mode-badge');
+var srAnnounce  = document.getElementById('sr-announce');
+var pulseEl     = document.getElementById('pulse');
+var barVplus    = document.getElementById('bar-vplus');
+var barVminus   = document.getElementById('bar-vminus');
+var barError    = document.getElementById('bar-error');
+var barVout     = document.getElementById('bar-vout');
+var valVplus    = document.getElementById('val-vplus');
+var valVminus   = document.getElementById('val-vminus');
+var valError    = document.getElementById('val-error');
+var valVout     = document.getElementById('val-vout');
+var trackVplus  = document.getElementById('bar-vplus-track');
+var trackVminus = document.getElementById('bar-vminus-track');
+var trackError  = document.getElementById('bar-error-track');
+var trackVout   = document.getElementById('bar-vout-track');
+var stepBox     = document.querySelector('.step-box');
+
+/* ── Physics ─────────────────────────────────────────────────── */
+/*
+ * Convergence model (negative feedback):
+ *   Vout(n) = (Vin/β) × (1 − e^{−5n/MAX_ITER})   clamped to ±V_SAT
+ *   V−      = β × Vout
+ * Positive feedback: Vout races to the rail (V_SAT × (1 − e^{−5n/MAX_ITER})).
+ */
+function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+function computeNextState() {
+  var nextIter = state.iteration + 1;
+  var vout;
+  if (state.mode === 'negative') {
+    var vss = VIN / BETA;   // 2.0 V — ideal settled value
+    vout = vss * (1 - Math.exp(-5 * nextIter / MAX_ITER));
+  } else {
+    vout = V_SAT * (1 - Math.exp(-5 * nextIter / MAX_ITER));
+  }
+  vout     = clamp(vout, -V_SAT, V_SAT);
+  var vm   = (state.mode === 'negative') ? BETA * vout : -(BETA * vout);
+  var err  = VIN - vm;
+  return { vplus: VIN, vminus: vm, vout: vout, error: err };
+}
+
+/* ── Callout text (per spec) ─────────────────────────────────── */
+function getCallout(n, settled, saturated) {
+  if (saturated)           return 'Positive feedback \u2014 output driven to rail';
+  if (settled && n >= MAX_ITER) return 'Max iterations reached';
+  if (settled)             return 'V\u208a = V\u208b \u2014 Golden Rule 1 achieved';
+  if (n === 1)             return 'Error detected \u2014 output responding';
+  if (n <= 4)              return 'Feedback pulling V\u208b toward V\u208a';
+  return 'Error shrinking \u2014 system converging';
+}
+
+/* ── Bar rendering ───────────────────────────────────────────── */
+function voltToBar(v) {
+  var pct = (v / VRANGE) * 50;
+  if (v >= 0) return { left: 50, width: Math.min(pct, 50) };
+  var w = Math.min(-pct, 50);
+  return { left: 50 - w, width: w };
+}
+function setBar(fillEl, trackEl, v) {
+  var b = voltToBar(v);
+  fillEl.style.left  = b.left  + '%';
+  fillEl.style.width = b.width + '%';
+  trackEl.setAttribute('aria-valuenow', v.toFixed(2));
+}
+function updateBars(vp, vm, err, vout) {
+  setBar(barVplus,  trackVplus,  vp);
+  setBar(barVminus, trackVminus, vm);
+  setBar(barError,  trackError,  err);
+  setBar(barVout,   trackVout,   vout);
+  valVplus.textContent  = vp.toFixed(2)  + ' V';
+  valVminus.textContent = vm.toFixed(2)  + ' V';
+  valError.textContent  = err.toFixed(2) + ' V';
+  valVout.textContent   = vout.toFixed(2) + ' V';
+  barVout.classList.toggle('saturating',
+    state.mode === 'positive' && Math.abs(vout) > SAT_THR);
+}
+
+/* ── Pulse token ─────────────────────────────────────────────── */
+var LIT_IDS = ['blk-sum', 'blk-amp', 'blk-beta'];
+function clearLit() {
+  LIT_IDS.forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('lit');
+    el.style.stroke = '';   // remove inline stroke so CSS default restores
+  });
+}
+function setPulseAt(wp) {
+  var color = state.mode === 'negative' ? 'var(--pulse-neg)' : 'var(--pulse-pos)';
+  pulseEl.setAttribute('cx', wp.x);
+  pulseEl.setAttribute('cy', wp.y);
+  pulseEl.classList.add('active');
+  pulseEl.style.fill = color;
+  clearLit();
+  if (wp.blockId) {
+    var el = document.getElementById(wp.blockId);
+    if (el) {
+      el.classList.add('lit');
+      el.style.stroke = color;  // match pulse color in both modes
+    }
+  }
+}
+function hidePulse() {
+  pulseEl.classList.remove('active');
+  clearLit();
+}
+
+/* ── Step-box helpers ────────────────────────────────────────── */
+function setCalloutText(text) {
+  stepDesc.textContent = text;
+  stepBox.style.borderLeftColor = state.mode === 'negative'
+    ? 'var(--neg)' : 'var(--pos)';
+}
+
+/* ── Screen-reader announce (debounced) ──────────────────────── */
+var announceTimer = null;
+function announce(msg, delay) {
+  clearTimeout(announceTimer);
+  announceTimer = setTimeout(function () { srAnnounce.textContent = msg; }, delay || 0);
+}
+
+/* ── Sub-step data actions ───────────────────────────────────────
+ * Each action updates ONLY the bars/values that change in that sub-step.
+ * Sub-step 3 finalizes the iteration: increments the counter,
+ * commits pending state, checks terminal conditions, and sets the
+ * iteration callout.  hidePulse() is NOT called here for sub-step 3;
+ * it is called in the onDone of its waypoint walk so the pulse travels
+ * the return leg before disappearing.
+ */
+function execSubStepAction(ss) {
+  if (ss === 1) {
+    /* Pre-compute next state; show V+ and ε at the summing junction */
+    state.pending = computeNextState();
+    var eps = VIN - state.vminus;
+    setBar(barVplus, trackVplus, VIN);
+    valVplus.textContent = VIN.toFixed(2) + ' V';
+    setBar(barError, trackError, eps);
+    valError.textContent = eps.toFixed(2) + ' V';
+    /* V_out and V− bars: deliberately unchanged this sub-step */
+    setCalloutText(
+      '\u03a3: \u03b5 = ' + VIN.toFixed(2) +
+      ' \u2212 ' + state.vminus.toFixed(2) +
+      ' = ' + eps.toFixed(2) + ' V \u2014 error entering op-amp'
+    );
+    announce('Summing junction: error is ' + eps.toFixed(2) + ' volts.', 200);
+
+  } else if (ss === 2) {
+    /* β path: show V_out and update V− */
+    var vo = state.pending.vout;
+    var vm = state.pending.vminus;
+    setBar(barVout,   trackVout,   vo);
+    valVout.textContent   = vo.toFixed(2) + ' V';
+    barVout.classList.toggle('saturating',
+      state.mode === 'positive' && Math.abs(vo) >= SAT_THR);
+    setBar(barVminus, trackVminus, vm);
+    valVminus.textContent = vm.toFixed(2) + ' V';
+    var sign = state.mode === 'negative' ? '\u03b2' : '\u2212\u03b2';
+    var dir  = state.mode === 'negative' ? ' \u2014 converging' : ' \u2014 diverging';
+    setCalloutText(
+      '\u03b2 path: V\u208b = ' + sign + ' \u00d7 V\u2080\u1d64\u209c' +
+      ' = ' + sign + ' \u00d7 ' + vo.toFixed(2) +
+      ' = ' + vm.toFixed(2) + ' V' + dir
+    );
+    announce('Feedback: V-out ' + vo.toFixed(2) + ' V, V-minus is now ' + vm.toFixed(2) + ' volts.', 200);
+
+  } else if (ss === 3) {
+    /* Finalize: commit all pending values */
+    var cv = state.pending;
+    state.iteration += 1;
+    state.vplus  = cv.vplus;
+    state.vminus = cv.vminus;
+    state.vout   = cv.vout;
+    state.error  = cv.error;
+    /* Residual error bar (V+ − new V−) */
+    setBar(barError, trackError, cv.error);
+    valError.textContent = cv.error.toFixed(2) + ' V';
+    iterDisp.textContent = state.iteration;
+
+    /* Terminal conditions */
+    if (state.mode === 'negative' && Math.abs(cv.error) < SETTLE_THR) {
+      state.settled = true;
+      iterStatus.textContent = 'Settled';
+      announce('Output settled. Golden Rule 1 achieved. Iteration ' + state.iteration + '.', 300);
+    } else if (state.mode === 'positive' && Math.abs(cv.vout) >= SAT_THR) {
+      state.saturated = true;
+      iterStatus.textContent = 'Saturated at rail';
+      announce('Saturated at supply rail. Iteration ' + state.iteration + '.', 300);
+    } else if (state.iteration >= MAX_ITER) {
+      state.settled = true;
+      iterStatus.textContent = 'Max iterations reached';
+      announce('Maximum iterations reached. Iteration ' + state.iteration + '.', 300);
+    } else {
+      iterStatus.textContent = 'Running \u2014 |\u03b5| = ' + Math.abs(cv.error).toFixed(2) + ' V';
+    }
+
+    state.iterCallout = getCallout(state.iteration, state.settled, state.saturated);
+    setCalloutText(state.iterCallout);
+    /* hidePulse() is called in walkSubStepWPs onDone, not here */
+  }
+}
+
+/* ── Waypoint walk for one sub-step ─────────────────────────────
+ * Animates the pulse through one sub-step's waypoint list.
+ * If state.running becomes false mid-walk, the walk aborts and leaves
+ * the pulse at its current SVG position (visible — no hidePulse here).
+ * onDone is only called when the full waypoint list has been traversed.
+ */
+function walkSubStepWPs(wps, onDone) {
+  var ms = SPEED_MS[state.speed];
+  var i  = 0;
+  function next() {
+    if (!state.running) { return; }       // paused — leave pulse in place
+    if (i >= wps.length) {
+      if (onDone) onDone();
+      return;
+    }
+    setPulseAt(wps[i]);
+    i++;
+    state.wpTimer = setTimeout(next, ms);
+  }
+  next();
+}
+
+/* ── advanceSubStep ──────────────────────────────────────────────
+ * The single function that drives both Play and Step modes.
+ *
+ *   isStep = false  (Play):  after the walk, schedule the next sub-step
+ *   isStep = true   (Step):  after the walk, stop and re-enable controls
+ *
+ * The data action (execSubStepAction) is guarded by ssActionDone so it
+ * fires exactly once even if the walk is aborted and re-started.
+ * hidePulse() is called in the onDone for sub-step 3 only, so the pulse
+ * traverses the return leg before clearing at the end of each iteration.
+ */
+function advanceSubStep(isStep) {
+  if (state.settled || state.saturated) { pause(); return; }
+
+  var ss  = state.subStep;                  // 1, 2, or 3
+  var wps = SUBSTEP_WPS[ss - 1];
+
+  /* Execute data action exactly once per sub-step invocation */
+  if (!state.ssActionDone) {
+    execSubStepAction(ss);
+    state.ssActionDone = true;
+  }
+
+  walkSubStepWPs(wps, function () {
+    state.ssActionDone = false;
+
+    /* Advance index: 1->2->3->1 */
+    state.subStep = (ss < 3) ? ss + 1 : 1;
+
+    /* Sub-step 3 ends an iteration: clear pulse now */
+    if (ss === 3) { hidePulse(); }
+
+    if (isStep) {
+      /* Step mode: one sub-step done — hand control back to the user */
+      state.running    = false;
+      btnPlay.disabled = false;
+      btnStep.disabled = false;
+    } else {
+      /* Play mode: keep going or stop if terminal */
+      if (state.settled || state.saturated) {
+        pause();
+      } else {
+        scheduleSubStep();
+      }
+    }
+  });
+}
+
+/* ── Scheduler (Play mode) ───────────────────────────────────── */
+function scheduleSubStep() {
+  if (!state.running) return;
+  if (state.settled || state.saturated) { pause(); return; }
+  /* Small inter-sub-step gap so bars are readable before the next pulse */
+  state.animTimer = setTimeout(function () {
+    if (!state.running) return;
+    advanceSubStep(false);
+  }, SPEED_MS[state.speed] * 0.25);
+}
+
+function play() {
+  if (state.settled || state.saturated) return;
+  state.running = true;
+  btnPlay.textContent = 'Pause';
+  btnPlay.setAttribute('aria-label', 'Pause animation');
+  btnStep.disabled = true;
+  announce('Animation playing.');
+  scheduleSubStep();
+}
+
+function pause() {
+  state.running = false;
+  clearTimeout(state.animTimer);
+  clearTimeout(state.wpTimer);
+  btnPlay.textContent = 'Play';
+  btnPlay.setAttribute('aria-label', 'Play animation');
+  btnPlay.disabled = false;
+  btnStep.disabled = false;
+  if (!state.settled && !state.saturated) {
+    announce('Paused at iteration ' + state.iteration +
+             ', sub-step ' + state.subStep + '.');
+  }
+}
+
+function reset() {
+  pause();
+  state.iteration    = 0;
+  state.subStep      = 1;
+  state.ssActionDone = false;
+  state.pending      = null;
+  state.vplus        = 0;
+  state.vminus       = 0;
+  state.vout         = 0;
+  state.error        = 0;
+  state.settled      = false;
+  state.saturated    = false;
+  state.iterCallout  = 'Waiting to start. Use Play or Step to trace the feedback loop.';
+  hidePulse();
+  updateBars(0, 0, 0, 0);
+  iterDisp.textContent   = '0';
+  iterStatus.textContent = 'Press Play or Step to begin';
+  setCalloutText(state.iterCallout);
+  announce('Animation reset.');
+}
+
+/* ── Step-through: exactly one sub-step per button press ─────────
+ * Sets state.running = true so walkSubStepWPs does not abort, then
+ * passes isStep = true so advanceSubStep re-enables controls instead
+ * of scheduling another sub-step.  btnPlay is disabled for the walk
+ * duration to block accidental play() calls.
+ */
+function stepOne() {
+  if (state.settled || state.saturated) return;
+  if (state.running) return;          // guard re-entrant calls
+  state.running    = true;
+  btnPlay.disabled = true;
+  btnStep.disabled = true;
+  advanceSubStep(true);
+}
+
+/* ── Mode toggle ─────────────────────────────────────────────── */
+function setMode(mode) {
+  state.mode = mode;
+  var isPos  = (mode === 'positive');
+
+  modeBadge.textContent = isPos ? 'Positive feedback' : 'Negative feedback';
+  modeBadge.classList.toggle('positive', isPos);
+
+  btnMode.textContent = isPos ? 'Positive feedback' : 'Negative feedback';
+  btnMode.setAttribute('aria-pressed', String(isPos));
+  btnMode.setAttribute('aria-label',
+    isPos ? 'Switch to negative feedback mode' : 'Switch to positive feedback mode');
+  btnMode.classList.toggle('toggle-active', isPos);
+
+  pulseEl.style.fill = isPos ? 'var(--pulse-pos)' : 'var(--pulse-neg)';
+
+  reset();
+  announce('Mode: ' + (isPos ? 'positive' : 'negative') + ' feedback. Animation reset.');
+}
+
+/* ── Event wiring ────────────────────────────────────────────── */
+btnPlay.addEventListener('click', function () {
+  if (state.running) { pause(); } else { play(); }
+});
+
+btnReset.addEventListener('click', reset);
+
+btnStep.addEventListener('click', function () {
+  if (!state.running) stepOne();
+});
+
+btnMode.addEventListener('click', function () {
+  setMode(state.mode === 'negative' ? 'positive' : 'negative');
+});
+
+speedSlider.addEventListener('input', function () {
+  state.speed = parseInt(this.value, 10);
+  speedDisp.textContent = state.speed + ' / 5';
+  this.setAttribute('aria-valuenow', state.speed);
+});
+
+/* Space bar toggles play/pause when no input is focused —
+   convenient for lecturers controlling the slide remotely. */
+document.addEventListener('keydown', function (e) {
+  if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+  if (e.code === 'Space' && document.activeElement === document.body) {
+    e.preventDefault();
+    if (state.running) { pause(); } else { play(); }
+  }
+});
+
+/* ── Init ────────────────────────────────────────────────────── */
+speedDisp.textContent = state.speed + ' / 5';
+updateBars(0, 0, 0, 0);
+
+})();
+</script>
+</body>
+</html>
