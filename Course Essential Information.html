@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Essential Information</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1rem 0;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h2>Course Description</h2>
+<p>The course introduces foundational concepts in Electrical and Computer Engineering (ECE) to first-year students. Recognizing ECE's breadth—from device physics and materials to circuits, systems, and machine learning—the curriculum focuses on essential principles for fundamental understanding. The main objective is to contextualize these core concepts, equipping students for advanced, specialized ECE courses.</p>
+<p>The curriculum covers key ECE domains, starting with a high-level perspective on using analog-to-digital converters (ADCs), digital-to-analog converters (DACs), and field-programmable gate arrays (FPGAs) within embedded systems for control and automation. The course explores analog circuit design for signal processing, examines the breadth of communication systems, and builds intuition for frequency analysis, signal processing, and filtering techniques. Finally, these topics are integrated through the lens of systems design and engineering, emphasizing practical, multidisciplinary problem-solving.</p>
+<p>This course intentionally distills each concept to its essential foundations, providing students with a broad but coherent understanding that prepares them for subsequent courses in analog and digital electronics, signal processing, and the ECE‑specific mathematical and physical principles encountered in the required math and physics sequences.</p>
+<hr/>
+<h2>Your Learning Resources &amp; The Role of AI</h2>
+<p>The textbook, <a href="https://canvas.ucdavis.edu/courses/1072443/files/30492587?wrap=1"><strong>ECE Confidential: Cracking The Code</strong></a> is your primary learning resource. It provides the conceptual foundation for every principle you will encounter. To succeed, you must move beyond passive reading to active mastery of the text.</p>
+<h3>A Flipped Classroom Workflow</h3>
+<p>Success depends on a consistent weekly rhythm, moving from independent exposure to group reinforcement:</p>
+<ol>
+<li><strong>Build the Foundation:</strong> Complete assigned textbook chapters <em>before</em> the Monday lecture.</li>
+<li><strong>Deepen with AI:</strong> Use AI tools (like <strong>NotebookLM</strong> or <strong>Gemini</strong>) to clarify difficult ideas, explore alternative explanations, or generate practice problems.</li>
+<li><strong>Verify Independently:</strong> Complete the <strong>Reading Check</strong> by Monday at Noon without AI to ensure you have internalized core concepts.</li>
+<li><strong>Reinforce in Lab:</strong> Return to the text and AI during physical lab activities to strengthen your grasp of methods and data analysis.</li>
+</ol>
+<h3>Using AI Responsibly</h3>
+<p>You are encouraged to use AI as a sophisticated study companion for "hardest conceptual hurdles" like displacement current or negative feedback. Refer to the <a href="https://canvas.ucdavis.edu/courses/1072443/files/30574892?wrap=1">ECE Emerge AI-Assisted Coding Guide</a> for more details.</p>
+<blockquote>
+<p><strong>Important:</strong> AI supports your understanding but does not replace engagement. You are responsible for the accuracy of your technical work and must properly attribute AI contributions in your projects.</p>
+</blockquote>
+<h3>The Goal: Personal Mastery</h3>
+<p>The <strong>Final Examination is closed-book</strong>. It is the primary venue where independent understanding is evaluated. Use AI to practice, but ensure your ultimate objective is personal mastery.</p>
+<hr/>
+<h2>Units &amp; Prerequisites</h2>
+<ul>
+<li><strong>Units:</strong> 4.0 Total (Lecture: 1.0, Laboratory: 2.0, Term Project: 1.0).</li>
+<li><strong>Corequisite:</strong> All EEC 1 students must also enroll in <strong>EEC 089D Section 001 (CRN: 55306)</strong> for 2 additional units.</li>
+<li><strong>GE Credit:</strong> SE.</li>
+<li><strong>Prerequisites:</strong> EEC 007, ECS 036A, or ENG 006 (concurrently); or Consent of Instructor.</li>
+</ul>
+<hr/>
+<h2>Preparation: What You'll Need</h2>
+<p>ECE Emerge is designed to bridge knowledge gaps and meet you where you are.</p>
+<ul>
+<li><strong>Mathematical Background:</strong> Completion of high school algebra and calculus is expected. Key college-level math concepts will be reviewed.</li>
+<li><strong>Circuits Knowledge:</strong> No prior expertise is assumed.</li>
+<li><strong>Programming Experience:</strong> * <strong>EE Majors:</strong> Concurrent enrollment in or prior completion of a MATLAB course is ideal.<ul>
+<li><strong>CE Majors:</strong> Existing coding skills will help you adapt to MATLAB quickly.</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2>Learning Objectives</h2>
+<p>Upon successful completion, students will be able to:</p>
+<ul>
+<li><strong>Fundamental Engineering Concepts:</strong> Apply concepts like charge, current, and voltage in practical contexts and demonstrate the application of complex numbers.</li>
+<li><strong>Technical Tools Proficiency:</strong> Utilize data acquisition modules (ADCs/DACs) and demonstrate proficiency in MATLAB and Python.</li>
+<li><strong>Measurement and Analysis Skills:</strong> Perform component measurements, capture electrical signals, and document experimental results professionally.</li>
+<li><strong>Engineering Context and Integration:</strong> Connect theoretical math/physics concepts to practical engineering scenarios.</li>
+<li><strong>Professional Skills Development:</strong> Practice technical documentation and time management through structured lab cycles.</li>
+<li><strong>Responsible AI Usage:</strong> Evaluate appropriate use cases for LLMs, maintain academic integrity, and validate AI-generated technical information.</li>
+</ul>
+<hr/>
+<h2>Assessment</h2>
+<p>Achievement will be evaluated through:<br/>
+* Pre-lecture and post-lecture assessments<br/>
+* Laboratory exercises and reports<br/>
+* Hands-on practical demonstrations<br/>
+* Project work and written reflections<br/>
+* Documentation of LLM usage</p>
+<hr/>
+<h2>ECE Emerge Course Structure (Spring 2026)</h2>
+<p>The course is organized into 8 modules:</p>
+<div aria-label="ECE Emerge Course Structure (Spring 2026)" class="table-wrapper" role="region" tabindex="0"><table><caption>ECE Emerge Course Structure (Spring 2026)</caption>
+<thead>
+<tr>
+<th scope="col" style="text-align: left;">Module</th>
+<th scope="col" style="text-align: left;">Lecture Topics</th>
+<th scope="col" style="text-align: left;">Lab Topics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Module #1</td>
+<td style="text-align: left;">Foundations and Circuit Language</td>
+<td style="text-align: left;">Intro to ADALM2000 (M2K); Soldering</td>
+</tr>
+<tr>
+<td style="text-align: left;">Module #2</td>
+<td style="text-align: left;">DC Circuits: KCL, KVL, Voltage Dividers</td>
+<td style="text-align: left;">DC Measurements; Series/Parallel</td>
+</tr>
+<tr>
+<td style="text-align: left;">Module #3</td>
+<td style="text-align: left;">Signals in Time and Frequency; Fourier</td>
+<td style="text-align: left;">Device Characterization; Frequency Domain</td>
+</tr>
+<tr>
+<td style="text-align: left;">Module #4</td>
+<td style="text-align: left;">Circuits That Remember: RC and RL</td>
+<td style="text-align: left;">Transient Response; Extracting $\tau$</td>
+</tr>
+<tr>
+<td style="text-align: left;">Module #5</td>
+<td style="text-align: left;">AC Analysis: Phasors and Impedance</td>
+<td style="text-align: left;">Passive RC Filters (LPF/HPF)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Module #6</td>
+<td style="text-align: left;">Op-Amp Fundamentals; Golden Rules</td>
+<td style="text-align: left;">Op-Amp Buffering; Slew Rate</td>
+</tr>
+<tr>
+<td style="text-align: left;">Module #7</td>
+<td style="text-align: left;">Applied Op-Amps: Inverting/Summing</td>
+<td style="text-align: left;">Precision Amps; Level Shifting</td>
+</tr>
+<tr>
+<td style="text-align: left;">Module #8</td>
+<td style="text-align: left;">Project</td>
+<td style="text-align: left;">Capstone Work</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2>The 12-Hour Weekly Commitment</h2>
+<p>Following the <strong>Carnegie Rule</strong>, this 4-unit course requires <strong>12 hours of work per week</strong>.</p>
+<ul>
+<li><strong>In-Class (3 Hours):</strong> 50-minute lecture and 2-hour lab.</li>
+<li><strong>Independent Mastery (9 Hours):</strong><ul>
+<li><strong>Pre-Lecture (~5-6 Hours):</strong> Deep-dive into the textbook and Reading Check.</li>
+<li><strong>Pre-Lab (~2 Hours):</strong> Calculations and circuit diagrams.</li>
+<li><strong>Synthesis &amp; Analysis (~1-2 Hours):</strong> Data analysis, report writing, and Module Assessment.</li>
+</ul>
+</li>
+</ul>
+<h3>Universal Deadlines</h3>
+<ul>
+<li><strong>Monday Noon:</strong> Reading Checks due before lecture.</li>
+<li><strong>Tuesday Noon:</strong> Pre-Lab Assignments due before any lab start.</li>
+<li><strong>Saturday Noon:</strong> Post-Lab Report and Module Assessment due.</li>
+</ul>
+<blockquote>
+<p><strong>Why Deadlines Matter:</strong> These prevent a 9-hour weekend crunch and ensure professional equity across all lab sections regardless of the day you attend. <strong>Deadlines are strictly enforced.</strong></p>
+</blockquote>
+<hr/>
+<h2>Required &amp; Optional Resources</h2>
+<h3>1. ADALM2000 (M2K) Module</h3>
+<ul>
+<li><strong>Individual Ownership:</strong> Required for every student.</li>
+<li><strong>Purchase:</strong> Obtain at least one week before your first lab. </li>
+<li><strong>Assistance:</strong> Limited units available via the <a href="https://ece.ucdavis.edu/department-resources/technology#loan">ECE Technology Loan Program</a>. Apply by <strong>Wednesday, March 25th</strong>.</li>
+</ul>
+<h3>2. Laptop</h3>
+<p>Required for every session. Windows 10+ is required for M2K interface support.<br/>
+* <strong>Specs:</strong> Intel i5/Ryzen 5, 8GB RAM (16GB rec), 2 USB ports.</p>
+<h3>3. Software</h3>
+<ul>
+<li><strong>MATLAB:</strong> Free for undergraduates. Use <a href="https://matlab.mathworks.com/">locally or via cloud</a>.</li>
+<li><strong>Gradescope:</strong> Required for all lab submissions. All work returned electronically.</li>
+<li><strong>Scopy:</strong> Graphical interface for M2K.</li>
+<li><strong>iClicker App:</strong> Required for Monday lecture diagnostics. Your lowest 2 scores will be dropped.</li>
+</ul>
+<h3>4. Optional Portable Lab Kit</h3>
+<p>Basic tools (under $20) for working outside scheduled hours:<br/>
+* Digital Multimeter<br/>
+* Diagonal Wire Cutters &amp; Needle Nose Pliers</p>
+<hr/>
+<h2>Instructional Team &amp; Communication</h2>
+<ul>
+<li><strong>Professor Andre Knoesen:</strong> Content and lectures. Email: aknoesen@ucdavis.edu (Subject must start with <strong>ECE Emerge:</strong>).</li>
+<li><strong>Laboratory TAs:</strong> Primary contact for technical hurdles and grading.</li>
+<li><strong>ULAs:</strong> Troubleshooting support during lab hours only.</li>
+<li><strong>Discourse:</strong> Primary platform for regular course and technical questions.</li>
+</ul>
+<hr/>
+<h2>Course Grading Structure</h2>
+<div aria-label="Course Grading Structure" class="table-wrapper" role="region" tabindex="0"><table><caption>Course Grading Structure</caption>
+<thead>
+<tr>
+<th scope="col" style="text-align: left;">Assessment Category</th>
+<th scope="col" style="text-align: center;">Weight</th>
+<th scope="col" style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Final Examination</strong></td>
+<td style="text-align: center;"><strong>30%</strong></td>
+<td style="text-align: left;">Cumulative, closed-book. Pencil only; no calculators.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Capstone Project</strong></td>
+<td style="text-align: center;"><strong>25%</strong></td>
+<td style="text-align: left;">Collaborative team project (Digital Scale).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Post-Lab Reports</strong></td>
+<td style="text-align: center;"><strong>20%</strong></td>
+<td style="text-align: left;">Professional documentation and data analysis via Gradescope.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Module Assessments</strong></td>
+<td style="text-align: center;"><strong>10%</strong></td>
+<td style="text-align: left;">Regular mastery checks. Lowest score dropped.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Pre-Lab Assignments</strong></td>
+<td style="text-align: center;"><strong>5%</strong></td>
+<td style="text-align: left;">Hardware readiness preparation.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reading Checks</strong></td>
+<td style="text-align: center;"><strong>5%</strong></td>
+<td style="text-align: left;">Monday Noon quizzes on textbook content.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Lecture Participation</strong></td>
+<td style="text-align: center;"><strong>5%</strong></td>
+<td style="text-align: left;">Active engagement via iClicker.</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2>Students Requiring Accommodations</h2>
+<p>All requests must go through the <strong>Student Disability Center (SDC)</strong>. <br/>
+* <strong>Documentation:</strong> Only SDC can authorize accommodations. <br/>
+* <strong>Contact:</strong> SDC will contact Professor Knoesen directly. <strong>Do not contact the instructor first.</strong><br/>
+* <strong>Timeline:</strong> Contact SDC <strong>before the course begins</strong>. Requests after Week 1 may not be accommodatable due to lab schedules.</p>
+<p>Visit the <a href="https://sdc.ucdavis.edu/">UC Davis SDC website</a> for details.</p>
+  </main>
+</body>
+</html>

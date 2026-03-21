@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECE Emerge: Module Summaries (Modules 1–7)</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1rem 0;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>ECE Emerge: Module Summaries (Modules 1–7)</h1>
+<h2>Module 1: Foundations and Circuit Language</h2>
+<p>Module 1 introduces the fundamental language of Electrical and Computer Engineering, focusing on the concepts of charge, current, and electric potential. You will begin to see the op-amp as an abstraction—a "black box" that hides internal complexity.</p>
+<ul>
+<li><strong>Electric Potential &amp; Conventional Current:</strong> Understanding how energy is moved through a circuit.</li>
+<li><strong>Hands-On:</strong> You will be introduced to the ADALM2000 (M2K) and complete the essential task of soldering your adaptor board.</li>
+</ul>
+<hr/>
+<h2>Module 2: DC Circuits and the Voltage Divider</h2>
+<p>This module establishes the core laws used to analyze any circuit, moving from individual components to networked systems.</p>
+<ul>
+<li><strong>KCL &amp; KVL:</strong> Mastering Kirchhoff’s Current and Voltage Laws to track charge and energy conservation.</li>
+<li><strong>The Voltage Divider:</strong> Learning the "cornerstone" circuit that appears in almost every engineering application.</li>
+<li><strong>Laboratory:</strong> You will perform DC voltage measurements and verify series/parallel relationships on your breadboard.</li>
+</ul>
+<hr/>
+<h2>Module 3: Signals in Time and Frequency</h2>
+<p>Module 3 shifts the focus from constant DC values to time-varying signals, introducing the duality between time and frequency domains.</p>
+<ul>
+<li><strong>Fourier Series Synthesis:</strong> Understanding how complex periodic waves are built from simple sine waves.</li>
+<li><strong>Frequency Domain:</strong> Using the M2K to visualize signals beyond the standard oscilloscope view.</li>
+</ul>
+<hr/>
+<h2>Module 4: Circuits That Remember (RC and RL)</h2>
+<p>This module introduces memory elements—capacitors and inductors—and analyzes how they respond to sudden changes in a circuit.</p>
+<ul>
+<li><strong>Time Constants:</strong> Defining how quickly a circuit charges or discharges.</li>
+<li><strong>MATLAB Integration:</strong> Using computational tools to extract time constants from physical laboratory data.</li>
+</ul>
+<hr/>
+<h2>Module 5: Phasors, Impedance, and Filters</h2>
+<p>Module 5 acts as a bridge, unifying signals and circuits to analyze systems driven by oscillating AC signals.</p>
+<ul>
+<li><strong>Phasors &amp; Complex Numbers:</strong> Converting difficult differential equations into straightforward algebra.</li>
+<li><strong>Filters:</strong> Understanding how RC circuits can be used as Low-Pass or High-Pass filters to "tune" signals.</li>
+</ul>
+<hr/>
+<h2>Module 6(a): Op-Amp Fundamentals</h2>
+<p>Week 6 introduces the operational amplifier (op-amp), exploring the high-gain active device and the concept of negative feedback.</p>
+<ul>
+<li><strong>The Golden Rules:</strong> Applying the "Virtual Short" and "Virtual Open" concepts to analyze ideal op-amp circuits.</li>
+<li><strong>Voltage Follower:</strong> Proving how a buffer isolates circuit stages and prevents loading effects.</li>
+<li><strong>Slew Rate:</strong> Measuring the real-world physical speed limits of an op-amp's output.</li>
+</ul>
+<hr/>
+<h2>Module 6(b): Applied Op-Amps and Level Shifting</h2>
+<p>Week 7 puts your op-amp knowledge to work by building the family of amplifiers required for the final project.</p>
+<ul>
+<li><strong>Inverting &amp; Non-Inverting Amplifiers:</strong> Designing circuits where gain is precisely set by external resistors.</li>
+<li><strong>Summing Amplifiers:</strong> Learning to "mix" signals and shift DC levels—a key requirement for the Scale Capstone project.</li>
+<li><strong>Saturation:</strong> Observing what happens when signals exceed the power supply rails.</li>
+</ul>
+<hr/>
+<h2>Module 7: Instrumentation Amplifiers and Capstone Launch</h2>
+<p>Module 7 transitions from structured lab exercises to an open-ended engineering design project: a high-resolution digital scale.</p>
+<ul>
+<li><strong>The Signal in the Difference:</strong> Using the Wheatstone bridge to convert mechanical force into tiny differential voltages.</li>
+<li><strong>Instrumentation Amplifiers:</strong> Utilizing the INA125 to provide high input impedance and superior common-mode rejection for precise sensor measurement.</li>
+<li><strong>Signal Chain Optimization:</strong> Designing level shifters to fill the 5V ADC input range, maximizing your scale's resolution to weigh a single jelly bean.</li>
+<li><strong>Engineering Bring-Up:</strong> Executing your team’s custom breadboard bring-up plan to verify the integrated signal chain.</li>
+</ul>
+<p>Would you like me to create a condensed study guide or a glossary of the technical terms mentioned in these modules?</p>
+  </main>
+</body>
+</html>
