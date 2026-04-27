@@ -203,13 +203,13 @@
 <tbody>
 <tr>
 <td><code>DraftProject_A_KemperTracker.md</code></td>
-<td>Track A project spec (Kemper Hall Indoor/Outdoor Tracker). Marked DRAFT. Published to GitHub Pages at <code>https://aknoesen.github.io/eec1-widgets/DraftProject_A_KemperTracker.html</code>.</td>
-<td>1.0</td>
+<td>Track A project spec (Kemper Hall Indoor/Outdoor Tracker). Marked DRAFT. Published to GitHub Pages at <code>https://aknoesen.github.io/eec1-widgets/DraftProject_A_KemperTracker.html</code>. Includes a Week 2 pointer to <code>FinalProject_TestHarness_Students.md</code> for the <code>analyzeReferenceWalk</code> requirement.</td>
+<td>1.1</td>
 </tr>
 <tr>
 <td><code>DraftProject_B_SensorGame.md</code></td>
-<td>Track B project spec (Networked Sensor-Controlled Game). Marked DRAFT. Published to GitHub Pages at <code>https://aknoesen.github.io/eec1-widgets/DraftProject_B_SensorGame.html</code>.</td>
-<td>1.0</td>
+<td>Track B project spec (Networked Sensor-Controlled Game). Marked DRAFT. Published to GitHub Pages at <code>https://aknoesen.github.io/eec1-widgets/DraftProject_B_SensorGame.html</code>. Includes a Week 2 pointer to <code>FinalProject_TestHarness_Students.md</code> for the <code>testGestureDetector</code> and <code>NetworkMessenger</code> headless requirements.</td>
+<td>1.1</td>
 </tr>
 <tr>
 <td><code>FinalProject_Assessment.md</code></td>
@@ -218,8 +218,8 @@
 </tr>
 <tr>
 <td><code>Project_StudentMemo_TeamFormation.md</code></td>
-<td>Student-facing memo announcing the project, the two track options (with links to the GitHub Pages drafts), the three complementary team roles, the ThingSpeak primer, Week 1 required workshops, the team declaration process, and the end-of-project teammate evaluation form (delivered via Qualtrics).</td>
-<td>1.3</td>
+<td>Student-facing memo announcing the project, the two track options (with links to the GitHub Pages drafts), the three complementary team roles, the ThingSpeak primer, Week 1 required workshops, the team declaration process, the end-of-project teammate evaluation form (delivered via Qualtrics), and a pointer to <code>FinalProject_TestHarness_Students.md</code> for the automated-testing requirements.</td>
+<td>1.4</td>
 </tr>
 </tbody>
 </table></div>
@@ -259,9 +259,19 @@
 <td>1.0</td>
 </tr>
 <tr>
+<td><code>FinalProject_GradingHarness_Spec.md</code></td>
+<td>Interface contract between Rishad's Cat 2 grading harness, Basheer's reference data files, and each team's submitted code. Specifies exact .mat file formats, function signatures (<code>analyzeReferenceWalk</code> for Track A, <code>testGestureDetector</code> for Track B), return struct schemas, harness scoring logic, ThingSpeak round-trip tests, and template code teams can copy.</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>FinalProject_TestHarness_Students.md</code></td>
+<td>Student-facing version of the harness spec. Covers what teams must expose for Cat 2 grading: function signatures, return formats, copy-paste templates, and self-test procedures. Omits instructor-side details (tolerances, scoring formulas).</td>
+<td>1.0 (DRAFT)</td>
+</tr>
+<tr>
 <td><code>FinalProject_SessionLog.md</code></td>
 <td>This file.</td>
-<td>1.4</td>
+<td>1.7</td>
 </tr>
 </tbody>
 </table></div>
@@ -491,6 +501,9 @@
 <li>Updated both grading rubrics with a Teammate Evaluation Handling section explaining how the form feeds into individual grade adjustments (Track A and Track B grading rubrics bumped to v1.1)</li>
 <li>Confirmed the teammate evaluation form is delivered through the existing course Qualtrics survey; updated the Assessment Guide and student memo to reference the Qualtrics instrument explicitly</li>
 <li>Created <code>FinalProject_RefDataset_Procedure.md</code> (v1.0): step-by-step recording guide for Basheer covering both Track A (Kemper walk with companion + video annotation, Google Maps for landmark coordinates) and Track B (two gesture streams, planned shake schedule for stream 1, controlled non-shake motion for stream 2)</li>
+<li>Created <code>FinalProject_GradingHarness_Spec.md</code> (v1.0): interface contract for Cat 2 automated grading. Specifies file formats for both tracks' reference data, function signatures and return schemas teams must expose, harness scoring logic, ThingSpeak round-trip tests, and a joint dry-run plan between Rishad and Basheer using synthetic data on Fri May 22 / Fri May 29</li>
+<li>Created <code>FinalProject_TestHarness_Students.md</code> (v1.0 DRAFT): student-facing version of the harness spec. Tells teams what functions to expose (<code>analyzeReferenceWalk</code> for Track A, <code>testGestureDetector</code> for Track B), what return formats to use, with copy-paste templates and a self-test procedure students can run before any reference data is published. Omits scoring formulas and tolerances that are instructor-side details.</li>
+<li>Added pointers to the test harness guide in three student-facing docs: Track A draft (Week 2 of "How to Get Started", v1.1), Track B draft (Week 2 of "How to Get Started", v1.1), and Project_StudentMemo_TeamFormation (Collective Responsibilities closing paragraph, v1.4). The detailed test harness guide remains as a standalone reference students consult when they reach the harness-stub work in week 2.</li>
 </ul>
 <hr/>
 <h2>How to Use This Log (Instructions for Future Claude)</h2>
@@ -503,7 +516,7 @@
 <li>Bump this file's version (at the bottom) when you update it. Increment the version on individual docs only when their content materially changes.</li>
 </ol>
 <hr/>
-<p><em>Version 1.4</em></p>
+<p><em>Version 1.7</em></p>
   </main>
 </body>
 </html>

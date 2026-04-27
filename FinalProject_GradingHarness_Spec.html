@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENG6 Final Project: Cat 2 Grading Harness Specification</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 70%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>ENG6 Final Project: Cat 2 Grading Harness Specification</h1>
+<p><strong>For:</strong> Rishad Joarder (primary; builds the harness), Basheer Ammar (data file format alignment), and the TA team (so student questions about test-harness expectations get consistent answers)</p>
+<p><strong>Purpose:</strong> This document is the interface contract between three things that have to fit together cleanly for Category 2 grading to run automatically:</p>
+<ol>
+<li>The reference dataset files that Basheer produces (per <code>FinalProject_RefDataset_Procedure.md</code>).</li>
+<li>The function signatures each student team must expose in their submitted code.</li>
+<li>The grading harness Rishad builds, which loads the reference data, calls the team's function, and produces the Cat 2 score row.</li>
+</ol>
+<p>If any of the three drift from this contract, Cat 2 grading breaks. Read carefully, propose changes early.</p>
+<hr/>
+<h2>Conventions Common to Both Tracks</h2>
+<ul>
+<li>All file paths inside the harness are absolute. Do not rely on <code>cd</code> or relative paths.</li>
+<li>All times are stored as ISO 8601 strings (<code>"2026-05-30T09:14:23"</code>) in JSON files and as MATLAB <code>datetime</code> objects after loading. The harness converts to elapsed seconds (relative to <code>walk_start_time</code> for Track A or sample 0 for Track B) before comparing to team output.</li>
+<li>All <code>.mat</code> files use a single named variable. The variable name is fixed (see each track's section). Do not save extra workspace state into the same <code>.mat</code>.</li>
+<li>Floating point comparisons use a tolerance defined in the harness (currently <code>1e-3</code>). Students should not need to know this.</li>
+<li>The harness runs on a clean MATLAB R2025a session with the team's submitted code folder on the path. No additional toolboxes beyond what MathWorks ships standard plus those used in MP1 to MP5.</li>
+</ul>
+<hr/>
+<h2>Track A Interface</h2>
+<h3>Reference data files (Basheer produces)</h3>
+<p>Three files in a single folder. The folder path is passed to the team's function as a single string.</p>
+<h4><code>golden_gps.mat</code></h4>
+<p>Contains exactly one variable: <code>gps_data</code>. Type: MATLAB <code>timetable</code> (the native return type of <code>poslog</code>).</p>
+<p>Required columns (these are what <code>poslog</code> returns):</p>
+<div aria-label="Reference data files (Basheer produces)" class="table-wrapper" role="region" tabindex="0"><table><caption>Reference data files (Basheer produces)</caption>
+<thead>
+<tr>
+<th scope="col">Column</th>
+<th scope="col">Type</th>
+<th scope="col">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Time</code> (row times)</td>
+<td><code>datetime</code></td>
+<td>Wall clock</td>
+</tr>
+<tr>
+<td><code>latitude</code></td>
+<td>double</td>
+<td>Degrees</td>
+</tr>
+<tr>
+<td><code>longitude</code></td>
+<td>double</td>
+<td>Degrees</td>
+</tr>
+<tr>
+<td><code>altitude</code></td>
+<td>double</td>
+<td>Meters</td>
+</tr>
+<tr>
+<td><code>speed</code></td>
+<td>double</td>
+<td>Meters per second</td>
+</tr>
+<tr>
+<td><code>course</code></td>
+<td>double</td>
+<td>Degrees</td>
+</tr>
+<tr>
+<td><code>horizontalAccuracy</code></td>
+<td>double</td>
+<td>Meters; the harness uses this for regime annotation cross-checks</td>
+</tr>
+</tbody>
+</table></div>
+<h4><code>golden_accel.mat</code></h4>
+<p>Contains exactly one variable: <code>accel_data</code>. Type: MATLAB <code>timetable</code> (native return type of <code>accellog</code>).</p>
+<p>Required columns:</p>
+<div aria-label="Reference data files (Basheer produces)" class="table-wrapper" role="region" tabindex="0"><table><caption>Reference data files (Basheer produces)</caption>
+<thead>
+<tr>
+<th scope="col">Column</th>
+<th scope="col">Type</th>
+<th scope="col">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Time</code> (row times)</td>
+<td><code>datetime</code></td>
+<td>Wall clock; same time base as <code>gps_data</code></td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>double</td>
+<td>Meters per second squared</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>double</td>
+<td>Meters per second squared</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>double</td>
+<td>Meters per second squared</td>
+</tr>
+</tbody>
+</table></div>
+<h4><code>golden_truth.json</code></h4>
+<p>Plain JSON. Schema:</p>
+<pre><code class="language-json">{
+  "walk_start_time": "ISO 8601 string",
+  "entry_time": "ISO 8601 string",
+  "stair_events": [
+    {"start": "ISO 8601", "end": "ISO 8601", "direction": "up" | "down"}
+  ],
+  "elevator_events": [
+    {"start": "ISO 8601", "end": "ISO 8601", "direction": "up" | "down", "floors_traveled": &lt;int&gt;}
+  ],
+  "floor_checkpoint_times": [
+    {"time": "ISO 8601", "floor": &lt;int 1-4&gt;}
+  ],
+  "exit_time": "ISO 8601 string",
+  "walk_end_time": "ISO 8601 string",
+  "total_step_count": &lt;int&gt;,
+  "landmarks": {
+    "starting_point":   {"lat": &lt;double&gt;, "lon": &lt;double&gt;},
+    "main_entrance":    {"lat": &lt;double&gt;, "lon": &lt;double&gt;},
+    "exit_threshold":   {"lat": &lt;double&gt;, "lon": &lt;double&gt;}
+  }
+}
+</code></pre>
+<h3>Function the team must expose</h3>
+<pre><code class="language-matlab">function results = analyzeReferenceWalk(referencePath)
+</code></pre>
+<p><strong>Input:</strong><br/>
+- <code>referencePath</code> (string or char): absolute path to a folder containing <code>golden_gps.mat</code>, <code>golden_accel.mat</code>, and <code>golden_truth.json</code>.</p>
+<p><strong>Behavior expected:</strong><br/>
+- Load the three files.<br/>
+- Run the team's analysis pipeline (regime detection, floor detection, event detection, step counting) against the loaded data.<br/>
+- Do <strong>not</strong> require any GUI interaction. The harness runs headless. If the team's primary workflow is in <code>SensorDashboard.mlapp</code>, factor the analysis logic out into class methods that this function can call directly.</p>
+<p><strong>Return:</strong> a struct with the following fields, exactly named:</p>
+<div aria-label="Function the team must expose" class="table-wrapper" role="region" tabindex="0"><table><caption>Function the team must expose</caption>
+<thead>
+<tr>
+<th scope="col">Field</th>
+<th scope="col">Type</th>
+<th scope="col">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>floor_at_checkpoints</code></td>
+<td>Nx2 array <code>[time_seconds, predicted_floor]</code></td>
+<td>One row per ground-truth checkpoint. <code>time_seconds</code> is elapsed seconds from <code>walk_start_time</code>. The team must look up its predicted floor at each annotated checkpoint time.</td>
+</tr>
+<tr>
+<td><code>detected_stair_events</code></td>
+<td>Mx3 cell or struct array with fields <code>start</code>, <code>end</code>, <code>direction</code></td>
+<td>All stair events the team's detector flagged across the walk</td>
+</tr>
+<tr>
+<td><code>detected_elevator_events</code></td>
+<td>Px4 with fields <code>start</code>, <code>end</code>, <code>direction</code>, <code>floors_traveled</code></td>
+<td>All elevator events the team's detector flagged</td>
+</tr>
+<tr>
+<td><code>gps_handoff_time</code></td>
+<td>scalar (elapsed seconds, or NaN if the team's app never switched regime)</td>
+<td>Time when the team's app first switched from outdoor to indoor mode</td>
+</tr>
+<tr>
+<td><code>gps_handoff_lat</code></td>
+<td>scalar (degrees, NaN if not available)</td>
+<td>Latitude reported by the team's app at handoff</td>
+</tr>
+<tr>
+<td><code>gps_handoff_lon</code></td>
+<td>scalar (degrees, NaN if not available)</td>
+<td>Longitude reported by the team's app at handoff</td>
+</tr>
+<tr>
+<td><code>step_count</code></td>
+<td>integer</td>
+<td>Total steps detected over the entire walk</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>If the team's code throws an error or does not expose this function</strong>, the harness assigns 0 for the Cat 2 items that depend on it. The team can still earn the <code>ThingSpeak record integrity</code> 3 points (read directly from their channel).</p>
+<h3>Harness scoring logic (Track A)</h3>
+<p>For each metric in the Track A grading rubric Cat 2, the harness computes:</p>
+<ul>
+<li><strong>Floor detection accuracy (10 pts):</strong> for each row in <code>floor_at_checkpoints</code>, compare <code>predicted_floor</code> against the ground-truth floor at that same time. Score = 10 * (correct / total).</li>
+<li><strong>Stair event TPR (5 pts):</strong> match each <code>detected_stair_events</code> row to a ground-truth <code>stair_events</code> entry if the start times agree within 5 seconds. Score = 5 * (matched / total ground-truth stair events).</li>
+<li><strong>Stair false-positive penalty:</strong> count detected events that do not match any ground-truth event. Subtract 1 point for each 2 unmatched (rounded down). Floor at zero.</li>
+<li><strong>Elevator TPR (5 pts):</strong> same matching logic as stairs, applied to start AND end times (each elevator event has two anchor points).</li>
+<li><strong>GPS handoff (4 pts):</strong> convert <code>gps_handoff_time</code> to a clock time, compare against ground-truth <code>entry_time</code>. Compute distance from <code>(gps_handoff_lat, gps_handoff_lon)</code> to <code>landmarks.main_entrance</code> using a haversine. Apply rubric tiers (within 15 s and 20 m: 4; within 30 s or 40 m: 2; else 0).</li>
+<li><strong>Step count error (3 pts):</strong> absolute percent difference between <code>step_count</code> and <code>total_step_count</code>. Apply rubric tiers (10%: 3; 20%: 2; 40%: 1; else 0).</li>
+<li><strong>ThingSpeak record integrity (3 pts):</strong> harness directly queries the team's submitted ThingSpeak channel URL. Checks that all required fields (lat, lon, alt, floor, speed, accel magnitude, regime, walk ID) are populated and that sample density is at least one per 15 seconds during the walk window. Tiered: full / partial / missing.</li>
+</ul>
+<h3>Template a team can copy</h3>
+<p>Place this in the team's project folder so the harness can find it:</p>
+<pre><code class="language-matlab">function results = analyzeReferenceWalk(referencePath)
+    % Load reference files
+    gps_path   = fullfile(referencePath, 'golden_gps.mat');
+    accel_path = fullfile(referencePath, 'golden_accel.mat');
+    truth_path = fullfile(referencePath, 'golden_truth.json');
+
+    S_gps   = load(gps_path);    gps_data   = S_gps.gps_data;
+    S_accel = load(accel_path);  accel_data = S_accel.accel_data;
+    truth   = jsondecode(fileread(truth_path));
+
+    % Instantiate analyzer (or your equivalent class)
+    analyzer = SensorDataAnalyzer();
+
+    % --- TEAM CODE: drive analyzer through the same pipeline the live app uses ---
+    % e.g. analyzer.processGPS(gps_data); analyzer.processAccel(accel_data);
+    %      Then read out the results below.
+
+    % Build the return struct in the EXACT format the harness expects:
+    results = struct( ...
+        'floor_at_checkpoints',     [], ...
+        'detected_stair_events',    struct('start', {}, 'end', {}, 'direction', {}), ...
+        'detected_elevator_events', struct('start', {}, 'end', {}, 'direction', {}, 'floors_traveled', {}), ...
+        'gps_handoff_time',         NaN, ...
+        'gps_handoff_lat',          NaN, ...
+        'gps_handoff_lon',          NaN, ...
+        'step_count',               0 ...
+    );
+end
+</code></pre>
+<hr/>
+<h2>Track B Interface</h2>
+<h3>Reference data files (Basheer produces)</h3>
+<h4><code>gesture_stream_1.mat</code> and <code>gesture_stream_2.mat</code></h4>
+<p>Each contains exactly one variable: <code>accel_data</code>. Type: Nx3 double matrix (X, Y, Z).</p>
+<p>Sample rate is implicit and should be approximately 50 Hz (typical MATLAB Mobile rate). The harness reads the actual rate from a sidecar field in <code>gesture_truth.json</code> (see below).</p>
+<h4><code>gesture_truth.json</code></h4>
+<pre><code class="language-json">{
+  "stream_1_shake_times_seconds": [&lt;list of doubles&gt;],
+  "stream_1_duration_seconds": 90,
+  "stream_1_sample_rate_hz": 50,
+  "stream_2_duration_seconds": 60,
+  "stream_2_sample_rate_hz": 50,
+  "stream_2_shake_times_seconds": []
+}
+</code></pre>
+<p><code>stream_1_shake_times_seconds</code> is the list of times (relative to start of stream 1) at which Basheer performed deliberate shakes. The harness converts these to sample indices using the recorded sample rate.</p>
+<h3>Function the team must expose</h3>
+<pre><code class="language-matlab">function fired = testGestureDetector(referenceStream)
+</code></pre>
+<p><strong>Input:</strong><br/>
+- <code>referenceStream</code>: Nx3 double matrix (X, Y, Z accelerometer samples).</p>
+<p><strong>Output:</strong><br/>
+- <code>fired</code>: logical column vector of length N. <code>true</code> at each sample where the team's gesture detector fires; <code>false</code> elsewhere.</p>
+<p><strong>Behavior expected:</strong><br/>
+- Apply the team's deployed gesture detector (the same one used in the running game) to <code>referenceStream</code>.<br/>
+- The detector should not assume anything about the sample rate beyond the typical MATLAB Mobile range (40 to 60 Hz). If the detector uses a moving window, the window should be expressed in samples, not in seconds-via-an-assumed-rate.<br/>
+- Do not require ThingSpeak or GUI to run. The detector class (<code>GestureDetector</code> or equivalent) must be callable headless on a buffer.</p>
+<p><strong>If the team's code throws or does not expose this function</strong>, harness assigns 0 for all gesture-detection items. The network round-trip test items can still be attempted independently.</p>
+<h3>Harness scoring logic (gesture detection)</h3>
+<p>The harness loads stream 1, calls <code>testGestureDetector(stream_1.accel_data)</code>, then for each ground-truth shake time:</p>
+<ul>
+<li><strong>True positive:</strong> at least one <code>true</code> fires within +/- 1.0 seconds of the ground-truth shake. Latency = time from ground-truth shake to first <code>true</code> within the window.</li>
+<li><strong>False negative:</strong> no <code>true</code> within the window.</li>
+<li><strong>TPR:</strong> TP / 12. Score: 10 * TPR (rubric Cat 2 first row).</li>
+<li><strong>Median latency:</strong> computed over matched events. Score: 4 / 3 / 2 / 1 / 0 per rubric tiers (0.5 / 1 / 2 / 4 second thresholds).</li>
+</ul>
+<p>Stream 2 measures false positives. Harness loads stream 2, calls <code>testGestureDetector(stream_2.accel_data)</code>, counts <code>true</code> samples grouped into events (consecutive <code>true</code> samples count as one event). FPR = events / <code>stream_2_duration_seconds</code>. Score: 8 / 6 / 4 / 2 / 0 per rubric tiers (0.05 / 0.10 / 0.20 / 0.40 events per second).</p>
+<h3>Network round-trip test (Track B only)</h3>
+<p>Two items, 4 points each, in addition to gesture-detection scoring.</p>
+<p>The harness expects the team's <code>NetworkMessenger</code> class to expose:</p>
+<pre><code class="language-matlab">methods (Access = public)
+    success = sendMove(obj, moveString)
+    moves   = checkForRemoteMoves(obj)
+end
+</code></pre>
+<p><strong>Test 1 (write):</strong> harness instantiates the team's <code>NetworkMessenger</code> with their submitted ThingSpeak channel URL. Calls <code>sendMove("HARNESS:tag")</code>. Within 10 seconds, queries the channel directly via ThingSpeak REST API and confirms the entry appeared. Pass = 4 points.</p>
+<p><strong>Test 2 (read since last):</strong> harness writes two distinct tag moves directly to the team's channel through the ThingSpeak REST API (one per second). Calls team's <code>checkForRemoteMoves()</code>. Verifies both tags returned in the order they were written, with no duplicates. Pass = 4 points.</p>
+<h3>Template a team can copy</h3>
+<pre><code class="language-matlab">function fired = testGestureDetector(referenceStream)
+    detector = GestureDetector();        % team's class
+
+    N = size(referenceStream, 1);
+    fired = false(N, 1);
+
+    % If detector uses a moving window of W samples, slide it.
+    W = detector.WindowSize;             % team-defined property
+    for i = W:N
+        window = referenceStream(i-W+1:i, :);
+        if detector.detect(window)
+            fired(i) = true;
+        end
+    end
+end
+</code></pre>
+<p>(This is a reference implementation. Teams whose detector is event-based rather than per-sample can wrap differently as long as the returned <code>fired</code> is N-length and reflects detector output.)</p>
+<hr/>
+<h2>Files Rishad Builds</h2>
+<p>Working folder structure (suggestion):</p>
+<pre><code>GradingHarness/
+├── runHarness.m                  % top-level driver, loops over teams
+├── scoreTrackA.m                 % loads reference, calls team analyzeReferenceWalk, computes Cat 2 row
+├── scoreTrackB.m                 % loads reference, calls team testGestureDetector, computes gesture metrics
+├── networkRoundTrip.m            % the two ThingSpeak tests for Track B
+├── computeFloorAccuracy.m        % helper: matches predicted to ground-truth floor checkpoints
+├── matchEvents.m                 % helper: matches stair/elevator events to ground truth within tolerance
+├── haversine.m                   % helper: distance between lat/lon pairs
+├── ReferenceData/                % from Basheer
+│   ├── TrackA/
+│   └── TrackB/
+└── results.csv                   % output
+</code></pre>
+<p><code>results.csv</code> columns:</p>
+<pre><code>team_id, track, code_parsed, cat1_breakdown..., cat2_breakdown..., notes
+</code></pre>
+<hr/>
+<h2>What Is NOT in This Specification</h2>
+<ul>
+<li><strong>Cat 1 (submission completeness)</strong>: separate from Cat 2. Rishad runs that as a different script, also from his complementary task.</li>
+<li><strong>Cat 3, 4, 5 (manual grading)</strong>: human-graded per the rubric documents.</li>
+<li><strong>Teammate evaluation handling</strong>: separate flow; reviewed by instructor only after Cat 1 to 5 are tabulated.</li>
+</ul>
+<hr/>
+<h2>Action Items Across the Three TAs</h2>
+<div aria-label="Action Items Across the Three TAs" class="table-wrapper" role="region" tabindex="0"><table><caption>Action Items Across the Three TAs</caption>
+<thead>
+<tr>
+<th scope="col">Owner</th>
+<th scope="col">Action</th>
+<th scope="col">Deadline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rishad</td>
+<td>Stub <code>runHarness.m</code>, <code>scoreTrackA.m</code>, <code>scoreTrackB.m</code>, <code>networkRoundTrip.m</code> against this spec</td>
+<td>Fri, May 22</td>
+</tr>
+<tr>
+<td>Basheer</td>
+<td>Produce a synthetic minimal reference data set matching the file formats above (one stair event, one elevator event, one checkpoint, 2 fake shakes) so Rishad can dry-run his harness before the real recording</td>
+<td>Fri, May 22</td>
+</tr>
+<tr>
+<td>Rishad + Basheer</td>
+<td>Joint dry-run: harness consumes Basheer's synthetic reference, scores a deliberately-broken team submission and a deliberately-correct one, both produce sensible numbers</td>
+<td>Fri, May 29</td>
+</tr>
+<tr>
+<td>Basheer</td>
+<td>Real reference datasets delivered (per <code>FinalProject_RefDataset_Procedure.md</code>)</td>
+<td>Mon, Jun 1</td>
+</tr>
+<tr>
+<td>Rishad</td>
+<td>Final harness ready to run against student submissions</td>
+<td>Wed, Jun 3</td>
+</tr>
+<tr>
+<td>Rishad</td>
+<td>Cat 1 + Cat 2 results posted to master spreadsheet</td>
+<td>Thu, Jun 11</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2>Open Questions</h2>
+<ol>
+<li><strong>MATLAB version on the grader machine.</strong> Confirmed R2025a? If TAs grade on a mix of versions, behavior of <code>poslog</code> and <code>accellog</code> could vary slightly.</li>
+<li><strong>Exact harness tolerance values.</strong> This spec uses 5 seconds for stair-event matching, 1.0 second for shake matching, and <code>1e-3</code> for floats. Tunable; flag if any feel wrong after dry-run.</li>
+<li><strong>Team-side template distribution.</strong> Should the <code>analyzeReferenceWalk.m</code> and <code>testGestureDetector.m</code> template files be posted on Canvas alongside the project doc, or shown in Rishad's Workshop 2 (May 27)? Workshop 2 timing is tight relative to the May 18 to 24 isolation-build week.</li>
+<li><strong>Failure-mode policy.</strong> If the team's <code>analyzeReferenceWalk</code> runs but throws partway through, do we score the metrics it returned before the crash, or zero out everything? Currently spec says: zero-out everything that depends on the function's return. Confirm.</li>
+</ol>
+<hr/>
+<p><em>Version 1.0</em></p>
+  </main>
+</body>
+</html>

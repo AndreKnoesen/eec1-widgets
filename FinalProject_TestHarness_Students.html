@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENG6 Final Project: Cat 2 Test Harness Guide (Students)</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 70%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>ENG6 Final Project: Cat 2 Test Harness Guide (Students)</h1>
+<blockquote>
+<p><strong>DRAFT — for student reference.</strong> Function signatures and file formats are stable. Specific harness behaviors (tolerances, scoring formulas) are instructor-side details and not documented here.</p>
+</blockquote>
+<hr/>
+<h2>Why This Document Exists</h2>
+<p>Your project is graded in part by an automated test harness. <strong>Category 2 of the rubric (30 of 100 points)</strong> is fully automated: the harness loads a reference dataset, calls a specific function in your submitted code, and computes scores from what your function returns.</p>
+<p>If your project does not expose the right function with the right return format, those 30 points are unreachable regardless of how well your live app works.</p>
+<p><strong>Read this document before you write more than a skeleton, not the night before submission.</strong> Teams that build the test function early discover separation-of-concerns issues when there is still time to fix them. Teams that wait inevitably hit naming, signature, or path bugs at the worst possible moment.</p>
+<hr/>
+<h2>What You Must Expose (Both Tracks)</h2>
+<p>A small testing function lives in your project's top-level folder. The function:</p>
+<ul>
+<li>Takes a file path or a data array as input.</li>
+<li>Runs your real analysis pipeline (the same code your live app uses) on that input.</li>
+<li>Returns a struct or array in a specific format.</li>
+</ul>
+<p>The harness expects the function file at the top of your submission folder so it sits on the MATLAB path when graders unzip your submission.</p>
+<hr/>
+<h2>Track A: <code>analyzeReferenceWalk(referencePath)</code></h2>
+<p>If you are on Track A, your submission must include a file named exactly <code>analyzeReferenceWalk.m</code> containing this function.</p>
+<h3>Signature</h3>
+<pre><code class="language-matlab">function results = analyzeReferenceWalk(referencePath)
+</code></pre>
+<p><code>referencePath</code> is a string giving the absolute path to a folder containing three files:</p>
+<ul>
+<li><code>golden_gps.mat</code> (a single variable <code>gps_data</code>, a MATLAB <code>timetable</code> from <code>poslog</code>)</li>
+<li><code>golden_accel.mat</code> (a single variable <code>accel_data</code>, a MATLAB <code>timetable</code> from <code>accellog</code>)</li>
+<li><code>golden_truth.json</code> (an annotation file you do not need to write your own parser for; you only consume the data files)</li>
+</ul>
+<h3>What your function must do</h3>
+<ol>
+<li>Load the two <code>.mat</code> files.</li>
+<li>Run your team's analysis pipeline on the loaded data: regime detection, floor detection, stair and elevator event detection, step counting.</li>
+<li>Build a return struct with the following fields, named exactly:</li>
+</ol>
+<div aria-label="What your function must do" class="table-wrapper" role="region" tabindex="0"><table><caption>What your function must do</caption>
+<thead>
+<tr>
+<th scope="col">Field</th>
+<th scope="col">Type</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>floor_at_checkpoints</code></td>
+<td>Nx2 numeric array</td>
+<td>Each row: <code>[time_in_seconds_from_walk_start, predicted_floor]</code>. Times correspond to ground-truth checkpoint times the harness extracts from <code>golden_truth.json</code>; you predict your floor at each of those times.</td>
+</tr>
+<tr>
+<td><code>detected_stair_events</code></td>
+<td>struct array with fields <code>start</code>, <code>end</code>, <code>direction</code></td>
+<td>Times in seconds. Direction is <code>"up"</code> or <code>"down"</code>. One entry per stair event your detector flags across the walk.</td>
+</tr>
+<tr>
+<td><code>detected_elevator_events</code></td>
+<td>struct array with fields <code>start</code>, <code>end</code>, <code>direction</code>, <code>floors_traveled</code></td>
+<td>Same structure, plus how many floors the elevator traveled.</td>
+</tr>
+<tr>
+<td><code>gps_handoff_time</code></td>
+<td>scalar in seconds (or <code>NaN</code> if your app never switched regime)</td>
+<td>When your app first switched from outdoor to indoor mode.</td>
+</tr>
+<tr>
+<td><code>gps_handoff_lat</code></td>
+<td>scalar (or <code>NaN</code>)</td>
+<td>Latitude reported by your app at handoff.</td>
+</tr>
+<tr>
+<td><code>gps_handoff_lon</code></td>
+<td>scalar (or <code>NaN</code>)</td>
+<td>Longitude reported by your app at handoff.</td>
+</tr>
+<tr>
+<td><code>step_count</code></td>
+<td>integer</td>
+<td>Total steps detected over the entire walk.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Important constraints</h3>
+<ul>
+<li><strong>Headless.</strong> Your function must run without <code>app.UIFigure</code> or any other App Designer element. If your analysis logic lives inside callback bodies, you need to factor it out into class methods (per the MP5 separation-of-concerns principle) so this function can call it without launching the app. This is the moment when separation of concerns stops being abstract.</li>
+<li><strong>No ThingSpeak required for Cat 2.</strong> This function is offline-only. Your ThingSpeak integration is graded separately (Cat 1 reachability check, Cat 2 record-integrity check on your live channel).</li>
+<li><strong>Names matter.</strong> The harness reads return fields by exact name. A typo means zero on those metrics.</li>
+</ul>
+<h3>Template you can copy</h3>
+<pre><code class="language-matlab">function results = analyzeReferenceWalk(referencePath)
+    % Load reference files
+    gps_path   = fullfile(referencePath, 'golden_gps.mat');
+    accel_path = fullfile(referencePath, 'golden_accel.mat');
+    truth_path = fullfile(referencePath, 'golden_truth.json');
+
+    S_gps   = load(gps_path);    gps_data   = S_gps.gps_data;
+    S_accel = load(accel_path);  accel_data = S_accel.accel_data;
+    truth   = jsondecode(fileread(truth_path));
+
+    % --- TEAM CODE: drive your real analysis pipeline on this data ---
+    % Example (adapt to your own class names and methods):
+    analyzer = SensorDataAnalyzer();
+    analyzer.processGPS(gps_data);
+    analyzer.processAccel(accel_data);
+    %
+    % Then read out the values your harness needs:
+    %   floor_predictions = analyzer.predictFloorAt(checkpoint_times)
+    %   stair_events      = analyzer.getStairEvents()
+    %   elevator_events   = analyzer.getElevatorEvents()
+    %   handoff_info      = analyzer.getHandoffInfo()
+    %   total_steps       = analyzer.getStepCount()
+    % -----------------------------------------------------------------
+
+    % Assemble the return struct in the EXACT format the harness expects:
+    results = struct( ...
+        'floor_at_checkpoints',     [], ...   % Nx2: [time_seconds, floor]
+        'detected_stair_events',    struct('start', {}, 'end', {}, 'direction', {}), ...
+        'detected_elevator_events', struct('start', {}, 'end', {}, 'direction', {}, 'floors_traveled', {}), ...
+        'gps_handoff_time',         NaN, ...
+        'gps_handoff_lat',          NaN, ...
+        'gps_handoff_lon',          NaN, ...
+        'step_count',               0 ...
+    );
+
+    % ... fill in fields from your analyzer's outputs ...
+end
+</code></pre>
+<h3>Self-test</h3>
+<p>You can test your function on your own data before any reference dataset is published:</p>
+<ol>
+<li>Run a short walk yourself with your app (any walk, even just down a hallway and back).</li>
+<li>Save the resulting <code>gps_data</code> and <code>accel_data</code> to <code>.mat</code> files manually (use the variable names above).</li>
+<li>Hand-build a minimal <code>golden_truth.json</code> with one fake checkpoint and one fake stair event so your function has something to load.</li>
+<li>Call <code>analyzeReferenceWalk(yourFolder)</code>. Confirm it returns a struct with all the right field names and types.</li>
+</ol>
+<p>If your function works on your own walk, it will work on the harness's golden walk.</p>
+<hr/>
+<h2>Track B: <code>testGestureDetector(referenceStream)</code></h2>
+<p>If you are on Track B, your submission must include a file named exactly <code>testGestureDetector.m</code> containing this function.</p>
+<h3>Signature</h3>
+<pre><code class="language-matlab">function fired = testGestureDetector(referenceStream)
+</code></pre>
+<p><code>referenceStream</code> is an Nx3 double matrix of accelerometer samples (X, Y, Z columns). N varies (90 seconds at typical mobile sample rates is roughly 4500 samples).</p>
+<h3>What your function must do</h3>
+<p>Run your team's real gesture detector against the entire stream. Return a logical column vector of length N. The vector is <code>true</code> at each sample where your detector decides "a shake just fired here," and <code>false</code> elsewhere.</p>
+<h3>Important constraints</h3>
+<ul>
+<li><strong>Same detector as the live game.</strong> This function must call your real <code>GestureDetector</code> class. If your live game tunes thresholds at runtime (with a slider, say), expose those tuned threshold values as class properties so the harness uses the same numbers your live game uses.</li>
+<li><strong>Sample-rate-tolerant.</strong> Express any window size in samples, not in seconds-via-an-assumed-rate. Mobile phone sample rates vary between roughly 40 and 60 Hz; the harness will not assume a specific rate.</li>
+<li><strong>Headless.</strong> No GUI, no ThingSpeak. Your <code>GestureDetector</code> must be instantiable and runnable on a buffer without anything else loaded.</li>
+<li><strong>Output length must equal input length.</strong> N samples in, N booleans out.</li>
+</ul>
+<h3>Template you can copy</h3>
+<pre><code class="language-matlab">function fired = testGestureDetector(referenceStream)
+    detector = GestureDetector();        % your class
+
+    N = size(referenceStream, 1);
+    fired = false(N, 1);
+
+    % If your detector uses a moving window of W samples, slide it:
+    W = detector.WindowSize;             % expose this as a public property
+    for i = W:N
+        window = referenceStream(i-W+1:i, :);
+        if detector.detect(window)
+            fired(i) = true;
+        end
+    end
+end
+</code></pre>
+<p>If your detector is event-based rather than per-sample, wrap it differently as long as the returned <code>fired</code> is N-length and reflects detector output at each sample.</p>
+<h3>Self-test</h3>
+<p>Record your own short stream and validate before the harness sees it:</p>
+<ol>
+<li>With MATLAB Mobile, log accelerometer for 30 seconds. During that 30 seconds, perform 5 deliberate shakes spread across the window. Note the approximate times you shake.</li>
+<li>Save the Nx3 matrix to a <code>.mat</code> file: <code>save('myTest.mat', 'accel_data')</code>.</li>
+<li>Call <code>fired = testGestureDetector(accel_data)</code>. Plot it: <code>plot(fired);</code>.</li>
+<li>Verify your <code>fired</code> vector goes <code>true</code> near each of your 5 shakes and stays mostly <code>false</code> between them.</li>
+</ol>
+<p>If 5 of 5 shakes fire correctly with few false positives, your detector is in shape for the harness.</p>
+<hr/>
+<h2>Track B Additional: Network Round-Trip Test</h2>
+<p>The harness also tests your <code>NetworkMessenger</code> class for ThingSpeak round-trip behavior. There is no separate function to expose; the harness uses your class directly.</p>
+<p>So your <code>NetworkMessenger</code> must:</p>
+<ul>
+<li>Accept your team's ThingSpeak channel URL via constructor argument or public property.</li>
+<li>Expose public methods <code>sendMove(moveString)</code> and <code>checkForRemoteMoves()</code>.</li>
+<li>Be instantiable and callable without a running game. The harness creates the class, sends a test move, and reads it back; that needs to work outside any game state.</li>
+</ul>
+<p>The harness will:</p>
+<ol>
+<li>Instantiate your class with your channel URL.</li>
+<li>Call <code>sendMove("HARNESS:tag")</code>. Verify the entry appears on your channel within 10 seconds.</li>
+<li>Write two distinct sequential moves to your channel directly (via the ThingSpeak REST API). Call your <code>checkForRemoteMoves()</code>. Verify both moves come back in the correct order with no duplicates.</li>
+</ol>
+<p>If your class can pass these two checks on a quiet channel by itself, it will pass during grading.</p>
+<hr/>
+<h2>Practical Advice</h2>
+<ol>
+<li>
+<p><strong>Build the test function early.</strong> Implement <code>analyzeReferenceWalk</code> (or <code>testGestureDetector</code>) in <strong>Week 2</strong> of the project, the same week you finalize your analysis classes. The act of writing this thin wrapper exposes separation-of-concerns issues immediately. You want to find them when you have time to fix them.</p>
+</li>
+<li>
+<p><strong>Use the self-test before submission.</strong> Once the function works against your own walk or stream, you can submit your project knowing Cat 2 will execute cleanly. Teams that skip this step show up at submission with broken function paths or struct fields.</p>
+</li>
+<li>
+<p><strong>Filenames are exact.</strong> <code>analyzeReferenceWalk.m</code>, <code>testGestureDetector.m</code>. Lowercase first letter, camelCase the rest. The harness uses the filename literally.</p>
+</li>
+<li>
+<p><strong>Keep the function small.</strong> This file is glue: load files (Track A) or accept input (Track B), call your real classes, build the return value. The actual analysis lives in your classes. If your wrapper has more than 30 to 40 lines of substantive logic, you are doing too much in it; push that logic back into your classes.</p>
+</li>
+<li>
+<p><strong>Headless means headless.</strong> If a grader cannot call your function without launching the App Designer GUI, the function fails. Test by running it in a fresh MATLAB session, from the command line, with your project folder on the path and nothing else.</p>
+</li>
+</ol>
+<hr/>
+<h2>Questions</h2>
+<p>Post on the course forum, tagged <code>[Cat 2]</code>. Rishad will field questions about the harness format. Your area-lead TAs (Elnaz for App Designer integration, Basheer for detector behavior, Rishad for cloud and harness) handle questions about how to make your existing code expose the required interface.</p>
+<hr/>
+<p><em>Version 1.0 (DRAFT)</em></p>
+  </main>
+</body>
+</html>
