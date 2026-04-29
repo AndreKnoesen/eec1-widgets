@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M2K MATLAB Class — User Guide</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 70%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>M2K MATLAB Class — User Guide</h1>
+<p>The <code>M2K</code> class wraps the <strong>libm2k</strong> C library to provide a clean MATLAB interface for the <strong>Analog Devices ADALM-2000 (M2K)</strong> hardware. It manages the device connection and exposes analog input (oscilloscope), analog output (waveform generator), and power supply functionality. You can perform all the operations you have previously done in Scopy by creating objects and calling methods in MATLAB through the <code>M2K</code> class.</p>
+<h2>References</h2>
+<ul>
+<li><a href="https://analogdevicesinc.github.io/libm2k/index.html">libm2k API documentation</a></li>
+<li><a href="https://wiki.analog.com/university/tools/m2k/matlab">ADALM-2000 with MATLAB</a></li>
+</ul>
+<hr/>
+<h2>Class Properties</h2>
+<div aria-label="Class Properties" class="table-wrapper" role="region" tabindex="0"><table><caption>Class Properties</caption>
+<thead>
+<tr>
+<th scope="col">Property</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>m2kObj</code></td>
+<td>Handle to the raw libm2k context object</td>
+</tr>
+<tr>
+<td><code>analogInputObj</code></td>
+<td>Controls Ch1 (1+/1−) and Ch2 (2+/2−) oscilloscopes</td>
+</tr>
+<tr>
+<td><code>powerSupplyObj</code></td>
+<td>Controls V+ and V− power supplies</td>
+</tr>
+<tr>
+<td><code>analogOutputObj</code></td>
+<td>Controls W1 and W2 waveform generators</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2>Methods</h2>
+<h3>Constructor — <code>M2K()</code></h3>
+<p>Creates and initializes the M2K object. Automatically:<br/>
+- Closes any existing M2K connections<br/>
+- Opens a new connection to the device<br/>
+- Calibrates both the ADC and DAC</p>
+<pre><code class="language-matlab">myM2K = M2K();
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> If the device is not detected, MATLAB will throw an error. Restart MATLAB, check the USB connection, and verify the search path.</p>
+</blockquote>
+<hr/>
+<h3><code>clearM2K()</code></h3>
+<p>Closes all open M2K context connections. Called internally by the constructor; you can also call it manually for cleanup.</p>
+<p>Make sure to <strong>always</strong> include <code>clearM2K()</code> at the end of your script to release the M2K port. </p>
+<pre><code class="language-matlab">myM2K.clearM2K();
+</code></pre>
+<hr/>
+<h3><code>calibrateM2K()</code></h3>
+<p>Performs the ADC and DAC calibration routines.</p>
+<pre><code class="language-matlab">myM2K.calibrateM2K();
+</code></pre>
+<hr/>
+<h3>Analog Input (Oscilloscope — Ch1, Ch2)</h3>
+<h4><code>enableAnalogIn(channelNumber)</code></h4>
+<p>Enables an analog input channel. Must be called before reading samples.</p>
+<p><strong>Inputs:</strong></p>
+<div aria-label="Analog Input (Oscilloscope — Ch1, Ch2)" class="table-wrapper" role="region" tabindex="0"><table><caption>Analog Input (Oscilloscope — Ch1, Ch2)</caption>
+<thead>
+<tr>
+<th scope="col">Parameter</th>
+<th scope="col">Values</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>channelNumber</code></td>
+<td><code>1</code></td>
+<td>Enable Ch1 (1+/1−)</td>
+</tr>
+<tr>
+<td><code>channelNumber</code></td>
+<td><code>2</code></td>
+<td>Enable Ch2 (2+/2−)</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-matlab">myM2K.enableAnalogIn(1); % Enable Ch1
+myM2K.enableAnalogIn(2); % Enable Ch2
+</code></pre>
+<hr/>
+<h4><code>setAnalogInSampleRate(ADC_rate)</code></h4>
+<p>Sets the ADC sample rate for both channels and confirms the new rate in the console.</p>
+<p><strong>Valid rates:</strong> 1k, 10k, 100k, 1M, 10M, 100M (samples per second)</p>
+<pre><code class="language-matlab">myM2K.setAnalogInSampleRate(1e6); % 1 MSPS
+</code></pre>
+<hr/>
+<h4><code>getAnalogInSampleRate()</code></h4>
+<p>Reads the current ADC sampling rate of M2K.</p>
+<pre><code class="language-matlab">curr_ADC_Rate = myM2K.getAnalogInSampleRate();
+</code></pre>
+<hr/>
+<h4><code>clearAnalogInSampleBuffer()</code></h4>
+<p>Flushes the ADC sample buffer by resetting the kernel buffers. Call this before <code>getAnalogInSamples()</code> to discard stale data.</p>
+<pre><code class="language-matlab">myM2K.clearAnalogInSampleBuffer();
+</code></pre>
+<hr/>
+<h4><code>[t, ch1Samples, ch2Samples] = getAnalogInSamples(seconds)</code></h4>
+<p>Reads voltage samples from both Ch1 and Ch2 simultaneously. </p>
+<p><strong>Inputs:</strong></p>
+<div aria-label="Analog Input (Oscilloscope — Ch1, Ch2)" class="table-wrapper" role="region" tabindex="0"><table><caption>Analog Input (Oscilloscope — Ch1, Ch2)</caption>
+<thead>
+<tr>
+<th scope="col">Parameter</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>seconds</code></td>
+<td>Duration of the capture window (in seconds)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns:</strong></p>
+<div aria-label="Analog Input (Oscilloscope — Ch1, Ch2)" class="table-wrapper" role="region" tabindex="0"><table><caption>Analog Input (Oscilloscope — Ch1, Ch2)</caption>
+<thead>
+<tr>
+<th scope="col">Output</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>t</code></td>
+<td>Time vector (seconds), same length as the sample arrays</td>
+</tr>
+<tr>
+<td><code>ch1Samples</code></td>
+<td>Voltage readings from Ch1 (1+/1−) in volts</td>
+</tr>
+<tr>
+<td><code>ch2Samples</code></td>
+<td>Voltage readings from Ch2 (2+/2−) in volts</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-matlab">[t, Vin, Vout] = myM2K.getAnalogInSamples(0.1, 1000000);
+</code></pre>
+<hr/>
+<h3>Analog Output (Waveform Generator — W1, W2)</h3>
+<h4><code>enableAnalogOut(channelNumber)</code></h4>
+<p>Enables an analog output channel. Must be called before pushing waveforms.</p>
+<div aria-label="Analog Output (Waveform Generator — W1, W2)" class="table-wrapper" role="region" tabindex="0"><table><caption>Analog Output (Waveform Generator — W1, W2)</caption>
+<thead>
+<tr>
+<th scope="col">Parameter</th>
+<th scope="col">Values</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>channelNumber</code></td>
+<td><code>1</code></td>
+<td>Enable W1</td>
+</tr>
+<tr>
+<td><code>channelNumber</code></td>
+<td><code>2</code></td>
+<td>Enable W2</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-matlab">myM2K.enableAnalogOut(1); % Enable W1
+myM2K.enableAnalogOut(2); % Enable W2
+</code></pre>
+<hr/>
+<h4><code>setAnalogOutSampleRate(DAC_rate)</code></h4>
+<p>Sets the DAC sampling rate for both W1 and W2, and confirms the new rate in the console.</p>
+<p><strong>Valid rates:</strong> 750, 7.5k, 75k, 750k, 7.5M, 75M (samples per second)</p>
+<pre><code class="language-matlab">myM2K.setAnalogOutSampleRate(750e3); % 750 kSPS
+</code></pre>
+<hr/>
+<h4><code>getAnalogOutSampleRate()</code></h4>
+<p>Reads the current DAC sampling rate of M2K.</p>
+<pre><code class="language-matlab">curr_DAC_Rate = myM2K.getAnalogOutSampleRate();
+</code></pre>
+<hr/>
+<h4><code>setWaveform(channelNumber, signalArray)</code></h4>
+<p>Generates a waveform on W1 or W2.</p>
+<div aria-label="Analog Output (Waveform Generator — W1, W2)" class="table-wrapper" role="region" tabindex="0"><table><caption>Analog Output (Waveform Generator — W1, W2)</caption>
+<thead>
+<tr>
+<th scope="col">Parameter</th>
+<th scope="col">Values</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>channelNumber</code></td>
+<td><code>1</code></td>
+<td>Generate signal on W1</td>
+</tr>
+<tr>
+<td><code>channelNumber</code></td>
+<td><code>2</code></td>
+<td>Generate signal on W2</td>
+</tr>
+<tr>
+<td><code>signalArray</code></td>
+<td>signal vector in double</td>
+<td>Signal output of the waveform generator</td>
+</tr>
+</tbody>
+</table></div>
+<p>The following example requires the SignalLab class.</p>
+<pre><code class="language-matlab">myM2K.setWaveform(1, signalArray);
+</code></pre>
+<hr/>
+<h3>Power Supply (V+, V−)</h3>
+<h4><code>enablePowerSupply(supplyNumber)</code></h4>
+<p>Enables V+ or V-.</p>
+<p><strong>Inputs:</strong> <br/>
+| Parameter       | Values | Description |<br/>
+|-----------------|--------|-------------|<br/>
+| <code>supplyNumber</code>  | <code>1</code>    | Enable V+   |<br/>
+| <code>supplyNumber</code>  | <code>2</code>    | Enable V−   |</p>
+<pre><code class="language-matlab">myM2K.enablePowerSupply(1); % Enable V+
+myM2K.enablePowerSupply(2); % Enable V-
+</code></pre>
+<hr/>
+<h4><code>setPowerSupply(supplyNumber, voltage)</code></h4>
+<p>Sets the output voltage for a specified power supply.</p>
+<p><strong>Inputs:</strong> </p>
+<div aria-label="Power Supply (V+, V−)" class="table-wrapper" role="region" tabindex="0"><table><caption>Power Supply (V+, V−)</caption>
+<thead>
+<tr>
+<th scope="col">Parameter</th>
+<th scope="col">Values</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>supplyNumber</code></td>
+<td><code>1</code></td>
+<td>Configures V+</td>
+</tr>
+<tr>
+<td><code>supplyNumber</code></td>
+<td><code>2</code></td>
+<td>Configures V-</td>
+</tr>
+<tr>
+<td><code>voltage</code></td>
+<td><code>5 - 0</code></td>
+<td>Voltage range for V+</td>
+</tr>
+<tr>
+<td><code>voltage</code></td>
+<td><code>0 - -5</code></td>
+<td>Voltage range for V-</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-matlab">myM2K.setPowerSupply(1, 3.1); % Set V+ to 3.1V
+myM2K.setPowerSupply(2, -2.8); % Set V- to -2.8V
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> V+ accepts positive voltage value only. V- accepts negative voltage value only.</p>
+</blockquote>
+<hr/>
+<h2>Example — Plotting a Signal in Time and Frequency Domains</h2>
+<p>This example first generates a sine wave using the <code>SignalLab</code> class, pushes the generated signal to M2K's waveform generator (W1), reads W1 through 1+/1-, then plots the received signal in both time and frequency domains.</p>
+<p>Make sure to include both the <code>M2K</code> class and the <code>SignalLab</code> class in your working directory.</p>
+<p><strong>Connect 1+ with W1, 1- with GND.</strong></p>
+<pre><code class="language-matlab">% Before connecting the M2K with your circuit, run this block fo code.
+
+% This ensures the accuracy of the calibration procedure
+myM2K = M2K(); % create M2K object
+myM2K.enableAnalogIn(1); % enable Ch1
+myM2K.enableAnalogIn(2); % enable Ch2
+myM2K.enableAnalogOut(1); % enable W1
+</code></pre>
+<pre><code class="language-matlab">% After connecting M2K with your circuit, run this block of code.
+
+Vpp = 2; % waveform peak to peak is 2V
+waveFreq = 1000; % frequency of the waveform is 1 kHz
+
+ADCRate = 1000000; % ADC rate = 1MHz 
+DACRate = 750000; % DAC rate = 750kHz
+
+% set the ADC and DAC rates
+myM2K.setAnalogOutSampleRate(DACRate);
+myM2K.setAnalogInSampleRate(ADCRate);
+
+% use signalLab to generate a 2 Vpp, 1 kHz sine wave
+% the sampling frequency is the DAC rate because the generated signal is used by M2K's W1
+s_generated = SignalLab(Vpp / 2, waveFreq, DACRate);
+s_generated.info()
+% generate siganl
+[t_generated, samples_generated] = s_generated.generate(0.01);
+
+% plot the generated signal in time and frequency domains 
+figure;
+s_generated.plotSignal(t_generated, samples_generated);
+title(sprintf('Generated %s Signal --- Time Domain', s_generated.waveType));
+figure;
+s_generated.plotSpectrum(samples_generated);
+title(sprintf('Generated %s Signal --- Frequency Domain', s_generated.waveType));
+
+% push the generated signal to M2K waveform generator W1
+myM2K.setWaveform(1, samples_generated);
+% clear the ADC buffer
+myM2K.clearAnalogInSampleBuffer();
+% read 10 periods of the received signals from Ch1 and Ch2 
+[t_received, ch1_samples, ch2_samples] = myM2K.getAnalogInSamples(10 / waveFreq);
+
+
+% create another signalLab object with the ADC sampling rate
+% the sampling frequency is the ADC rate because the received signal is read by M2K's Ch1(1+/1-)
+s_received = s_generated;
+s_received.samplingRate = ADCRate;
+s_received.info()
+
+% plot the received signal in time and frequency domains 
+figure;
+s_received.plotSignal(t_received, ch1_samples);
+title(sprintf('Received %s Signal --- Time Domain', s_received.waveType));
+figure;
+s_received.plotSpectrum(ch1_samples);
+title(sprintf('Received %s Signal --- Frequency Domain', s_received.waveType));
+
+
+</code></pre>
+<hr/>
+<h2>Quick-Reference Card</h2>
+<div aria-label="Quick-Reference Card" class="table-wrapper" role="region" tabindex="0"><table><caption>Quick-Reference Card</caption>
+<thead>
+<tr>
+<th scope="col">Setup</th>
+<th scope="col">Method call</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connect and calibrate M2K</td>
+<td><code>myM2K = M2K()</code></td>
+</tr>
+<tr>
+<td>Manual calibration</td>
+<td><code>myM2K.calibrateM2K()</code></td>
+</tr>
+<tr>
+<td>Close device connection</td>
+<td><code>myM2K.clearM2K()</code></td>
+</tr>
+</tbody>
+</table></div>
+<div aria-label="Quick-Reference Card" class="table-wrapper" role="region" tabindex="0"><table><caption>Quick-Reference Card</caption>
+<thead>
+<tr>
+<th scope="col">Oscilloscope (Ch1, Ch2)</th>
+<th scope="col">Method call</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enable oscilloscope channel</td>
+<td><code>myM2K.enableAnalogIn(1)</code> or <code>(2)</code></td>
+</tr>
+<tr>
+<td>Set ADC rate</td>
+<td><code>myM2K.setAnalogInSampleRate(rate)</code></td>
+</tr>
+<tr>
+<td>Read ADC rate</td>
+<td><code>myM2K.getAnalogInSampleRate()</code></td>
+</tr>
+<tr>
+<td>Flush ADC buffer</td>
+<td><code>myM2K.clearAnalogInSampleBuffer()</code></td>
+</tr>
+<tr>
+<td>Capture samples</td>
+<td><code>[t,ch1,ch2] = myM2K.getAnalogInSamples(sec)</code></td>
+</tr>
+</tbody>
+</table></div>
+<div aria-label="Quick-Reference Card" class="table-wrapper" role="region" tabindex="0"><table><caption>Quick-Reference Card</caption>
+<thead>
+<tr>
+<th scope="col">Waveform Generators (W1, W2)</th>
+<th scope="col">Method call</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enable waveform generator</td>
+<td><code>myM2K.enableAnalogOut(1)</code> or <code>(2)</code></td>
+</tr>
+<tr>
+<td>Set DAC rate</td>
+<td><code>myM2K.setAnalogOutSampleRate(rate)</code></td>
+</tr>
+<tr>
+<td>Read DAC rate</td>
+<td><code>myM2K.getAnalogOutSampleRate()</code></td>
+</tr>
+<tr>
+<td>Output waveform voltage</td>
+<td><code>myM2K.setWaveform(channelNum, signal)</code></td>
+</tr>
+</tbody>
+</table></div>
+<div aria-label="Quick-Reference Card" class="table-wrapper" role="region" tabindex="0"><table><caption>Quick-Reference Card</caption>
+<thead>
+<tr>
+<th scope="col">Power Supplies (V+, V-)</th>
+<th scope="col">Method call</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enable power supply rail</td>
+<td><code>myM2K.enablePowerSupply(1)</code> or <code>(2)</code></td>
+</tr>
+<tr>
+<td>Set power supply voltages</td>
+<td><code>myM2K.setPowerSupply(posV, negV)</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2>Troubleshooting</h2>
+<ul>
+<li><strong>Can't register M2K</strong>:</li>
+<li>Check USB connection.</li>
+<li>Ensure Scopy is closed so it is not holding the serial port.</li>
+<li>Check if <code>M2K.m</code> is in your working directory.</li>
+<li>Check if <code>libm2k</code> is in your search path. </li>
+<li>Restart MATLAB.</li>
+<li>
+<p>Call <code>clearM2K()</code> by the end or at the beginning of your script.</p>
+</li>
+<li>
+<p><strong>Invalid ADC/DAC Rate</strong></p>
+</li>
+<li>Only set the sample rate to a valid value.</li>
+<li>Valid ADC rates: <code>1k, 10k, 100k, 1M, 10M, 100M</code> (samples per second).</li>
+<li>
+<p>Valid DAC rates: <code>750, 7.5k, 75k, 750k, 7.5M, 75M</code> (samples per second).</p>
+</li>
+<li>
+<p><strong>Captured waveforms are off</strong></p>
+</li>
+<li>Call <code>clearAnalogInSampleBuffer()</code> before <code>getAnalogInSamples()</code>.</li>
+<li>Make sure your ADC rate is above the Nyquist rate.</li>
+</ul>
+  </main>
+</body>
+</html>
