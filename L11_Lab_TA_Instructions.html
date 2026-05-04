@@ -1,290 +1,382 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>L11 Lab — TA Instructions: Group Project Data Collection</title>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>L11 Lab — TA Instructions</title>
   <style>
-    /* ── Skip navigation (ADA requirement) ── */
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: auto;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
-    .skip-link:focus {
-      position: static;
-      width: auto;
-      height: auto;
-      display: block;
-      padding: 8px 16px;
-      background: #005a9c;
-      color: #ffffff;
-      font-weight: bold;
-      text-decoration: none;
-    }
 
-    /* ── Base typography ── */
-    body {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #1a1a1a;
-      background: #ffffff;
-      margin: 0;
-      padding: 0;
-    }
-    main {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 1.5rem 1.25rem 3rem;
-    }
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 
-    /* ── Headings ── */
-    h1 {
-      font-size: 1.75rem;
-      border-bottom: 3px solid #005a9c;
-      padding-bottom: 0.4rem;
-      color: #003366;
-    }
-    h2 {
-      font-size: 1.3rem;
-      margin-top: 2.25rem;
-      color: #003366;
-      border-left: 5px solid #005a9c;
-      padding-left: 0.6rem;
-    }
-    h3 {
-      font-size: 1.05rem;
-      margin-top: 1.5rem;
-      color: #003366;
-    }
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 
-    /* ── Blockquote (callout boxes) ── */
-    blockquote {
-      border-left: 4px solid #6699cc;
-      margin: 0.75rem 0;
-      padding: 0.5rem 1rem;
-      background: #f0f5ff;
-      color: #1a1a1a;
-    }
-
-    /* ── Inline code ── */
-    code {
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.9em;
-      background: #f4f4f4;
-      padding: 0.1em 0.35em;
-      border-radius: 3px;
-      color: #1a1a1a;
-    }
-
-    /* ── Code blocks ── */
-    pre {
-      background: #f4f4f4;
-      border: 1px solid #cccccc;
-      border-left: 4px solid #005a9c;
-      border-radius: 4px;
-      padding: 0.85rem 1rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-      line-height: 1.45;
-    }
-    pre code {
-      background: none;
-      padding: 0;
-      border-radius: 0;
-      font-size: 0.88em;
-      color: #1a1a1a;
-    }
-
-    /* ── Images ── */
-    img {
-      max-width: 70%;
-      height: auto;
-      display: block;
-      margin: 1rem auto;
-    }
-
-    /* ── Horizontal rule ── */
-    hr {
-      border: none;
-      border-top: 1px solid #cccccc;
-      margin: 1.5rem 0;
-    }
-
-    /* ── Responsive table wrapper ── */
-    .table-wrapper {
-      overflow-x: auto;
-      margin: 1rem 0 1.5rem;
-      border: 1px solid #aaaaaa;
-      border-radius: 4px;
-    }
-
-    /* ── Tables ── */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.93rem;
-    }
-    caption {
-      caption-side: top;
-      text-align: left;
-      font-weight: bold;
-      font-size: 0.95rem;
-      padding: 0.5rem 0.75rem;
-      background: #003366;
-      color: #ffffff;
-    }
-    th {
-      background: #005a9c;
-      color: #ffffff;
-      text-align: left;
-      padding: 0.5rem 0.75rem;
-      white-space: nowrap;
-    }
-    td {
-      padding: 0.45rem 0.75rem;
-      border-top: 1px solid #dddddd;
-      vertical-align: top;
-    }
-    tr:nth-child(even) td {
-      background: #f7f9ff;
-    }
-    tr:hover td {
-      background: #eef3ff;
-    }
-
-    /* ── Strong / emphasis ── */
-    strong {
-      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
-    }
-    em {
-      color: #555555;
-    }
-
-    /* ── Focus visible for keyboard navigation ── */
-    a:focus, button:focus, [tabindex]:focus {
-      outline: 3px solid #005a9c;
-      outline-offset: 2px;
-    }
-  </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
-    onload="renderMathInElement(document.body, {
-      delimiters: [
-        {left: '$$', right: '$$', display: true},
-        {left: '$',  right: '$',  display: false}
-      ],
-      throwOnError: false
-    });"></script>
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem auto;
+padding: 0 1.5rem; color: #111; font-size: 17px; line-height: 1.65; }
+h1 { color: #111; border-bottom: 4px solid #C99700; padding-bottom: 0.4rem; font-size: 1.6em; }
+h2 { color: #111; border-left: 6px solid #C99700; background: #fffbe6;
+padding: 0.5rem 0.8rem; margin-top: 2.5rem; font-size: 1.2em; }
+h3 { color: #111; border-left: 3px solid #888; background: #f4f4f4;
+padding: 0.3rem 0.6rem; margin-top: 1.5rem; font-size: 1.05em; }
+blockquote { background: #e8f4ff; color: #111; border-left: 4px solid #4477aa;
+border-radius: 0 4px 4px 0; padding: 0.6rem 1rem; margin: 0.8rem 0;
+font-style: italic; }
+blockquote p { margin: 0; }
+pre { background: #f0f0f0; color: #111; padding: 0.8rem 1rem; border-radius: 4px;
+border-left: 4px solid #bbb; overflow-x: auto; font-size: 0.88rem; line-height: 1.5; }
+code { background: #efefef; padding: 0.1em 0.3em; border-radius: 3px;
+font-size: 0.9em; color: #333; }
+pre code { background: none; padding: 0; color: #111; font-size: 1em; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th { background: #444; color: white; padding: 0.4rem 0.8rem; text-align: left; }
+td { padding: 0.35rem 0.8rem; border-bottom: 1px solid #ddd; }
+tr:nth-child(even) td { background: #f8f8f8; }
+strong { color: #111; }
+hr { border: none; border-top: 2px solid #ddd; margin: 2rem 0; }
+img { max-width: 560px; width: 100%; border: 1px solid #ccc; border-radius: 4px;
+display: block; margin: 0.6rem 0 1.2rem 0; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+</style>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  <main id="main-content" role="main">
-    <h1>L11 Lab — TA Instructions: Group Project Data Collection</h1>
-<p><strong>ENG 6 Spring 2026 | Instructor/TA Use Only</strong><br/>
+<header id="title-block-header">
+<h1 class="title">L11 Lab — TA Instructions</h1>
+</header>
+<h1 id="l11-lab-ta-instructions-group-project-data-collection">L11 Lab —
+TA Instructions: Group Project Data Collection</h1>
+<p><strong>ENG 6 Spring 2026 | Instructor/TA Use Only</strong>
 <strong>Time budget: 30 minutes</strong></p>
-<hr/>
-<h2>What This Lab Accomplishes</h2>
-<p>Each student runs a MATLAB script that records 20 seconds of smartphone accelerometer data for three activities (walking, running, jumping) and saves three <code>.mat</code> files named with their identity:</p>
+<hr />
+<h2 id="what-this-lab-accomplishes">What This Lab Accomplishes</h2>
+<p>Each student runs a MATLAB script that records 20 seconds of
+smartphone accelerometer data for three activities (walking, running,
+jumping) and saves three <code>.mat</code> files named with their
+identity:</p>
 <pre><code>walk_jane_smith_a03.mat
 run_jane_smith_a03.mat
-jump_jane_smith_a03.mat
-</code></pre>
-<p>All files are uploaded to a shared class folder. After the lab, you post the complete <code>files</code> array so every student can run their batch analysis loop on the full class dataset.</p>
-<hr/>
-<h2>Before Lab (Day Before or Morning Of)</h2>
-<p><strong>1. Create the shared upload folder.</strong><br/>
-Use MATLAB Drive — every student already has access through MATLAB Online.<br/>
-- Create a folder: <code>ENG6_Spring2026 / GroupProject / Lab_Data</code><br/>
-- Set it to shared/collaborative so all students can upload<br/>
-- Post the full path in the course chat <strong>at the start of lab</strong>, not before (avoids confusion)</p>
-<p><strong>2. Know the lab section codes.</strong><br/>
-Students enter their lab section when prompted by the script. Use the official section codes (e.g., <code>A01</code>, <code>B02</code>). Post these on the board or projector at the start of lab so students enter them consistently — a typo in the section code creates an unorganized file that's hard to attribute.</p>
-<p><strong>3. Have a backup dataset ready.</strong><br/>
-If phones fail, use the synthetic files from the L11 cheat sheet generator. Run it once before lab and keep <code>walk.mat</code>, <code>run.mat</code>, <code>jump.mat</code> available. These are last resort only — real student data is the goal.</p>
-<p><strong>4. Confirm the script is accessible.</strong><br/>
-The script is publicly available at:</p>
-<pre><code>https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m
-</code></pre>
-<p>Students can download it directly in MATLAB Online using:</p>
-<pre><code class="language-matlab">websave("L11_Lab_DataCollection.m", "https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m");
-</code></pre>
-<p>Post this command in the course chat at the start of lab so students can paste it into the Command Window. No Canvas upload or MATLAB Drive sharing required.</p>
-<hr/>
-<h2>During Lab — 30-Minute Timeline</h2>
-<div aria-label="During Lab — 30-Minute Timeline" class="table-wrapper" role="region" tabindex="0"><table><caption>During Lab — 30-Minute Timeline</caption>
+jump_jane_smith_a03.mat</code></pre>
+<p>Students submit all three files to a Canvas assignment. After all lab
+sections close, you download the submissions, run a two-step MATLAB
+script that extracts and renames the files and generates
+<code>class_files.m</code>, then post <code>class_files.m</code> so
+every student can run their batch analysis loop on the full class
+dataset.</p>
+<hr />
+<h2 id="before-lab-day-before-or-morning-of">Before Lab (Day Before or
+Morning Of)</h2>
+<p><strong>1. Create the Canvas submission assignment.</strong> - Go to
+Canvas → Assignments → <strong>+ Assignment</strong> - Title:
+<code>L11 Lab Sensor Data</code> - Submission type: <strong>File
+Uploads</strong> — set allowed extensions to <code>.mat</code> only - No
+due-date penalty (accept until midnight after the last lab section) -
+<strong>Do not grade here</strong> — completeness is tracked via the
+gradebook checkmark</p>
+<p><strong>2. Know the lab section codes.</strong> Post the official
+section codes on the board or projector at the start of lab (e.g.,
+<code>A01</code>, <code>B02</code>). The script lowercases everything
+and strips spaces, but confirm students enter the section code
+consistently — a typo creates a file that is hard to attribute
+later.</p>
+<p><strong>3. Have a backup dataset ready.</strong> If phones fail, use
+the synthetic files from the L11 cheat sheet generator. Keep
+<code>walk.mat</code>, <code>run.mat</code>, <code>jump.mat</code>
+available. These are last resort only — real student data is the
+goal.</p>
+<p><strong>4. Confirm the script is accessible.</strong> The script is
+publicly available at:</p>
+<pre><code>https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m</code></pre>
+<p>Post this websave command in the course chat at the start of lab:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">websave</span>(<span class="st">&quot;L11_Lab_DataCollection.m&quot;</span><span class="op">,</span> <span class="st">&quot;https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<hr />
+<h2 id="during-lab-30-minute-timeline">During Lab — 30-Minute
+Timeline</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
 <tr>
-<th scope="col">Time</th>
-<th scope="col">What's happening</th>
+<th>Time</th>
+<th>What’s happening</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>0–3 min</td>
-<td>Distribute student instruction sheet. Students open the script in MATLAB Online. Post the shared folder path and lab section codes on the projector.</td>
+<td>Distribute student instruction sheet. Students open MATLAB Online.
+Post the Canvas assignment link and lab section codes on the
+projector.</td>
 </tr>
 <tr>
 <td>3–8 min</td>
-<td>Students connect their phone to MATLAB Mobile and run the setup steps. Circulate — most connection failures are Wi-Fi (phone and laptop must be on the same network).</td>
+<td>Students connect their phone to MATLAB Mobile and run the setup
+steps. Circulate — most connection failures are Wi-Fi (phone and laptop
+must be on the same network).</td>
 </tr>
 <tr>
 <td>8–25 min</td>
-<td>Students run the script. Each of the three 20-second recordings runs back-to-back with an Enter prompt between them. Total active script time is ~5 minutes; most of the window is students reading the prompts and positioning themselves.</td>
+<td>Students run the script. Each of the three 20-second recordings runs
+back-to-back with an Enter prompt between them. Total active script time
+is ~5 minutes.</td>
 </tr>
 <tr>
 <td>25–30 min</td>
-<td>Students upload their three files to the shared folder. Confirm uploads — check that files appear with the correct naming pattern before students leave.</td>
+<td>Students submit their three files to Canvas. Confirm by opening
+Canvas → Grades for your section — submitted students show a file
+icon.</td>
 </tr>
 </tbody>
-</table></div>
-<hr/>
-<h2>Circulating: What to Watch For</h2>
-<p><strong>Phone not connecting:</strong><br/>
-- Check that MATLAB Mobile is open and logged into the same MathWorks account as the MATLAB Online session<br/>
-- Both devices must be on the same Wi-Fi network — eduroam is fine; hotspots sometimes block the connection<br/>
-- If connection fails after 2 minutes, pair that student with a teammate who has a working connection — one phone per team is sufficient</p>
-<p><strong>Script warning "No data received":</strong><br/>
-- Usually means <code>m.Logging = 1</code> fired before the phone fully connected<br/>
-- Tell the student to re-run the script from the beginning (<code>clc; L11_Lab_DataCollection</code>)</p>
-<p><strong>Student enters inconsistent name/section:</strong><br/>
-- Common issue: spaces, capitalization, typos<br/>
-- The script lowercases everything and strips spaces, but <code>janesmith</code> vs <code>jane_smith</code> would differ if they misread the prompt<br/>
-- If a file arrives with a garbled name, rename it in the shared folder yourself — don't ask the student to re-collect</p>
-<p><strong>Student finishes early:</strong><br/>
-- Have them help a teammate with phone connection<br/>
-- Or: run a second collection (e.g., different walking speed or jumping height) and save with <code>_v2</code> appended — useful for variability analysis in the Group Project</p>
-<hr/>
-<h2>After All Labs Conclude (by Monday)</h2>
-<p><strong>Timeline note:</strong> Labs run Tuesday evening through Monday. Lecture 12 is Thursday — using synthetic data, not the class dataset. Do <strong>not</strong> post the class <code>files</code> array until all lab sections have uploaded. The class dataset is used in the homework, not in Lecture 12.</p>
-<p><strong>1. Collect the uploaded files.</strong><br/>
-After the final lab section on Monday, download all <code>.mat</code> files from the shared folder to a single local directory.</p>
-<p><strong>2. Generate the <code>files</code> array for the homework.</strong><br/>
-Run this in MATLAB to get a copy-pasteable string array from whatever was uploaded:</p>
-<pre><code class="language-matlab">d = dir("path/to/shared/folder/*.mat");
-names = string({d.name});
-disp("""files = [" + join("""" + names + """", ", ") + "];""")
-</code></pre>
-<p>This prints a ready-made line students paste into their homework script.</p>
-<p><strong>3. Post before the homework is due.</strong><br/>
-Post the <code>files</code> array in the course chat. Students replace the three-file placeholder in their batch analysis script with this line. The loop body does not change — that is the point.</p>
-<p><strong>Example of what you will post:</strong></p>
-<pre><code class="language-matlab">files = ["walk_jane_smith_a03.mat", "run_jane_smith_a03.mat", ...
-         "walk_omar_hassan_b01.mat", "run_omar_hassan_b01.mat", ...];
-</code></pre>
-<hr/>
-<h2>If the Lab Session Goes Short</h2>
-<p>If fewer than half the students have uploaded files by the end of lab:<br/>
-- Use the synthetic backup dataset for L12 Activity 2<br/>
-- Have students label their synthetic records with <code>"Walk (synthetic)"</code>, <code>"Run (synthetic)"</code>, etc.<br/>
-- Real data can be collected outside lab and added to the Group Project folder later</p>
-<hr/>
-<p><em>ENG 6 Spring 2026 | L11 Lab | TA Instructions | Not Distributed to Students</em></p>
-  </main>
+</table>
+<hr />
+<h2 id="circulating-what-to-watch-for">Circulating: What to Watch
+For</h2>
+<p><strong>Phone not connecting:</strong> - Check that MATLAB Mobile is
+open and logged into the same MathWorks account as the MATLAB Online
+session - Both devices must be on the same Wi-Fi network — eduroam is
+fine; hotspots sometimes block the connection - If connection fails
+after 2 minutes, pair that student with a teammate who has a working
+connection — one phone per team is sufficient</p>
+<p><strong>Script warning “No data received”:</strong> - Usually means
+<code>m.Logging = 1</code> fired before the phone fully connected - Tell
+the student to re-run the script from the beginning:
+<code>clc; L11_Lab_DataCollection</code></p>
+<p><strong>Student entered inconsistent name/section:</strong> - The
+script lowercases everything and strips spaces before saving - If a file
+arrives with a garbled name (visible in Canvas), note the student’s name
+and rename the file yourself when processing the full dataset — do not
+ask the student to re-collect</p>
+<p><strong>Student finishes early:</strong> - Have them verify Canvas
+shows “Submitted” with three files listed - Or: run a second collection
+(different walking speed or jumping height) and save with
+<code>_v2</code> appended — useful for variability analysis in the Group
+Project</p>
+<hr />
+<h2 id="monitoring-submission-completeness">Monitoring Submission
+Completeness</h2>
+<p>Canvas gradebook gives you instant visibility — no manual folder
+audit needed:</p>
+<ol type="1">
+<li>Canvas → <strong>Grades</strong> → filter by your section</li>
+<li>Find the <em>L11 Lab Sensor Data</em> column</li>
+<li>Any student without a file icon has not submitted — send one
+targeted reminder</li>
+</ol>
+<p>At the end of your lab section, screenshot or export the gradebook
+column. This is your record of who collected data.</p>
+<hr />
+<h2 id="after-all-labs-conclude-by-monday">After All Labs Conclude (by
+Monday)</h2>
+<p><strong>Timeline note:</strong> Labs run Tuesday through Monday.
+Lecture 12 (Thursday) uses synthetic data — do <strong>not</strong> post
+<code>class_files.m</code> until all sections have submitted. The class
+dataset is used in the lab the following week, not in Lecture 12.</p>
+<hr />
+<h3 id="step-1-download-all-submissions-from-canvas">Step 1 — Download
+All Submissions from Canvas</h3>
+<ol type="1">
+<li>Canvas → Assignments → <em>L11 Lab Sensor Data</em> →
+<strong>Download Submissions</strong></li>
+<li>Save the ZIP to your computer and unzip it into a folder named
+<code>canvas_downloads</code></li>
+</ol>
+<p>Canvas prepends student identification to each filename (e.g.,
+<code>smith_jane_12345_walk_jane_smith_a03.mat</code>). The next step
+strips the prefix automatically.</p>
+<hr />
+<h3 id="step-2-extract-and-rename-files-generate-class_files.m">Step 2 —
+Extract and Rename Files, Generate class_files.m</h3>
+<p>Save this as <code>process_submissions.m</code> and run it once from
+the folder containing <code>canvas_downloads</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">% process_submissions.m</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Run from the folder that contains canvas_downloads/</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">% Produces: class_data/ (renamed .mat files) and class_files.m</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="va">source_dir</span> <span class="op">=</span> <span class="st">&quot;canvas_downloads&quot;</span><span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="va">output_dir</span> <span class="op">=</span> <span class="st">&quot;class_data&quot;</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="op">~</span><span class="va">exist</span>(<span class="va">output_dir</span><span class="op">,</span> <span class="st">&quot;dir&quot;</span>)<span class="op">,</span> <span class="va">mkdir</span>(<span class="va">output_dir</span>)<span class="op">;</span> <span class="kw">end</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="va">d</span> <span class="op">=</span> <span class="va">dir</span>(<span class="va">fullfile</span>(<span class="va">source_dir</span><span class="op">,</span> <span class="st">&quot;*.mat&quot;</span>))<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="va">n_copied</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="va">skipped</span>  <span class="op">=</span> {}<span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">d</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">raw</span>   <span class="op">=</span> <span class="va">string</span>(<span class="va">d</span>(<span class="va">k</span>).<span class="va">name</span>)<span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="va">parts</span> <span class="op">=</span> <span class="va">split</span>(<span class="va">raw</span><span class="op">,</span> <span class="st">&quot;_&quot;</span>)<span class="op">;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">% Find where the original filename starts (walk / run / jump)</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="va">start_idx</span> <span class="op">=</span> <span class="va">find</span>(<span class="va">parts</span> <span class="op">==</span> <span class="st">&quot;walk&quot;</span> <span class="op">|</span> <span class="va">parts</span> <span class="op">==</span> <span class="st">&quot;run&quot;</span> <span class="op">|</span> <span class="va">parts</span> <span class="op">==</span> <span class="st">&quot;jump&quot;</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="va">isempty</span>(<span class="va">start_idx</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">skipped</span>{<span class="kw">end</span><span class="op">+</span><span class="fl">1</span>} <span class="op">=</span> <span class="va">raw</span><span class="op">;</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="kw">continue</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="va">original</span> <span class="op">=</span> <span class="va">join</span>(<span class="va">parts</span>(<span class="va">start_idx</span><span class="op">:</span><span class="kw">end</span>)<span class="op">,</span> <span class="st">&quot;_&quot;</span>)<span class="op">;</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="va">src</span>  <span class="op">=</span> <span class="va">fullfile</span>(<span class="va">source_dir</span><span class="op">,</span> <span class="va">raw</span>)<span class="op">;</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="va">dest</span> <span class="op">=</span> <span class="va">fullfile</span>(<span class="va">output_dir</span><span class="op">,</span> <span class="va">original</span>)<span class="op">;</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="va">copyfile</span>(<span class="va">src</span><span class="op">,</span> <span class="va">dest</span>)<span class="op">;</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="va">n_copied</span> <span class="op">=</span> <span class="va">n_copied</span> <span class="op">+</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;Copied %d files to %s/\n&quot;</span><span class="op">,</span> <span class="va">n_copied</span><span class="op">,</span> <span class="va">output_dir</span>)<span class="op">;</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="op">~</span><span class="va">isempty</span>(<span class="va">skipped</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="va">fprintf</span>(<span class="st">&quot;WARNING — %d files skipped (unexpected naming):\n&quot;</span><span class="op">,</span> <span class="va">length</span>(<span class="va">skipped</span>))<span class="op">;</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">skipped</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">fprintf</span>(<span class="st">&quot;  %s\n&quot;</span><span class="op">,</span> <span class="va">skipped</span>{<span class="va">k</span>})<span class="op">;</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co">% Generate class_files.m</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="va">d2</span>    <span class="op">=</span> <span class="va">dir</span>(<span class="va">fullfile</span>(<span class="va">output_dir</span><span class="op">,</span> <span class="st">&quot;*.mat&quot;</span>))<span class="op">;</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="va">names</span> <span class="op">=</span> <span class="va">string</span>({<span class="va">d2</span>.<span class="va">name</span>})<span class="op">;</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="va">fid</span> <span class="op">=</span> <span class="va">fopen</span>(<span class="st">&quot;class_files.m&quot;</span><span class="op">,</span> <span class="st">&quot;w&quot;</span>)<span class="op">;</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="va">fid</span><span class="op">,</span> <span class="st">&quot;files = [ ...\n&quot;</span>)<span class="op">;</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">names</span>)</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="va">k</span> <span class="op">&lt;</span> <span class="va">length</span>(<span class="va">names</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        <span class="va">fprintf</span>(<span class="va">fid</span><span class="op">,</span> <span class="ss">&#39;    &quot;%s&quot;, ...\n&#39;</span><span class="op">,</span> <span class="va">names</span>(<span class="va">k</span>))<span class="op">;</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">else</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="va">fprintf</span>(<span class="va">fid</span><span class="op">,</span> <span class="ss">&#39;    &quot;%s&quot;];\n&#39;</span><span class="op">,</span> <span class="va">names</span>(<span class="va">k</span>))<span class="op">;</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="va">fclose</span>(<span class="va">fid</span>)<span class="op">;</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;Generated class_files.m  (%d files)\n&quot;</span><span class="op">,</span> <span class="va">length</span>(<span class="va">names</span>))<span class="op">;</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;Expected: %d files (164 students × 3 activities)\n&quot;</span><span class="op">,</span> <span class="fl">164</span><span class="op">*</span><span class="fl">3</span>)<span class="op">;</span></span></code></pre></div>
+<p><strong>After running:</strong> check that the file count is close to
+492. The WARNING list identifies any files with unexpected naming —
+rename those manually.</p>
+<hr />
+<h3 id="step-3-verify-the-dataset">Step 3 — Verify the Dataset</h3>
+<p>Run this quick sanity check in MATLAB:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">run</span>(<span class="st">&quot;class_files.m&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;%d files total\n&quot;</span><span class="op">,</span> <span class="va">length</span>(<span class="va">files</span>))<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Count per activity</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">act</span> <span class="op">=</span> [<span class="st">&quot;walk&quot;</span><span class="op">,</span> <span class="st">&quot;run&quot;</span><span class="op">,</span> <span class="st">&quot;jump&quot;</span>]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">n</span> <span class="op">=</span> <span class="va">sum</span>(<span class="va">contains</span>(<span class="va">files</span><span class="op">,</span> <span class="va">act</span> <span class="op">+</span> <span class="st">&quot;_&quot;</span>))<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">fprintf</span>(<span class="st">&quot;  %s: %d\n&quot;</span><span class="op">,</span> <span class="va">act</span><span class="op">,</span> <span class="va">n</span>)<span class="op">;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>Expected output:</p>
+<pre><code>492 files total
+  walk: 164
+  run:  164
+  jump: 164</code></pre>
+<p>If any count is below 164, cross-reference with Canvas gradebook to
+identify who is missing, then send a targeted follow-up email.</p>
+<hr />
+<h3 id="step-4-post-class_files.m-to-the-course">Step 4 — Post
+class_files.m to the Course</h3>
+<ol type="1">
+<li>Upload <code>class_files.m</code> to Canvas → Files → Course
+Materials (or post as a Canvas Announcement attachment)</li>
+<li>Post in the course chat:</li>
+</ol>
+<blockquote>
+<p><strong>class_files.m is now available.</strong> Download it from
+Canvas Files and place it in your MATLAB working folder. Then run
+<code>class_files</code> in the Command Window — this defines the
+<code>files</code> variable your batch analysis loop needs. You do not
+need to paste 492 filenames by hand.</p>
+</blockquote>
+<p><strong>Note on file access:</strong> students also need the
+<code>.mat</code> files themselves to run <code>buildResults</code>
+locally (Part 6 of the lab assignment). Upload the entire
+<code>class_data/</code> folder to a shared MATLAB Drive location and
+post the path alongside <code>class_files.m</code>. Update
+<code>class_files.m</code> to include the full path prefix if
+needed:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">% If files are in a shared MATLAB Drive folder, update class_files.m:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">base</span> <span class="op">=</span> <span class="st">&quot;/MATLAB Drive/ENG6_Spring2026/class_data/&quot;</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">files</span> <span class="op">=</span> <span class="va">base</span> <span class="op">+</span> <span class="va">files</span><span class="op">;</span></span></code></pre></div>
+<hr />
+<h2 id="if-the-lab-session-goes-short">If the Lab Session Goes
+Short</h2>
+<p>If fewer than half the students have submitted by the end of lab: -
+Use the synthetic backup dataset for L12 Activity 2 (unchanged — L12
+always uses synthetic data) - Students can submit outside lab until
+midnight — Canvas accepts late files - If a student misses the deadline
+entirely, they use synthetic data and note it in their written
+answers</p>
+<hr />
+<p><em>ENG 6 Spring 2026 | L11 Lab | TA Instructions | Not Distributed
+to Students</em></p>
 </body>
 </html>
