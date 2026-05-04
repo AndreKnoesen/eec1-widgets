@@ -71,16 +71,16 @@ for k = 1:3
     m.Logging = 0;
     fprintf("\n");
 
-    % Retrieve data: accellog returns [t, x, y, z]
-    raw = accellog(m);
+    % Retrieve data: accellog returns acceleration (N×3) and timestamps (N×1) separately
+    [accel, t_raw] = accellog(m);
 
-    if isempty(raw)
+    if isempty(accel)
         fprintf("WARNING: No data received for %s. Check phone connection and re-run the script.\n\n", labels(k));
         break;
     end
 
-    % Rearrange to [Ax, Ay, Az, t] — format expected by the batch analysis loop
-    data = [raw(:,2), raw(:,3), raw(:,4), raw(:,1)];
+    % Combine to [Ax, Ay, Az, t] — format expected by the batch analysis loop
+    data = [accel, t_raw];
 
     % Save
     filename = activities(k) + "_" + id + ".mat";
@@ -98,14 +98,16 @@ fprintf("==========================================\n");
 fprintf("  Collection complete!\n");
 fprintf("==========================================\n\n");
 
-fprintf("Files saved in your current MATLAB folder:\n");
+fprintf("=== Ready to submit ===\n");
+fprintf("Attach these three files to the Canvas assignment:\n");
 for k = 1:3
     fprintf("  %s_%s.mat\n", activities(k), id);
 end
 
-fprintf("\nNext step — upload to the shared class folder:\n");
-fprintf("  Your TA will post the folder path in the course chat.\n");
-fprintf("  Upload all three files before leaving lab.\n\n");
+fprintf("\nNext step — submit to Canvas:\n");
+fprintf("  Canvas → Assignments → L11 Lab Sensor Data → Submit Assignment\n");
+fprintf("  Choose Files → select all three .mat files listed above → Submit\n");
+fprintf("  Confirm Canvas shows Submitted before you leave lab.\n\n");
 
 fprintf("The batch analysis loop you wrote in Lecture 11 will process\n");
-fprintf("these files — and your classmates' — in Lecture 12.\n");
+fprintf("these files — and your classmates' — in the following lab.\n");
