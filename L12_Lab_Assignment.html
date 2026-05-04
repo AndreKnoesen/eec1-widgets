@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Lab 12 — Structures and Batch Analysis</title>
+  <style>
+
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem auto;
+padding: 0 1.5rem; color: #111; font-size: 17px; line-height: 1.65; }
+h1 { color: #111; border-bottom: 4px solid #C99700; padding-bottom: 0.4rem; font-size: 1.6em; }
+h2 { color: #111; border-left: 6px solid #C99700; background: #fffbe6;
+padding: 0.5rem 0.8rem; margin-top: 2.5rem; font-size: 1.2em; }
+h3 { color: #111; border-left: 3px solid #888; background: #f4f4f4;
+padding: 0.3rem 0.6rem; margin-top: 1.5rem; font-size: 1.05em; }
+h4 { color: #333; margin-top: 1.2rem; font-size: 1.0em; }
+blockquote { background: #e8f4ff; color: #111; border-left: 4px solid #4477aa;
+border-radius: 0 4px 4px 0; padding: 0.6rem 1rem; margin: 0.8rem 0;
+font-style: italic; }
+blockquote p { margin: 0; }
+pre { background: #f0f0f0; color: #111; padding: 0.8rem 1rem; border-radius: 4px;
+border-left: 4px solid #bbb; overflow-x: auto; font-size: 0.88rem; line-height: 1.5; }
+code { background: #efefef; padding: 0.1em 0.3em; border-radius: 3px;
+font-size: 0.9em; color: #333; }
+pre code { background: none; padding: 0; color: #111; font-size: 1em; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th { background: #444; color: white; padding: 0.4rem 0.8rem; text-align: left; }
+td { padding: 0.35rem 0.8rem; border-bottom: 1px solid #ddd; }
+tr:nth-child(even) td { background: #f8f8f8; }
+strong { color: #111; }
+hr { border: none; border-top: 2px solid #ddd; margin: 2rem 0; }
+img { max-width: 560px; width: 100%; border: 1px solid #ccc; border-radius: 4px;
+display: block; margin: 0.6rem 0 1.2rem 0; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+</style>
+</head>
+<body>
+<h1 id="lab-12-structures-and-batch-analysis-of-class-sensor-data">Lab
+12: Structures and Batch Analysis of Class Sensor Data</h1>
+<hr />
+<blockquote>
+<p>This lab is the payoff for two lectures. In Lecture 11 you built the
+loop that processes multiple files. In Lecture 12 you built the
+structure that stores what the loop computes. In this lab you write five
+functions in MATLAB Grader that wire those two ideas together into a
+working pipeline — then you run that pipeline on the full class dataset:
+492 recordings from 164 students. By the end you will be able to
+articulate what the loop structure is, what the data structure is, and
+why keeping them separate was the right design.</p>
+</blockquote>
+<hr />
+<h2 id="reminder-the-three-phase-structure">Reminder: The Three-Phase
+Structure</h2>
+<p>Every lab in this course follows the same pattern:</p>
+<pre><code>PRE-LAB  →  LAB SESSION  →  POST-LAB
+(before)     (in person)     (after)</code></pre>
+<p>The lab session is where you write and test your five functions in
+MATLAB Grader. The post-lab written questions require running those
+functions on the real class dataset — complete Part 6 during the lab
+session so you have the output you need.</p>
+<hr />
+<h2 id="goals">Goals</h2>
+<p>By the end of this lab you will have:</p>
+<ul>
+<li>Written five functions that together form a complete sensor data
+batch analysis pipeline</li>
+<li>Run that pipeline on 492 real class recordings and extracted
+per-activity statistics</li>
+<li>Found and compared your own recordings against the class</li>
+<li>Explained the pass-by-value behavior of MATLAB structures and
+connected it to what you saw in Lab 7</li>
+</ul>
+<p><strong>Concepts applied:</strong> String operations (L10) · Loops
+(L11) · Structures (L12)</p>
+<hr />
+<h2 id="pre-lab">PRE-LAB</h2>
+<p><strong>Complete before your lab session.</strong></p>
+<p>This lab has no AI exploration or self-test problems. The pre-lab is
+a single setup check.</p>
+<hr />
+<h3 id="pre-lab-setup-check">Pre-Lab Setup Check</h3>
+<p>Confirm each item before arriving at lab:</p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Canvas → Assignments → <em>L11 Lab
+Sensor Data</em> shows <strong>Submitted</strong> with all three
+<code>.mat</code> files listed</label></li>
+<li><label><input type="checkbox"></input>MATLAB Online accessible on your
+laptop</label></li>
+<li><label><input type="checkbox"></input>Canvas link for the <strong>Lab 12
+MATLAB Grader</strong> assignment bookmarked — open it and confirm you
+can see Problem 1 before the lab session begins</label></li>
+</ul>
+<p>If Canvas does not show your L11 submission as complete, contact your
+TA immediately — you will need your own recordings for Part 6 of this
+lab.</p>
+<hr />
+<h2 id="lab-session">LAB SESSION</h2>
+<p><strong>Complete this section during your in-person lab period. TAs
+are available to help.</strong></p>
+<p>Bring to the lab session: - Laptop with MATLAB Online accessible -
+<strong>Lab 12 MATLAB Grader</strong> assignment open in a browser tab -
+<code>class_files.m</code> downloaded from Canvas Files (your TA posts
+this after all L11 labs close)</p>
+<blockquote>
+<p><strong>Before starting Problem 1:</strong> confirm
+<code>class_files.m</code> is in your MATLAB Drive working folder. Type
+<code>run(&quot;class_files.m&quot;)</code> in the Command Window and verify it
+defines a variable <code>files</code> with 492 entries. If the file is
+not yet posted, proceed with Problems 1–5 and return to Part 6 when your
+TA confirms availability.</p>
+</blockquote>
+<hr />
+<h3 id="background-key-concepts-for-this-lab">Background: Key Concepts
+for This Lab</h3>
+<blockquote>
+<p><strong>Review before starting Problem 1</strong></p>
+<p><strong>Filename convention.</strong> Every <code>.mat</code> file in
+the class dataset uses this pattern:
+<code>activity_firstname_lastname_section.mat</code> Examples:
+<code>walk_jane_smith_a03.mat</code> · <code>run_john_doe_b01.mat</code>
+· <code>jump_ali_hassan_b02.mat</code> The activity name is always the
+first word, before the first underscore.</p>
+<p><strong>What each file contains.</strong> Each <code>.mat</code> file
+holds one variable <code>data</code> — an N×4 matrix with columns
+<code>[Ax, Ay, Az, t]</code>. This is the same format as the synthetic
+files in Lecture 12 Activity 2.</p>
+<p><strong>Structures are passed by value.</strong> When you pass a
+struct to a function, the function receives a copy. Modifications to
+that copy are discarded when the function returns — unless the function
+returns the modified struct and the caller assigns it back.
+<code>s = myFunc(s)</code> is the correct pattern;
+<code>myFunc(s)</code> alone changes nothing in the caller’s
+workspace.</p>
+<p><strong><code>[results.field]</code> extraction.</strong> Given a
+struct array where every record has a scalar field <code>peak</code>,
+the expression <code>[results.peak]</code> produces a 1×N row vector —
+one value per record. This only works when the field is a scalar (not an
+array) in every record.</p>
+</blockquote>
+<hr />
+<h3 id="how-matlab-grader-works-for-this-lab">How MATLAB Grader Works
+for This Lab</h3>
+<p>Open the <strong>Lab 12</strong> assignment in MATLAB Grader (link on
+Canvas). Each problem presents a function template to complete. Grader
+runs your function against the visible test cases shown in this document
+and additional hidden test cases. A test passes only when your output
+matches exactly.</p>
+<p><strong>Local helper functions:</strong> Problems 2–5 call functions
+from earlier problems. Include any required helper functions as local
+functions at the bottom of your submission file, below the main
+function. MATLAB supports this; Grader will find them.</p>
+<p><strong>Develop locally, submit to Grader.</strong> Write and test
+your solution in MATLAB Online first. When it passes your own tests,
+paste it into Grader.</p>
+<hr />
+<h3 id="problem-1-getactivity-10-points">Problem 1 —
+<code>getActivity</code> (10 points)</h3>
+<p><strong>Filename:</strong> <code>getActivity.m</code></p>
+<p>Write a function that extracts the activity type from a filename. The
+activity name is everything before the first underscore.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">activity</span> <span class="op">=</span> <span class="va">getActivity</span>(<span class="va">filename</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Returns the activity type encoded in a filename.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Inputs:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">%   filename - 1x1  string  e.g. &quot;walk_jane_smith_a03.mat&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Outputs:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">%   activity - 1x1  string  e.g. &quot;walk&quot;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">activity</span> <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<blockquote>
+<p><strong>Hint:</strong> One string function covered in Lecture 10
+returns everything that appears before a given character. What character
+separates the activity name from the rest of the filename?</p>
+</blockquote>
+<p><strong>Visible test cases:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Expected output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getActivity(&quot;walk_jane_smith_a03.mat&quot;)</code></td>
+<td><code>&quot;walk&quot;</code></td>
+</tr>
+<tr>
+<td><code>getActivity(&quot;run_john_doe_b01.mat&quot;)</code></td>
+<td><code>&quot;run&quot;</code></td>
+</tr>
+<tr>
+<td><code>getActivity(&quot;jump_ali_hassan_b02.mat&quot;)</code></td>
+<td><code>&quot;jump&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="problem-2-computerecord-20-points">Problem 2 —
+<code>computeRecord</code> (20 points)</h3>
+<p><strong>Filename:</strong> <code>computeRecord.m</code></p>
+<p>Write a function that processes the sensor data from one recording
+and returns a result struct. Include your <code>getActivity</code>
+solution as a local function at the bottom of the file.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">record</span> <span class="op">=</span> <span class="va">computeRecord</span>(<span class="va">data</span><span class="op">,</span> <span class="va">filename</span><span class="op">,</span> <span class="va">threshold</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Computes a result record from one sensor recording.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Inputs:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">%   data      - Nx4  double  matrix with columns [Ax, Ay, Az, t]</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">%   filename  - 1x1  string  e.g. &quot;walk_jane_smith_a03.mat&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">%   threshold - 1x1  double  event detection threshold (m/s^2)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Outputs:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">%   record - 1x1  struct  with fields:</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">%              .filename   (string)  same as input filename</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">%              .activity   (string)  extracted with getActivity</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">%              .peak       (double)  max resultant acceleration (m/s^2)</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">%              .num_events (double)  count of samples where R &gt; threshold</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">%              .duration   (double)  t(end) - t(1), in seconds</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="va">Ax</span> <span class="op">=</span> <span class="va">data</span>(<span class="op">:,</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="va">Ay</span> <span class="op">=</span> <span class="va">data</span>(<span class="op">:,</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="va">Az</span> <span class="op">=</span> <span class="va">data</span>(<span class="op">:,</span><span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="va">t</span>  <span class="op">=</span> <span class="va">data</span>(<span class="op">:,</span><span class="fl">4</span>)<span class="op">;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="va">R</span> <span class="op">=</span> ___________________<span class="op">;</span>           <span class="co">% resultant acceleration</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="va">record</span>.<span class="va">filename</span>   <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="va">record</span>.<span class="va">activity</span>   <span class="op">=</span> ___________________<span class="op">;</span>   <span class="co">% call getActivity</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="va">record</span>.<span class="va">peak</span>       <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="va">record</span>.<span class="va">num_events</span> <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="va">record</span>.<span class="va">duration</span>   <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">% --- paste your getActivity solution here ---</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">activity</span> <span class="op">=</span> <span class="va">getActivity</span>(<span class="va">filename</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="va">activity</span> <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p><strong>Visible test cases</strong> (Grader passes a known N×4 data
+matrix; field values depend on that data):</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Expected result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>record.filename</code></td>
+<td>same string as the <code>filename</code> input</td>
+</tr>
+<tr>
+<td><code>record.activity</code></td>
+<td><code>&quot;walk&quot;</code> (when filename starts with
+<code>walk_</code>)</td>
+</tr>
+<tr>
+<td><code>record.peak</code></td>
+<td>positive scalar, units m/s²</td>
+</tr>
+<tr>
+<td><code>record.num_events</code></td>
+<td>non-negative integer</td>
+</tr>
+<tr>
+<td><code>record.duration</code></td>
+<td>positive scalar, units seconds</td>
+</tr>
+<tr>
+<td><code>isfield(record, &quot;peak&quot;)</code></td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="problem-3-buildresults-20-points">Problem 3 —
+<code>buildResults</code> (20 points)</h3>
+<p><strong>Filename:</strong> <code>buildResults.m</code></p>
+<p>Write a function that processes a full set of <code>.mat</code> files
+and returns an array of structures — one record per file. Include
+<code>computeRecord</code> and <code>getActivity</code> as local
+functions.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">results</span> <span class="op">=</span> <span class="va">buildResults</span>(<span class="va">filenames</span><span class="op">,</span> <span class="va">threshold</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Loads and processes a set of .mat files into a struct array.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Inputs:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">%   filenames - 1xN  string array  .mat filenames to load</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">%   threshold - 1x1  double        event detection threshold (m/s^2)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">% Outputs:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">%   results - 1xN  struct array  one record per file</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">%             Fields: .filename, .activity, .peak, .num_events, .duration</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">% Each .mat file must contain a variable named &#39;data&#39; (Nx4 matrix [Ax Ay Az t]).</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="va">i</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">filenames</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">loaded</span> <span class="op">=</span> <span class="va">load</span>(<span class="va">filenames</span>(<span class="va">i</span>))<span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">data</span>   <span class="op">=</span> <span class="va">loaded</span>.<span class="va">data</span><span class="op">;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">results</span>(<span class="va">i</span>) <span class="op">=</span> <span class="va">computeRecord</span>(<span class="va">data</span><span class="op">,</span> <span class="va">filenames</span>(<span class="va">i</span>)<span class="op">,</span> <span class="va">threshold</span>)<span class="op">;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">% --- paste your computeRecord and getActivity solutions here ---</span></span></code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> Grader provides three synthetic
+<code>.mat</code> files as supporting files for this problem. You do not
+need to supply them — they are available automatically when your
+function runs.</p>
+</blockquote>
+<p><strong>Visible test cases</strong> (Grader uses a 3-file dataset —
+walk, run, jump):</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Expected result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>length(results)</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>results(1).activity</code></td>
+<td><code>&quot;walk&quot;</code></td>
+</tr>
+<tr>
+<td><code>results(2).activity</code></td>
+<td><code>&quot;run&quot;</code></td>
+</tr>
+<tr>
+<td><code>size([results.peak])</code></td>
+<td><code>[1 3]</code></td>
+</tr>
+<tr>
+<td><code>results(idx).activity</code> where
+<code>idx = argmax([results.peak])</code></td>
+<td><code>&quot;jump&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="problem-4-summarizebyactivity-15-points">Problem 4 —
+<code>summarizeByActivity</code> (15 points)</h3>
+<p><strong>Filename:</strong> <code>summarizeByActivity.m</code></p>
+<p>Write a function that computes per-activity statistics from a struct
+array.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">stats</span> <span class="op">=</span> <span class="va">summarizeByActivity</span>(<span class="va">results</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Summarizes peak statistics broken down by activity type.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Inputs:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">%   results - 1xN  struct array  from buildResults</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Outputs:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">%   stats - 1x3  struct array, one entry per activity in order: walk, run, jump</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">%           stats(k).activity  (string)  &quot;walk&quot; | &quot;run&quot; | &quot;jump&quot;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">%           stats(k).mean_peak (double)  mean peak across all matching records</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">%           stats(k).max_peak  (double)  maximum peak across all matching records</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">%           stats(k).count     (double)  number of matching records</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">activities</span> <span class="op">=</span> [<span class="st">&quot;walk&quot;</span><span class="op">,</span> <span class="st">&quot;run&quot;</span><span class="op">,</span> <span class="st">&quot;jump&quot;</span>]<span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">activities</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">act</span>  <span class="op">=</span> <span class="va">activities</span>(<span class="va">k</span>)<span class="op">;</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">mask</span> <span class="op">=</span> ([<span class="va">results</span>.<span class="va">activity</span>] <span class="op">==</span> <span class="va">act</span>)<span class="op">;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">peaks</span> <span class="op">=</span> [<span class="va">results</span>(<span class="va">mask</span>).<span class="va">peak</span>]<span class="op">;</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">stats</span>(<span class="va">k</span>).<span class="va">activity</span>  <span class="op">=</span> <span class="va">act</span><span class="op">;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">stats</span>(<span class="va">k</span>).<span class="va">mean_peak</span> <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">stats</span>(<span class="va">k</span>).<span class="va">max_peak</span>  <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">stats</span>(<span class="va">k</span>).<span class="va">count</span>     <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p><strong>Visible test cases</strong> (Grader uses a 9-record dataset —
+3 files per activity):</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Expected result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stats(1).activity</code></td>
+<td><code>&quot;walk&quot;</code></td>
+</tr>
+<tr>
+<td><code>stats(3).activity</code></td>
+<td><code>&quot;jump&quot;</code></td>
+</tr>
+<tr>
+<td><code>stats(3).max_peak &gt; stats(1).max_peak</code></td>
+<td><code>1</code> — jump peaks exceed walk</td>
+</tr>
+<tr>
+<td><code>stats(1).count + stats(2).count + stats(3).count</code></td>
+<td><code>9</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="problem-5-addeventrate-10-points">Problem 5 —
+<code>addEventRate</code> (10 points)</h3>
+<p><strong>Filename:</strong> <code>addEventRate.m</code></p>
+<p>Write a function that adds an <code>event_rate</code> field (events
+per second) to a single result record.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">s</span> <span class="op">=</span> <span class="va">addEventRate</span>(<span class="va">s</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Adds event_rate field to a result record.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Inputs:</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">%   s - 1x1  struct  result record with fields num_events and duration</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Outputs:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">%   s - 1x1  struct  same record with event_rate = num_events / duration added</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">s</span>.<span class="va">event_rate</span> <span class="op">=</span> ___________________<span class="op">;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>To apply to every record in <code>results</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">i</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">results</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">results</span>(<span class="va">i</span>) <span class="op">=</span> <span class="va">addEventRate</span>(<span class="va">results</span>(<span class="va">i</span>))<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p><strong>Visible test cases</strong> — study the Version A / Version B
+pair before answering Written Question W2:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Setup</th>
+<th>Expression</th>
+<th>Expected result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>s.num_events=10; s.duration=5.0;</code></td>
+<td><code>r = addEventRate(s); r.event_rate</code></td>
+<td><code>2.0</code></td>
+</tr>
+<tr>
+<td><code>s.num_events=0; s.duration=8.0;</code></td>
+<td><code>r = addEventRate(s); r.event_rate</code></td>
+<td><code>0.0</code></td>
+</tr>
+<tr>
+<td>Same <code>s</code> — Version A</td>
+<td><code>addEventRate(s); isfield(s,&quot;event_rate&quot;)</code></td>
+<td><code>0</code> — field NOT added</td>
+</tr>
+<tr>
+<td>Same <code>s</code> — Version B</td>
+<td><code>s = addEventRate(s); isfield(s,&quot;event_rate&quot;)</code></td>
+<td><code>1</code> — field added</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="part-6-real-class-data-analysis">Part 6 — Real Class Data
+Analysis</h3>
+<p>Run this after completing Problems 1–5 and confirming
+<code>class_files.m</code> is in your working folder. The output you
+produce here is what you paste into your post-lab written
+submission.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">% === Part 6: Real Class Data Analysis ===</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Run from your MATLAB Drive working folder after completing Problems 1–5.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="va">run</span>(<span class="st">&quot;class_files.m&quot;</span>)<span class="op">;</span>                          <span class="co">% defines &#39;files&#39; (492 entries)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;Loaded %d files.\n\n&quot;</span><span class="op">,</span> <span class="va">length</span>(<span class="va">files</span>))<span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Build struct array</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="va">threshold</span> <span class="op">=</span> <span class="fl">12</span><span class="op">;</span>                                <span class="co">% m/s^2</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="va">results</span>   <span class="op">=</span> <span class="va">buildResults</span>(<span class="va">files</span><span class="op">,</span> <span class="va">threshold</span>)<span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">% Per-activity summary</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="va">stats</span> <span class="op">=</span> <span class="va">summarizeByActivity</span>(<span class="va">results</span>)<span class="op">;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;=== ACTIVITY SUMMARY ===\n&quot;</span>)<span class="op">;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">fprintf</span>(<span class="st">&quot;%-6s  mean_peak=%5.2f  max_peak=%5.2f  count=%d\n&quot;</span><span class="op">,</span> <span class="op">...</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">stats</span>(<span class="va">k</span>).<span class="va">activity</span><span class="op">,</span> <span class="va">stats</span>(<span class="va">k</span>).<span class="va">mean_peak</span><span class="op">,</span> <span class="va">stats</span>(<span class="va">k</span>).<span class="va">max_peak</span><span class="op">,</span> <span class="va">stats</span>(<span class="va">k</span>).<span class="va">count</span>)<span class="op">;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">% My recordings</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="va">my_name</span> <span class="op">=</span> <span class="st">&quot;firstname_lastname&quot;</span><span class="op">;</span>                <span class="co">% REPLACE with your name, all lowercase</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="va">my_mask</span> <span class="op">=</span> <span class="va">contains</span>([<span class="va">results</span>.<span class="va">filename</span>]<span class="op">,</span> <span class="va">my_name</span>)<span class="op">;</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;\n=== MY RECORDINGS ===\n&quot;</span>)<span class="op">;</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">i</span> <span class="op">=</span> <span class="va">find</span>(<span class="va">my_mask</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="va">fprintf</span>(<span class="st">&quot;%-45s  peak=%5.2f  events=%3d  duration=%.1fs\n&quot;</span><span class="op">,</span> <span class="op">...</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">results</span>(<span class="va">i</span>).<span class="va">filename</span><span class="op">,</span> <span class="va">results</span>(<span class="va">i</span>).<span class="va">peak</span><span class="op">,</span> <span class="va">results</span>(<span class="va">i</span>).<span class="va">num_events</span><span class="op">,</span> <span class="va">results</span>(<span class="va">i</span>).<span class="va">duration</span>)<span class="op">;</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">% Add event rate</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">i</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">results</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="va">results</span>(<span class="va">i</span>) <span class="op">=</span> <span class="va">addEventRate</span>(<span class="va">results</span>(<span class="va">i</span>))<span class="op">;</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="va">my_idx</span> <span class="op">=</span> <span class="va">find</span>(<span class="va">my_mask</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;\nMy first recording event rate: %.3f events/s\n&quot;</span><span class="op">,</span> <span class="va">results</span>(<span class="va">my_idx</span>).<span class="va">event_rate</span>)<span class="op">;</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="va">fprintf</span>(<span class="st">&quot;\n=== Paste the output above into your Canvas post-lab submission. ===\n&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<p><strong>Expected output format:</strong></p>
+<pre><code>Loaded 492 files.
+
+=== ACTIVITY SUMMARY ===
+walk   mean_peak= 9.84  max_peak=18.43  count=164
+run    mean_peak=18.71  max_peak=34.22  count=164
+jump   mean_peak=35.18  max_peak=62.44  count=164
+
+=== MY RECORDINGS ===
+walk_jane_smith_a03.mat           peak=10.24  events=  2  duration=20.0s
+run_jane_smith_a03.mat            peak=19.45  events= 12  duration=20.1s
+jump_jane_smith_a03.mat           peak=38.67  events= 28  duration=20.3s
+
+My first recording event rate: 0.100 events/s</code></pre>
+<blockquote>
+<p>Values above are illustrative. Your class will produce different
+numbers. If <code>count</code> is not 164 for all three activities,
+check with your TA — some submissions may still be processing.</p>
+</blockquote>
+<hr />
+<h3 id="lab-session-checklist">Lab Session Checklist</h3>
+<p>Before leaving, confirm:</p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Problem 1
+(<code>getActivity</code>): all visible test cases pass in
+Grader</label></li>
+<li><label><input type="checkbox"></input>Problem 2
+(<code>computeRecord</code>): all five fields correct in
+Grader</label></li>
+<li><label><input type="checkbox"></input>Problem 3
+(<code>buildResults</code>): <code>length(results)</code> and all
+activity fields correct</label></li>
+<li><label><input type="checkbox"></input>Problem 4
+(<code>summarizeByActivity</code>): all visible test cases
+pass</label></li>
+<li><label><input type="checkbox"></input>Problem 5
+(<code>addEventRate</code>): Version A and Version B test cases both
+pass</label></li>
+<li><label><input type="checkbox"></input>Part 6 output copied and saved — you
+need it for the post-lab written submission</label></li>
+<li><label><input type="checkbox"></input><code>class_files.m</code> ran
+without error and produced 492 entries</label></li>
+</ul>
+<hr />
+<h2 id="post-lab">POST-LAB</h2>
+<p><strong>Complete within 48 hours of your lab session.</strong></p>
+<p>Submit your written answers to <strong>Canvas → Assignments → Lab 12
+Written Questions</strong> as a single text submission. Paste the Part 6
+output block first, then answer W1–W4 below it.</p>
+<hr />
+<h3 id="written-questions">Written Questions</h3>
+<p><strong>W1.</strong> Paste your complete Part 6 output block here
+(the <code>=== ACTIVITY SUMMARY ===</code> and
+<code>=== MY RECORDINGS ===</code> sections).</p>
+<hr />
+<p><strong>W2.</strong> Problem 5 contains two versions of the same call
+— Version A (<code>addEventRate(s)</code> with no assignment) and
+Version B (<code>s = addEventRate(s)</code>). Explain in your own words
+why Version A leaves <code>s</code> unchanged and Version B does not.
+Your answer must reference how MATLAB passes structures to functions.
+<strong>2–4 sentences.</strong></p>
+<hr />
+<p><strong>W3.</strong> In Lab 7 you called methods on a
+<code>SensorDataAnalyzer</code> object and those changes persisted in
+the object without returning anything. In Problem 5 you had to return
+and reassign the struct. Explain in one or two sentences why the
+behavior is different: what is different about how MATLAB treats struct
+values versus handle-class objects?</p>
+<hr />
+<p><strong>W4.</strong> Look at your own recordings in the Part 6
+output. For each activity, state your peak value and whether it is above
+or below the class mean. Then answer: which of your three activities
+produced the largest ratio of your peak to the class mean, and what does
+that tell you about that recording? <strong>3–5 sentences.</strong></p>
+<hr />
+<h3 id="post-lab-checklist">Post-Lab Checklist</h3>
+<p>Before the deadline, confirm:</p>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>All five MATLAB Grader problems
+submitted and showing a passing score</label></li>
+<li><label><input type="checkbox"></input>Canvas written submission posted
+with Part 6 output block and all four written answers</label></li>
+<li><label><input type="checkbox"></input>W1: Part 6 output pasted (activity
+summary + your recordings)</label></li>
+<li><label><input type="checkbox"></input>W2: Pass-by-value explanation, 2–4
+sentences</label></li>
+<li><label><input type="checkbox"></input>W3: Struct vs. handle-class
+distinction, 1–2 sentences</label></li>
+<li><label><input type="checkbox"></input>W4: Your recording comparison, 3–5
+sentences</label></li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Academic integrity:</strong> Your Part 6 output must come
+from running your own completed functions on the actual class dataset.
+Submitted output that is inconsistent with your Grader solutions, or
+that does not match the class dataset your TA posted, will be
+investigated.</p>
+</blockquote>
+<hr />
+<p><em>ENG 6 Spring 2026 | Lab 12 | Structures and Batch Analysis of
+Class Sensor Data</em></p>
+</body>
+</html>
