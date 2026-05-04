@@ -1,245 +1,189 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>L11 Lab — Group Project Data Collection</title>
   <style>
-    /* ── Skip navigation (ADA requirement) ── */
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: auto;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
-    .skip-link:focus {
-      position: static;
-      width: auto;
-      height: auto;
-      display: block;
-      padding: 8px 16px;
-      background: #005a9c;
-      color: #ffffff;
-      font-weight: bold;
-      text-decoration: none;
-    }
 
-    /* ── Base typography ── */
-    body {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #1a1a1a;
-      background: #ffffff;
-      margin: 0;
-      padding: 0;
-    }
-    main {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 1.5rem 1.25rem 3rem;
-    }
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 
-    /* ── Headings ── */
-    h1 {
-      font-size: 1.75rem;
-      border-bottom: 3px solid #005a9c;
-      padding-bottom: 0.4rem;
-      color: #003366;
-    }
-    h2 {
-      font-size: 1.3rem;
-      margin-top: 2.25rem;
-      color: #003366;
-      border-left: 5px solid #005a9c;
-      padding-left: 0.6rem;
-    }
-    h3 {
-      font-size: 1.05rem;
-      margin-top: 1.5rem;
-      color: #003366;
-    }
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 
-    /* ── Blockquote (callout boxes) ── */
-    blockquote {
-      border-left: 4px solid #6699cc;
-      margin: 0.75rem 0;
-      padding: 0.5rem 1rem;
-      background: #f0f5ff;
-      color: #1a1a1a;
-    }
-
-    /* ── Inline code ── */
-    code {
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.9em;
-      background: #f4f4f4;
-      padding: 0.1em 0.35em;
-      border-radius: 3px;
-      color: #1a1a1a;
-    }
-
-    /* ── Code blocks ── */
-    pre {
-      background: #f4f4f4;
-      border: 1px solid #cccccc;
-      border-left: 4px solid #005a9c;
-      border-radius: 4px;
-      padding: 0.85rem 1rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-      line-height: 1.45;
-    }
-    pre code {
-      background: none;
-      padding: 0;
-      border-radius: 0;
-      font-size: 0.88em;
-      color: #1a1a1a;
-    }
-
-    /* ── Images ── */
-    img {
-      max-width: 70%;
-      height: auto;
-      display: block;
-      margin: 1rem auto;
-    }
-
-    /* ── Horizontal rule ── */
-    hr {
-      border: none;
-      border-top: 1px solid #cccccc;
-      margin: 1.5rem 0;
-    }
-
-    /* ── Responsive table wrapper ── */
-    .table-wrapper {
-      overflow-x: auto;
-      margin: 1rem 0 1.5rem;
-      border: 1px solid #aaaaaa;
-      border-radius: 4px;
-    }
-
-    /* ── Tables ── */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.93rem;
-    }
-    caption {
-      caption-side: top;
-      text-align: left;
-      font-weight: bold;
-      font-size: 0.95rem;
-      padding: 0.5rem 0.75rem;
-      background: #003366;
-      color: #ffffff;
-    }
-    th {
-      background: #005a9c;
-      color: #ffffff;
-      text-align: left;
-      padding: 0.5rem 0.75rem;
-      white-space: nowrap;
-    }
-    td {
-      padding: 0.45rem 0.75rem;
-      border-top: 1px solid #dddddd;
-      vertical-align: top;
-    }
-    tr:nth-child(even) td {
-      background: #f7f9ff;
-    }
-    tr:hover td {
-      background: #eef3ff;
-    }
-
-    /* ── Strong / emphasis ── */
-    strong {
-      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
-    }
-    em {
-      color: #555555;
-    }
-
-    /* ── Focus visible for keyboard navigation ── */
-    a:focus, button:focus, [tabindex]:focus {
-      outline: 3px solid #005a9c;
-      outline-offset: 2px;
-    }
-  </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
-    onload="renderMathInElement(document.body, {
-      delimiters: [
-        {left: '$$', right: '$$', display: true},
-        {left: '$',  right: '$',  display: false}
-      ],
-      throwOnError: false
-    });"></script>
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem auto;
+padding: 0 1.5rem; color: #111; font-size: 17px; line-height: 1.65; }
+h1 { color: #111; border-bottom: 4px solid #C99700; padding-bottom: 0.4rem; font-size: 1.6em; }
+h2 { color: #111; border-left: 6px solid #C99700; background: #fffbe6;
+padding: 0.5rem 0.8rem; margin-top: 2.5rem; font-size: 1.2em; }
+h3 { color: #111; border-left: 3px solid #888; background: #f4f4f4;
+padding: 0.3rem 0.6rem; margin-top: 1.5rem; font-size: 1.05em; }
+blockquote { background: #e8f4ff; color: #111; border-left: 4px solid #4477aa;
+border-radius: 0 4px 4px 0; padding: 0.6rem 1rem; margin: 0.8rem 0;
+font-style: italic; }
+blockquote p { margin: 0; }
+pre { background: #f0f0f0; color: #111; padding: 0.8rem 1rem; border-radius: 4px;
+border-left: 4px solid #bbb; overflow-x: auto; font-size: 0.88rem; line-height: 1.5; }
+code { background: #efefef; padding: 0.1em 0.3em; border-radius: 3px;
+font-size: 0.9em; color: #333; }
+pre code { background: none; padding: 0; color: #111; font-size: 1em; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th { background: #444; color: white; padding: 0.4rem 0.8rem; text-align: left; }
+td { padding: 0.35rem 0.8rem; border-bottom: 1px solid #ddd; }
+tr:nth-child(even) td { background: #f8f8f8; }
+strong { color: #111; }
+hr { border: none; border-top: 2px solid #ddd; margin: 2rem 0; }
+img { max-width: 560px; width: 100%; border: 1px solid #ccc; border-radius: 4px;
+display: block; margin: 0.6rem 0 1.2rem 0; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+</style>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  <main id="main-content" role="main">
-    <h1>L11 Lab — Group Project Data Collection</h1>
-<p><strong>ENG 6: Engineering Problem Solving with Applied AI | Spring 2026</strong></p>
-<hr/>
-<h2>What You Will Do</h2>
-<p>You will record 20 seconds of smartphone accelerometer data for three physical activities — walking, running, and jumping — using a MATLAB script that guides you through every step. The script saves three files. You upload them to a shared class folder. In Lecture 12, your batch analysis loop will process the entire class dataset.</p>
-<p><strong>Total time: ~5 minutes of active recording.</strong> The rest of the 30-minute lab is setup, upload, and helping teammates.</p>
-<hr/>
-<h2>Before You Run the Script</h2>
-<p><strong>On your phone:</strong><br/>
-1. Install <strong>MATLAB Mobile</strong> from the App Store or Google Play (free — use your UC Davis MathWorks account)<br/>
-2. Open the app and sign in with the same account you use for MATLAB Online<br/>
-3. Connect to Wi-Fi (same network as your laptop — eduroam works)<br/>
-4. In the app: tap <strong>Settings → Connect</strong> and pair with your MATLAB Online session</p>
-<p><strong>In MATLAB Online:</strong><br/>
-1. Download the script by pasting this into the Command Window and pressing Enter:<br/>
-<code>matlab
-   websave("L11_Lab_DataCollection.m", "https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m");</code><br/>
-   The script saves to your current folder. You can also download it directly at:<br/>
-<code>https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m</code><br/>
-2. Make sure your current folder in MATLAB is set to a location you can find (e.g., your MATLAB Drive home folder) — this is where your files will be saved</p>
-<hr/>
-<h2>Running the Script</h2>
+<header id="title-block-header">
+<h1 class="title">L11 Lab — Group Project Data Collection</h1>
+</header>
+<h1 id="l11-lab-group-project-data-collection">L11 Lab — Group Project
+Data Collection</h1>
+<p><strong>ENG 6: Engineering Problem Solving with Applied AI | Spring
+2026</strong></p>
+<hr />
+<h2 id="what-you-will-do">What You Will Do</h2>
+<p>You will record 20 seconds of smartphone accelerometer data for three
+physical activities — walking, running, and jumping — using a MATLAB
+script that guides you through every step. The script saves three files.
+You submit them to Canvas. In the lab the following week, your batch
+analysis loop will process the entire class dataset.</p>
+<p><strong>Total time: ~5 minutes of active recording.</strong> The rest
+of the 30-minute lab is setup, submission, and helping teammates.</p>
+<hr />
+<h2 id="before-you-run-the-script">Before You Run the Script</h2>
+<p><strong>On your phone:</strong> 1. Install <strong>MATLAB
+Mobile</strong> from the App Store or Google Play (free — use your UC
+Davis MathWorks account) 2. Open the app and sign in with the same
+account you use for MATLAB Online 3. Connect to Wi-Fi (same network as
+your laptop — eduroam works) 4. In the app: tap <strong>Settings →
+Connect</strong> and pair with your MATLAB Online session</p>
+<p><strong>In MATLAB Online:</strong> 1. Download the script by pasting
+this into the Command Window and pressing Enter:
+<code>matlab    websave(&quot;L11_Lab_DataCollection.m&quot;, &quot;https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m&quot;);</code>
+You can also download it directly at:
+<code>https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m</code>
+2. Make sure your current folder in MATLAB is set to a location you can
+find (e.g., your MATLAB Drive home folder) — this is where your files
+will be saved</p>
+<hr />
+<h2 id="running-the-script">Running the Script</h2>
 <p>Type this in the MATLAB Command Window and press Enter:</p>
-<pre><code class="language-matlab">L11_Lab_DataCollection
-</code></pre>
-<p>The script will guide you through every step. Here is what to expect:</p>
-<p><strong>Step 1 — Setup prompt</strong><br/>
-The script asks you to confirm your phone is connected. Check that MATLAB Mobile shows "Connected" before pressing Enter.</p>
-<p><strong>Step 2 — Enter your information</strong><br/>
-You will be asked for:<br/>
-- First name<br/>
-- Last name<br/>
-- Lab section (e.g., <code>A01</code> — use the code shown on the projector)</p>
-<p>Enter these exactly. Your files will be named:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">L11_Lab_DataCollection</span></span></code></pre></div>
+<p>The script will guide you through every step. Here is what to
+expect:</p>
+<p><strong>Step 1 — Setup prompt</strong> The script asks you to confirm
+your phone is connected. Check that MATLAB Mobile shows “Connected”
+before pressing Enter.</p>
+<p><strong>Step 2 — Enter your information</strong> You will be asked
+for: - First name - Last name - Lab section (e.g., <code>A01</code> —
+use the code shown on the projector)</p>
+<p>Enter these exactly as shown. Your files will be named:</p>
 <pre><code>walk_firstname_lastname_section.mat
 run_firstname_lastname_section.mat
-jump_firstname_lastname_section.mat
-</code></pre>
-<p><strong>Step 3 — Three recordings</strong><br/>
-For each activity, the script prints instructions, then waits for you to press Enter. Once you press Enter:<br/>
-- Hold the phone in your hand (portrait orientation, screen facing you)<br/>
-- A 20-second countdown appears: <code>20 19 18 ...</code><br/>
-- Perform the activity <strong>continuously</strong> for the full countdown<br/>
-- The script stops automatically and saves the file</p>
-<div aria-label="Running the Script" class="table-wrapper" role="region" tabindex="0"><table><caption>Running the Script</caption>
+jump_firstname_lastname_section.mat</code></pre>
+<p><strong>Step 3 — Three recordings</strong> For each activity, the
+script prints instructions, then waits for you to press Enter. Once you
+press Enter: - Hold the phone in your hand (portrait orientation, screen
+facing you) - A 20-second countdown appears: <code>20 19 18 ...</code> -
+Perform the activity <strong>continuously</strong> for the full
+countdown - The script stops automatically and saves the file</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
 <tr>
-<th scope="col">Activity</th>
-<th scope="col">What to do</th>
+<th>Activity</th>
+<th>What to do</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Walking</td>
-<td>Walk at a normal pace, continuously and in a straight line or loop</td>
+<td>Walk at a normal pace, continuously and in a straight line or
+loop</td>
 </tr>
 <tr>
 <td>Running</td>
@@ -250,35 +194,69 @@ For each activity, the script prints instructions, then waits for you to press E
 <td>Jump in place repeatedly, approximately once per second</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 <blockquote>
-<p><strong>Tips for clean data:</strong><br/>
-- Keep the phone in your hand — do not put it in your pocket<br/>
-- Start moving <em>before</em> the countdown begins, not after<br/>
-- Stay consistent throughout the 20 seconds</p>
+<p><strong>Tips for clean data:</strong> - Keep the phone in your hand —
+do not put it in your pocket - Start moving <em>before</em> the
+countdown begins, not after - Stay consistent throughout the 20
+seconds</p>
 </blockquote>
-<p><strong>Step 4 — Confirmation</strong><br/>
-After each recording the script prints the filename, sample count, and recording duration. A typical result:</p>
-<pre><code>Saved: walk_jane_smith_a03.mat  |  2014 samples  |  20.1 s  |  100 Hz
-</code></pre>
-<p>If you see <code>WARNING: No data received</code> — check your phone connection and re-run the script.</p>
-<hr/>
-<h2>Uploading Your Files</h2>
-<p>After all three recordings:</p>
-<ol>
-<li>In MATLAB Online, go to the <strong>Files</strong> panel and find your three <code>.mat</code> files</li>
-<li>Upload them to the shared class folder — your TA will post the path in the course chat</li>
-<li>Confirm your files appear in the shared folder before you leave</li>
+<p><strong>Step 4 — Confirmation</strong> After each recording the
+script prints the filename, sample count, and recording duration. A
+typical result:</p>
+<pre><code>Saved: walk_jane_smith_a03.mat  |  2014 samples  |  20.1 s  |  100 Hz</code></pre>
+<p>If you see <code>WARNING: No data received</code> — check your phone
+connection and re-run the script.</p>
+<p>After all three recordings the script prints a summary:</p>
+<pre><code>=== Ready to submit ===
+Attach these three files to the Canvas assignment:
+  walk_jane_smith_a03.mat
+  run_jane_smith_a03.mat
+  jump_jane_smith_a03.mat</code></pre>
+<hr />
+<h2 id="submitting-your-files">Submitting Your Files</h2>
+<ol type="1">
+<li>Go to <strong>Canvas → Assignments → L11 Lab Sensor
+Data</strong></li>
+<li>Click <strong>Submit Assignment</strong></li>
+<li>Click <strong>Choose Files</strong> and select all three
+<code>.mat</code> files listed in the script summary above</li>
+<li>Click <strong>Submit</strong></li>
+<li>Confirm Canvas shows <strong>“Submitted”</strong> — take a
+screenshot if you like</li>
 </ol>
-<hr/>
-<h2>What Happens Next</h2>
+<blockquote>
+<p><strong>Before you leave lab:</strong> verify that Canvas shows
+Submitted and that all three filenames are listed in your submission. If
+you have any trouble, email the three files directly to your TA before
+midnight.</p>
+</blockquote>
+<hr />
+<h2 id="what-happens-next">What Happens Next</h2>
 <ul>
-<li><strong>Lecture 12 (Thursday):</strong> you will design a results structure and extend the batch loop using synthetic data — the same format as the files you collected today. Bring your uploaded files so you can reference your own data during the activity.</li>
-<li><strong>All labs conclude Monday:</strong> once every section has uploaded, your TA will post the complete <code>files</code> array listing everyone's recordings.</li>
-<li><strong>In the homework:</strong> paste the <code>files</code> array into your batch analysis script — the loop from Lecture 11 processes the full class dataset (your files and your classmates') without any other changes to the loop body.</li>
+<li><strong>Lecture 12 (Thursday):</strong> you will design a results
+structure and extend the batch loop using synthetic data — the same
+format as the files you collected today.</li>
+<li><strong>All labs conclude Monday:</strong> once every section has
+submitted, your TA will post <code>class_files.m</code> in the course
+chat. Running it defines the <code>files</code> variable containing the
+full class dataset.</li>
+<li><strong>In the lab the following week:</strong> paste or run
+<code>class_files.m</code> — your batch analysis loop processes all 164
+students’ recordings without any other changes to the loop body.</li>
 </ul>
-<hr/>
-<p><em>ENG 6 Spring 2026 | Lecture 11 Lab | Group Project Data Collection</em></p>
-  </main>
+<hr />
+<h2 id="before-you-leave-checklist">Before You Leave — Checklist</h2>
+<ul class="task-list">
+<li><label><input type="checkbox"></input>Three recordings completed
+(confirmation message printed for each)</label></li>
+<li><label><input type="checkbox"></input>Three <code>.mat</code> files
+submitted to Canvas → <em>L11 Lab Sensor Data</em></label></li>
+<li><label><input type="checkbox"></input>Canvas shows
+<strong>Submitted</strong> with all three filenames visible</label></li>
+</ul>
+<hr />
+<p><em>ENG 6 Spring 2026 | Lecture 11 Lab | Group Project Data
+Collection</em></p>
 </body>
 </html>
