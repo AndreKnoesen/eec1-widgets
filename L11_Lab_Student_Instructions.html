@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>L11 Lab — Group Project Data Collection</title>
+  <title>Lab 11 — Group Project Data Collection</title>
   <style>
 
 code{white-space: pre-wrap;}
@@ -94,6 +94,7 @@ h2 { color: #111; border-left: 6px solid #C99700; background: #fffbe6;
 padding: 0.5rem 0.8rem; margin-top: 2.5rem; font-size: 1.2em; }
 h3 { color: #111; border-left: 3px solid #888; background: #f4f4f4;
 padding: 0.3rem 0.6rem; margin-top: 1.5rem; font-size: 1.05em; }
+h4 { color: #333; margin-top: 1.2rem; font-size: 1.0em; }
 blockquote { background: #e8f4ff; color: #111; border-left: 4px solid #4477aa;
 border-radius: 0 4px 4px 0; padding: 0.6rem 1rem; margin: 0.8rem 0;
 font-style: italic; }
@@ -114,60 +115,112 @@ display: block; margin: 0.6rem 0 1.2rem 0; box-shadow: 0 1px 4px rgba(0,0,0,0.12
 </style>
 </head>
 <body>
-<header id="title-block-header">
-<h1 class="title">L11 Lab — Group Project Data Collection</h1>
-</header>
-<h1 id="l11-lab-group-project-data-collection">L11 Lab — Group Project
-Data Collection</h1>
-<p><strong>ENG 6: Engineering Problem Solving with Applied AI | Spring
-2026</strong></p>
+<h1 id="lab-11-group-project-data-collection">Lab 11: Group Project Data
+Collection</h1>
 <hr />
-<h2 id="what-you-will-do">What You Will Do</h2>
-<p>You will record 20 seconds of smartphone accelerometer data for three
-physical activities — walking, running, and jumping — using a MATLAB
-script that guides you through every step. The script saves three files.
-You submit them to Canvas. In the lab the following week, your batch
-analysis loop will process the entire class dataset.</p>
-<p><strong>Total time: ~5 minutes of active recording.</strong> The rest
-of the 30-minute lab is setup, submission, and helping teammates.</p>
+<blockquote>
+<p>This lab produces the raw material for everything that follows. You
+will record accelerometer data for three activities — walking, running,
+and jumping — submit three files to Canvas, and be done. In Lab 12 you
+will design the data structure that holds the results. In the lab the
+following week you will run your batch analysis loop on the full class
+dataset: 492 recordings from 164 students, including the three you
+collect today.</p>
+</blockquote>
 <hr />
-<h2 id="before-you-run-the-script">Before You Run the Script</h2>
-<p><strong>On your phone:</strong> 1. Install <strong>MATLAB
-Mobile</strong> from the App Store or Google Play (free — use your UC
-Davis MathWorks account) 2. Open the app and sign in with the same
-account you use for MATLAB Online 3. Connect to Wi-Fi (same network as
-your laptop — eduroam works) 4. In the app: tap <strong>Settings →
-Connect</strong> and pair with your MATLAB Online session</p>
-<p><strong>In MATLAB Online:</strong> 1. Download the script by pasting
-this into the Command Window and pressing Enter:
-<code>matlab    websave(&quot;L11_Lab_DataCollection.m&quot;, &quot;https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m&quot;);</code>
-You can also download it directly at:
-<code>https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m</code>
-2. Make sure your current folder in MATLAB is set to a location you can
-find (e.g., your MATLAB Drive home folder) — this is where your files
-will be saved</p>
+<h2 id="goals">Goals</h2>
+<p>By the end of this lab session you will have:</p>
+<ul>
+<li>Recorded 20 seconds of smartphone accelerometer data for walking,
+running, and jumping</li>
+<li>Saved three correctly named <code>.mat</code> files to your MATLAB
+Drive</li>
+<li>Submitted all three files to Canvas before leaving</li>
+</ul>
+<p><strong>Total active recording time: ~5 minutes.</strong> The rest of
+the 30-minute session is setup, submission, and helping teammates.</p>
 <hr />
-<h2 id="running-the-script">Running the Script</h2>
-<p>Type this in the MATLAB Command Window and press Enter:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">L11_Lab_DataCollection</span></span></code></pre></div>
-<p>The script will guide you through every step. Here is what to
-expect:</p>
-<p><strong>Step 1 — Setup prompt</strong> The script asks you to confirm
-your phone is connected. Check that MATLAB Mobile shows “Connected”
-before pressing Enter.</p>
-<p><strong>Step 2 — Enter your information</strong> You will be asked
-for: - First name - Last name - Lab section (e.g., <code>A01</code> —
-use the code shown on the projector)</p>
-<p>Enter these exactly as shown. Your files will be named:</p>
+<blockquote>
+<p><strong>This lab is completed entirely in your lab session.</strong>
+There is no pre-lab or post-lab component.</p>
+</blockquote>
+<hr />
+<h2 id="lab-session">LAB SESSION</h2>
+<p><strong>Complete this section during your in-person lab period. TAs
+are available to help.</strong></p>
+<p>Bring to the lab session: - Laptop with MATLAB Online accessible -
+Smartphone — install <strong>MATLAB Mobile</strong> before lab if
+possible (App Store or Google Play, free with your UC Davis MathWorks
+account)</p>
+<hr />
+<h3 id="background-what-the-script-does-and-why-the-filename-matters">Background:
+What the Script Does and Why the Filename Matters</h3>
+<blockquote>
+<p><strong>Read before starting Step 1</strong></p>
+<p>The data collection script guides you through three 20-second
+recordings. After each one it saves a <code>.mat</code> file that
+contains a single variable <code>data</code> — an N×4 matrix with
+columns <code>[Ax, Ay, Az, t]</code>: three axes of acceleration in m/s²
+and a time vector in seconds sampled at 100 Hz.</p>
+<p>The script names each file from the information you enter:</p>
 <pre><code>walk_firstname_lastname_section.mat
 run_firstname_lastname_section.mat
 jump_firstname_lastname_section.mat</code></pre>
-<p><strong>Step 3 — Three recordings</strong> For each activity, the
-script prints instructions, then waits for you to press Enter. Once you
-press Enter: - Hold the phone in your hand (portrait orientation, screen
-facing you) - A 20-second countdown appears: <code>20 19 18 ...</code> -
-Perform the activity <strong>continuously</strong> for the full
-countdown - The script stops automatically and saves the file</p>
+<p><strong>The naming convention matters.</strong> In Lab 12, your batch
+analysis loop will extract the activity type and your name directly from
+these filenames using string operations. A typo in your name or section
+code will cause your files to be attributed incorrectly or skipped.
+Enter exactly what is shown on the projector.</p>
+</blockquote>
+<hr />
+<h3 id="step-1-connect-your-phone-to-matlab">Step 1 — Connect Your Phone
+to MATLAB</h3>
+<ol type="1">
+<li>Open <strong>MATLAB Mobile</strong> on your phone and sign in with
+the same MathWorks account you use for MATLAB Online</li>
+<li>Connect to Wi-Fi — use the same network as your laptop (eduroam
+works)</li>
+<li>In the app: tap <strong>Settings → Connect</strong> and pair with
+your MATLAB Online session</li>
+<li>Confirm the app shows <strong>“Connected”</strong> before
+proceeding</li>
+</ol>
+<p><strong>If your phone won’t connect after 2 minutes:</strong> pair
+with a teammate who has a working connection. One phone per team is
+enough — you will each enter your own name and section when the script
+prompts, and save your own files.</p>
+<hr />
+<h3 id="step-2-download-the-data-collection-script">Step 2 — Download
+the Data Collection Script</h3>
+<p>In MATLAB Online, paste this into the Command Window and press
+Enter:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">websave</span>(<span class="st">&quot;L11_Lab_DataCollection.m&quot;</span><span class="op">,</span> <span class="st">&quot;https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<p>Confirm the file appears in your current MATLAB Drive folder. Set
+your current folder to a location you can find easily (e.g., your MATLAB
+Drive home folder) — this is where your three <code>.mat</code> files
+will be saved.</p>
+<blockquote>
+<p><strong>Fallback:</strong> if <code>websave</code> fails, open the
+URL directly in your browser and download the file manually:
+<code>https://aknoesen.github.io/eec1-widgets/L11_Lab_DataCollection.m</code></p>
+</blockquote>
+<hr />
+<h3 id="step-3-run-the-script-and-record-your-data">Step 3 — Run the
+Script and Record Your Data</h3>
+<p>Type this in the Command Window and press Enter:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">L11_Lab_DataCollection</span></span></code></pre></div>
+<p>The script guides you through every step. Here is what to expect:</p>
+<p><strong>Setup prompt.</strong> The script asks you to confirm your
+phone is connected. Press Enter only after MATLAB Mobile shows
+“Connected.”</p>
+<p><strong>Enter your information.</strong> You will be prompted for
+your first name, last name, and lab section code (use the code shown on
+the projector, e.g., <code>A01</code>). The script lowercases everything
+automatically. Your three filenames will be shown before recording
+begins — confirm they look correct.</p>
+<p><strong>Three recordings.</strong> For each activity the script
+prints instructions, waits for you to press Enter, then counts down 20
+seconds:</p>
 <table>
 <colgroup>
 <col style="width: 50%" />
@@ -182,8 +235,7 @@ countdown - The script stops automatically and saves the file</p>
 <tbody>
 <tr>
 <td>Walking</td>
-<td>Walk at a normal pace, continuously and in a straight line or
-loop</td>
+<td>Walk at a normal pace, continuously, in a straight line or loop</td>
 </tr>
 <tr>
 <td>Running</td>
@@ -196,67 +248,75 @@ loop</td>
 </tbody>
 </table>
 <blockquote>
-<p><strong>Tips for clean data:</strong> - Keep the phone in your hand —
-do not put it in your pocket - Start moving <em>before</em> the
-countdown begins, not after - Stay consistent throughout the 20
-seconds</p>
+<p><strong>Tips for clean data:</strong> - Hold the phone in your hand
+(portrait orientation, screen facing you) — do not put it in a pocket -
+Start moving <em>before</em> the countdown begins, not after - Stay
+consistent throughout the full 20 seconds</p>
 </blockquote>
-<p><strong>Step 4 — Confirmation</strong> After each recording the
-script prints the filename, sample count, and recording duration. A
-typical result:</p>
+<p><strong>Confirmation after each recording.</strong> The script prints
+the filename, sample count, and duration:</p>
 <pre><code>Saved: walk_jane_smith_a03.mat  |  2014 samples  |  20.1 s  |  100 Hz</code></pre>
 <p>If you see <code>WARNING: No data received</code> — check your phone
-connection and re-run the script.</p>
-<p>After all three recordings the script prints a summary:</p>
+connection and re-run the script from the beginning:
+<code>clc; L11_Lab_DataCollection</code></p>
+<p><strong>Final summary.</strong> After all three recordings the script
+prints:</p>
 <pre><code>=== Ready to submit ===
 Attach these three files to the Canvas assignment:
   walk_jane_smith_a03.mat
   run_jane_smith_a03.mat
   jump_jane_smith_a03.mat</code></pre>
 <hr />
-<h2 id="submitting-your-files">Submitting Your Files</h2>
+<h3 id="step-4-submit-your-files-to-canvas">Step 4 — Submit Your Files
+to Canvas</h3>
 <ol type="1">
 <li>Go to <strong>Canvas → Assignments → L11 Lab Sensor
 Data</strong></li>
 <li>Click <strong>Submit Assignment</strong></li>
-<li>Click <strong>Choose Files</strong> and select all three
+<li>Click <strong>Choose Files</strong> — select all three
 <code>.mat</code> files listed in the script summary above</li>
 <li>Click <strong>Submit</strong></li>
-<li>Confirm Canvas shows <strong>“Submitted”</strong> — take a
-screenshot if you like</li>
+<li>Confirm Canvas shows <strong>“Submitted”</strong> with all three
+filenames listed</li>
 </ol>
 <blockquote>
-<p><strong>Before you leave lab:</strong> verify that Canvas shows
-Submitted and that all three filenames are listed in your submission. If
-you have any trouble, email the three files directly to your TA before
-midnight.</p>
+<p><strong>Before you leave:</strong> if you have any trouble submitting
+in Canvas, email all three files directly to your TA before midnight. Do
+not leave without confirming your submission or notifying your TA.</p>
 </blockquote>
 <hr />
-<h2 id="what-happens-next">What Happens Next</h2>
+<h3 id="what-happens-next">What Happens Next</h3>
 <ul>
 <li><strong>Lecture 12 (Thursday):</strong> you will design a results
-structure and extend the batch loop using synthetic data — the same
-format as the files you collected today.</li>
-<li><strong>All labs conclude Monday:</strong> once every section has
-submitted, your TA will post <code>class_files.m</code> in the course
-chat. Running it defines the <code>files</code> variable containing the
-full class dataset.</li>
-<li><strong>In the lab the following week:</strong> paste or run
-<code>class_files.m</code> — your batch analysis loop processes all 164
-students’ recordings without any other changes to the loop body.</li>
+structure and extend your batch loop using synthetic data — the same
+<code>[Ax, Ay, Az, t]</code> format as the files you collected
+today.</li>
+<li><strong>After all labs conclude (Monday):</strong> your TA posts
+<code>class_files.m</code> in the course chat. Running it in MATLAB
+defines the <code>files</code> variable that lists all 492 class
+recordings.</li>
+<li><strong>Lab 12 session:</strong> you will run your completed batch
+analysis functions on the full class dataset — your three files included
+— and compare results across the whole class.</li>
 </ul>
 <hr />
-<h2 id="before-you-leave-checklist">Before You Leave — Checklist</h2>
+<h3 id="lab-session-checklist">Lab Session Checklist</h3>
+<p>Before leaving, confirm:</p>
 <ul class="task-list">
-<li><label><input type="checkbox"></input>Three recordings completed
-(confirmation message printed for each)</label></li>
+<li><label><input type="checkbox"></input>Phone connected to MATLAB Mobile and
+MATLAB Online during recording</label></li>
+<li><label><input type="checkbox"></input>All three recordings completed —
+confirmation message printed after each one</label></li>
+<li><label><input type="checkbox"></input>Files named correctly:
+<code>walk_</code>, <code>run_</code>, <code>jump_</code> + your name +
+section</label></li>
 <li><label><input type="checkbox"></input>Three <code>.mat</code> files
-submitted to Canvas → <em>L11 Lab Sensor Data</em></label></li>
+submitted to Canvas → <strong>L11 Lab Sensor Data</strong></label></li>
 <li><label><input type="checkbox"></input>Canvas shows
 <strong>Submitted</strong> with all three filenames visible</label></li>
 </ul>
 <hr />
-<p><em>ENG 6 Spring 2026 | Lecture 11 Lab | Group Project Data
+<p><em>ENG 6 Spring 2026 | Lab 11 | Group Project Data
 Collection</em></p>
 </body>
 </html>
