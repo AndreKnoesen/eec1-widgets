@@ -81,12 +81,31 @@
       color: #1a1a1a;
     }
 
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
     /* ── Images ── */
     img {
-      max-width: 100%;
+      max-width: 70%;
       height: auto;
       display: block;
-      margin: 1rem 0;
+      margin: 1rem auto;
     }
 
     /* ── Horizontal rule ── */
@@ -152,6 +171,16 @@
       outline-offset: 2px;
     }
   </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -178,9 +207,9 @@ Begin with the Week 1 module and work forward from there.</p>
 <h2>Office Hours and Lab Schedule</h2>
 <p><strong>Instructor office hours:</strong> Thurday 12:00-1 pm — Kemper 2115</p>
 <p><strong>TA office hours:</strong> </p>
-<p>Ammar Basheer - Monday 5:00-6:00 PM (Academic Surge 1116)</p>
-<p>Rishad Joarder - Thursday 1:00-2:00 PM (Academic Surge 1116)</p>
-<p>Elnaz Hamdarsi - Wednesday 10:00-11:00 AM (Academic Surge 1116)</p>
+<p>Ammar Basheer - Monday 5:00-6:00 PM (Academic Surge 1116) — Sections A01, A03</p>
+<p>Rishad Joarder - Thursday 1:00-2:00 PM (Academic Surge 1116) — Sections A02, A05, A07 (split), A08</p>
+<p>Elnaz Hamdarsi - Wednesday 10:00-11:00 AM (Academic Surge 1116) — Sections A04, A07 (split), A09, A11</p>
 <p><strong>Lab sections:</strong> Academic Surge 1116</p>
 <p>The lab section for each module starts on Tuesday.</p>
 <div aria-label="Office Hours and Lab Schedule" class="table-wrapper" role="region" tabindex="0"><table><caption>Office Hours and Lab Schedule</caption>
@@ -189,53 +218,63 @@ Begin with the Week 1 module and work forward from there.</p>
 <th scope="col">Section</th>
 <th scope="col">Day</th>
 <th scope="col">Time</th>
+<th scope="col">TA</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>A01</td>
-<td>Wednesday</td>
+<td>Tuesday</td>
 <td>7:10–8:00 PM</td>
+<td>Ammar Basheer</td>
 </tr>
 <tr>
 <td>A02</td>
 <td>Thursday</td>
 <td>7:10–8:00 PM</td>
+<td>Rishad Joarder</td>
 </tr>
 <tr>
 <td>A03</td>
 <td>Monday</td>
 <td>6:10–7:00 PM</td>
+<td>Ammar Basheer</td>
 </tr>
 <tr>
 <td>A04</td>
 <td>Wednesday</td>
 <td>4:10–5:00 PM</td>
+<td>Elnaz Hamdarsi</td>
 </tr>
 <tr>
 <td>A05</td>
 <td>Monday</td>
 <td>3:10–4:00 PM</td>
+<td>Rishad Joarder</td>
 </tr>
 <tr>
 <td>A07</td>
 <td>Wednesday</td>
 <td>7:10–8:00 PM</td>
+<td>Rishad Joarder / Elnaz Hamdarsi</td>
 </tr>
 <tr>
 <td>A08</td>
 <td>Thursday</td>
 <td>12:10–1:00 PM</td>
+<td>Rishad Joarder</td>
 </tr>
 <tr>
 <td>A09</td>
 <td>Wednesday</td>
 <td>8:10–9:00 AM</td>
+<td>Elnaz Hamdarsi</td>
 </tr>
 <tr>
 <td>A11</td>
 <td>Wednesday</td>
 <td>5:10–6:00 PM</td>
+<td>Elnaz Hamdarsi</td>
 </tr>
 </tbody>
 </table></div>
