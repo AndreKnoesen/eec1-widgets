@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniProject 6: Building Your First Activity Classifier</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Course banner ── */
+    .course-banner {
+      background: #003366;
+      color: #ffffff;
+      padding: 0.45rem 1.25rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1rem 0;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header role="banner" class="course-banner">
+    ENG6 &nbsp;&bull;&nbsp; Spring 2026 &nbsp;&bull;&nbsp; UC Davis
+  </header>
+  <main id="main-content" role="main">
+    <h1>MiniProject 6: Building Your First Activity Classifier</h1>
+<hr/>
+<blockquote>
+<p>Your phone already does this. Apple Watch, Fitbit, and Google Fit all detect when you switch from walking to running to climbing stairs, without you pressing anything. They do it by training a classifier on labeled sensor recordings: data where someone wrote down what they were doing at the time of collection.</p>
+<p>In Lab 11, without realizing it, you did exactly that. You recorded accelerometer data and encoded the label directly in the filename: <code>walk_</code>, <code>run_</code>, <code>jump_</code>. Every student in the class did the same. The result is a labeled dataset of several hundred recordings across three activities, collected on real phones by real people.</p>
+<p>In this lab you will build the pipeline that processes that dataset, derive activity thresholds directly from the data rather than guessing them, and find out how accurately peak acceleration alone can identify what someone was doing. Where the classifier fails is at least as interesting as where it succeeds.</p>
+</blockquote>
+<hr/>
+<h2>The Three-Phase Structure</h2>
+<p>Every lab in this course follows the same pattern:</p>
+<p><code>PRE-LAB  →  LAB SESSION  →  POST-LAB
+(before)     (in person)     (after)</code></p>
+<p>The pre-lab is a single confirmation step. The lab session is where you build and run the pipeline. The post-lab submission.</p>
+<hr/>
+<h2>Goals</h2>
+<p>By the end of this lab session you will have:</p>
+<ul>
+<li>Built a complete feature-extraction pipeline: raw sensor files in, a structured results table out</li>
+<li>Used ground-truth labels (the activity names in the filenames) to derive decision boundaries from data</li>
+<li>Evaluated a single-feature classifier on the full class dataset and measured its per-activity accuracy</li>
+<li>Identified where and why the classifier breaks down, and proposed what additional information would help</li>
+</ul>
+<p><strong>Concepts applied:</strong> String operations (L10), Loops (L11), Structures and Tables (L12)</p>
+<p><strong>ML concepts encountered:</strong> labeled data, feature extraction, decision boundaries, classification accuracy</p>
+<hr/>
+<h2>PRE-LAB</h2>
+<p><strong>Complete before arriving at your lab session.</strong></p>
+<hr/>
+<h3>Pre-Lab Task: Confirm Your Lab 11 Submission</h3>
+<p>Your Lab 11 sensor recordings are the raw data (and the labeled training set) for this lab. Before arriving, confirm they were submitted:</p>
+<ul>
+<li>[ ] Canvas &gt; Assignments &gt; <em>L11 Lab Sensor Data</em> shows <strong>Submitted</strong> with all three <code>.mat</code> files listed</li>
+</ul>
+<p>If your Lab 11 submission is not showing as complete, contact your TA immediately: you will need your own recordings for Part 4.</p>
+<hr/>
+<h3>Pre-Lab Checklist</h3>
+<ul>
+<li>[ ] Lab 11 submission confirmed on Canvas</li>
+<li>[ ] <code>class_files.m</code> downloaded from the course link and uploaded to your MATLAB Drive root</li>
+</ul>
+<hr/>
+<h2>LAB SESSION</h2>
+<p><strong>Complete this section during your in-person lab period. TAs are available to help.</strong></p>
+<p>Bring to the lab session:</p>
+<ul>
+<li>Laptop with MATLAB Online open</li>
+<li><code>class_files.m</code> saved to your MATLAB Drive before you arrive: right-click <a href="https://aknoesen.github.io/eec1-widgets/class_files.m">this link</a>, save the file, and upload it to your MATLAB Drive root</li>
+</ul>
+<hr/>
+<h3>MATLAB Grader Submissions</h3>
+<blockquote>
+<p><strong>Open these three Grader assignments before starting Problem 1.</strong> For each problem: write and test your function locally in MATLAB, then paste it into the Grader code editor and click <strong>Run</strong>. Grader shows which visible test cases pass. Submit only after all visible tests pass: hidden tests run on submission and make up a portion of the grade.</p>
+<div aria-label="MATLAB Grader Submissions" class="table-wrapper" role="region" tabindex="0"><table><caption>MATLAB Grader Submissions</caption>
+<thead>
+<tr>
+<th scope="col">Problem</th>
+<th scope="col">Canvas assignment</th>
+<th scope="col">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem 1: <code>getActivity</code></td>
+<td><em>MP6: Problem 1</em></td>
+<td>10</td>
+</tr>
+<tr>
+<td>Problem 2: <code>computeRecord</code></td>
+<td><em>MP6: Problem 2</em></td>
+<td>35</td>
+</tr>
+<tr>
+<td>Problem 3: <code>buildResultsTable</code></td>
+<td><em>MP6: Problem 3</em></td>
+<td>35</td>
+</tr>
+</tbody>
+</table></div>
+</blockquote>
+<hr/>
+<h3>Background: The Dataset, the Pipeline, and the ML Connection</h3>
+<blockquote>
+<p><strong>Read before starting Problem 1</strong></p>
+<p><strong>The dataset.</strong> After all Lab 11 sections close, the TA assembles every submitted <code>.mat</code> file into a shared list. Running <code>class_files.m</code> defines <code>files</code>: a string array of filenames, one per recording. The exact count depends on how many students submitted valid files; your TA will confirm the expected totals.</p>
+<p><strong>Filename convention.</strong> Every file follows this pattern:<br/>
+<code>activity_firstname_lastname_section.mat</code><br/>
+Examples: <code>walk_jane_smith_a03.mat</code> · <code>run_john_doe_b01.mat</code> · <code>jump_ali_hassan_b02.mat</code></p>
+<p><strong>What each file contains.</strong> Each <code>.mat</code> file holds one variable <code>data</code>: an N×4 matrix with columns <code>[Ax, Ay, Az, t]</code> (three axes of acceleration in m/s², time in seconds at 100 Hz).</p>
+<p><strong>Why this dataset is special.</strong> In most sensor data problems, you have measurements but no ground truth: you have to guess or manually review what was happening. Here, every filename is a verified label: the person who recorded it declared the activity at the moment of collection. A dataset where every example has a known correct answer is called a <strong>labeled dataset</strong>, and it is the starting point for supervised machine learning.</p>
+<p><strong>The pipeline you are building today maps directly onto the ML workflow:</strong><br/>
+<code>Raw files       →  getActivity        labels:   "walk", "run", "jump"
+                →  computeRecord      features: peak, num_events, duration
+                →  buildResultsTable  dataset:  one row per recording
+                →  Part 4             classifier: derive boundaries, measure accuracy</code><br/>
+Problems 1-3 build the infrastructure. Part 4 is where the analysis happens.</p>
+<p><strong>Before starting Problem 1:</strong> type <code>run("class_files.m")</code> in the Command Window and confirm it defines a variable <code>files</code>. If the file is not yet posted, proceed through Problems 1-3 and return to Part 4 when your TA confirms availability.</p>
+</blockquote>
+<hr/>
+<h3>Problem 1: <code>getActivity</code></h3>
+<p>The first step in any ML pipeline is reading the labels. Write a function that extracts the activity label from a filename. The label is everything before the first underscore. The skeleton and submission link are in the MATLAB Grader assignment.</p>
+<blockquote>
+<p><strong>Hint:</strong> One string function from Lecture 10 returns everything before a given delimiter character. Which character separates the label from the rest of the filename?</p>
+</blockquote>
+<p><strong>Visible test cases:</strong></p>
+<div aria-label="Problem 1:getActivity" class="table-wrapper" role="region" tabindex="0"><table><caption>Problem 1:getActivity</caption>
+<thead>
+<tr>
+<th scope="col">Call</th>
+<th scope="col">Expected output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getActivity("walk_jane_smith_a03.mat")</code></td>
+<td><code>"walk"</code></td>
+</tr>
+<tr>
+<td><code>getActivity("run_john_doe_b01.mat")</code></td>
+<td><code>"run"</code></td>
+</tr>
+<tr>
+<td><code>getActivity("jump_ali_hassan_b02.mat")</code></td>
+<td><code>"jump"</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Submit to <strong>MATLAB Grader: MP6, Problem 1</strong> once all visible tests pass.</p>
+<hr/>
+<h3>Problem 2: <code>computeRecord</code></h3>
+<p>The second step is <strong>feature extraction</strong>: computing a compact numerical summary from each raw recording. A feature is a number you extract from raw data because you believe it carries information about what you want to classify. Here, the key feature is peak resultant acceleration.</p>
+<p>Write a function that processes one recording and returns a struct. Include your <code>getActivity</code> solution as a local function at the bottom of the file. The skeleton and submission link are in the MATLAB Grader assignment.</p>
+<p>The result struct must have exactly five fields:</p>
+<div aria-label="Problem 2:computeRecord" class="table-wrapper" role="region" tabindex="0"><table><caption>Problem 2:computeRecord</caption>
+<thead>
+<tr>
+<th scope="col">Field</th>
+<th scope="col">Type</th>
+<th scope="col">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.filename</code></td>
+<td>string</td>
+<td>same as the <code>filename</code> input</td>
+</tr>
+<tr>
+<td><code>.activity</code></td>
+<td>string</td>
+<td>the ground-truth label, extracted using <code>getActivity</code></td>
+</tr>
+<tr>
+<td><code>.peak</code></td>
+<td>double</td>
+<td>max of <code>R = sqrt(Ax^2 + Ay^2 + Az^2)</code> (the key feature)</td>
+</tr>
+<tr>
+<td><code>.num_events</code></td>
+<td>double</td>
+<td>number of samples where <code>R &gt; threshold</code></td>
+</tr>
+<tr>
+<td><code>.duration</code></td>
+<td>double</td>
+<td><code>t(end) - t(1)</code> in seconds</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Visible test cases:</strong></p>
+<div aria-label="Problem 2:computeRecord" class="table-wrapper" role="region" tabindex="0"><table><caption>Problem 2:computeRecord</caption>
+<thead>
+<tr>
+<th scope="col">Expression</th>
+<th scope="col">Expected result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>record.activity</code></td>
+<td><code>"walk"</code> (when filename starts with <code>walk_</code>)</td>
+</tr>
+<tr>
+<td><code>record.peak</code></td>
+<td>positive scalar, units m/s²</td>
+</tr>
+<tr>
+<td><code>record.num_events</code></td>
+<td>non-negative integer</td>
+</tr>
+<tr>
+<td><code>record.duration</code></td>
+<td>positive scalar, units s</td>
+</tr>
+<tr>
+<td><code>isfield(record, "num_events")</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>record.filename</code></td>
+<td>same string as the <code>filename</code> input</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>Note:</strong> Grader provides a synthetic N×4 data matrix and known filename for testing. Develop locally in MATLAB first, then paste into Grader.</p>
+</blockquote>
+<p>Submit to <strong>MATLAB Grader: MP6, Problem 2</strong> once all visible tests pass.</p>
+<hr/>
+<h3>Problem 3: <code>buildResultsTable</code></h3>
+<p>The third step assembles the full dataset: run feature extraction on every recording and collect the results into a table: one row per file, one column per feature. This is the structured dataset a classifier will operate on.</p>
+<p>Write a function that loops over all <code>.mat</code> files, calls <code>computeRecord</code> on each, and returns a MATLAB table. Include <code>computeRecord</code> and <code>getActivity</code> as local functions at the bottom of the file. The skeleton and submission link are in the MATLAB Grader assignment.</p>
+<blockquote>
+<p><strong>Hint:</strong> <code>table(col1, col2, ...)</code> builds a table from column vectors; column names come from the variable names you pass in. You already wrote this line in Lecture 12 Activity 2.</p>
+</blockquote>
+<p><strong>Visible test cases</strong> (Grader uses a 3-file dataset: walk, run, jump):</p>
+<div aria-label="Problem 3:buildResultsTable" class="table-wrapper" role="region" tabindex="0"><table><caption>Problem 3:buildResultsTable</caption>
+<thead>
+<tr>
+<th scope="col">Expression</th>
+<th scope="col">Expected result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>class(T)</code></td>
+<td><code>'table'</code></td>
+</tr>
+<tr>
+<td><code>size(T)</code></td>
+<td><code>[3 5]</code></td>
+</tr>
+<tr>
+<td><code>T.activity(1)</code></td>
+<td><code>"walk"</code></td>
+</tr>
+<tr>
+<td><code>T.activity(2)</code></td>
+<td><code>"run"</code></td>
+</tr>
+<tr>
+<td><code>T.peak(3) &gt; T.peak(1)</code></td>
+<td><code>1</code> (jump peak exceeds walk)</td>
+</tr>
+<tr>
+<td><code>T(T.activity == "jump", :).peak</code></td>
+<td>scalar (the jump peak value)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Submit to <strong>MATLAB Grader: MP6, Problem 3</strong> once all visible tests pass.</p>
+<hr/>
+<h3>Part 4: Derive and Evaluate Your Classifier</h3>
+<p>With the full dataset in a table, you can now act like an ML engineer. The labeled data tells you where each activity actually lives in feature space. Use that information to set thresholds, build a classifier, and find out how well peak acceleration alone can distinguish activities, then locate your own recordings in the results.</p>
+<p>Download <a href="https://aknoesen.github.io/eec1-widgets/mp6_part4.m">mp6_part4.m</a> and save it to your MATLAB Drive alongside <code>class_files.m</code>.</p>
+<p><strong>Before running it, open the script and read it.</strong> It is divided into five clearly labeled steps; make sure you can answer these questions for each step before you execute anything:</p>
+<div aria-label="Part 4: Derive and Evaluate Your Classifier" class="table-wrapper" role="region" tabindex="0"><table><caption>Part 4: Derive and Evaluate Your Classifier</caption>
+<thead>
+<tr>
+<th scope="col">Step</th>
+<th scope="col">What the code does</th>
+<th scope="col">Question to answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step 1</td>
+<td>Computes mean, std, min, max of peak for each activity</td>
+<td>Why do we look at the spread (std) and not just the mean?</td>
+</tr>
+<tr>
+<td>Step 2</td>
+<td>Sets a decision boundary at the midpoint between adjacent class means</td>
+<td>Why the midpoint? What assumption does that make about the two groups?</td>
+</tr>
+<tr>
+<td>Step 3</td>
+<td>Assigns a predicted label to every recording based on its peak</td>
+<td>What does it mean for a recording to fall on the wrong side of a boundary?</td>
+</tr>
+<tr>
+<td>Step 4</td>
+<td>Counts correct predictions overall and per activity</td>
+<td>Why might overall accuracy hide something that per-activity accuracy reveals?</td>
+</tr>
+<tr>
+<td>Step 5</td>
+<td>Finds your own rows in the table and checks each prediction</td>
+<td>What would it mean physically if one of your recordings is misclassified?</td>
+</tr>
+</tbody>
+</table></div>
+<p>Once you can answer these, replace <code>"firstname_lastname"</code> with your own name (all lowercase, underscore between first and last) and run:</p>
+<p><code>run("class_files.m")
+run("mp6_part4.m")</code></p>
+<p>Copy the entire output block and save it: you will paste it into your post lab submission.</p>
+<p><strong>Expected output format</strong> (values are illustrative: your class numbers will differ):</p>
+<p>```<br/>
+Total recordings: 489</p>
+<p>=== PEAK ACCELERATION BY ACTIVITY (m/s^2) ===<br/>
+walk   n=163  mean= 9.84  std=2.31  min= 5.12  max=18.43<br/>
+run    n=163  mean=18.71  std=3.84  min=10.22  max=34.22<br/>
+jump   n=163  mean=35.18  std=6.42  min=19.87  max=62.44</p>
+<p>=== DECISION BOUNDARIES ===<br/>
+  walk | run  boundary:  14.28 m/s^2<br/>
+  run  | jump boundary:  26.95 m/s^2</p>
+<p>=== CLASSIFICATION ACCURACY ===<br/>
+Overall:  441 / 489  (90.2%)<br/>
+  walk   151 / 163  (92.6%)<br/>
+  run    144 / 163  (88.3%)<br/>
+  jump   146 / 163  (89.6%)</p>
+<p>=== MY RECORDINGS ===<br/>
+  walk   peak=10.24  predicted=walk   correct<br/>
+  run    peak=19.45  predicted=run    correct<br/>
+  jump   peak=38.67  predicted=jump   correct<br/>
+```</p>
+<blockquote>
+<p>The three activity counts need not be equal: a student who submitted only two files, or whose files could not be loaded, will be missing from one or more activities. If your name does not appear in <code>MY RECORDINGS</code>, search manually: <code>T(contains(T.filename, "yourname"), :)</code>.</p>
+</blockquote>
+<hr/>
+<h3>Lab Session Checklist</h3>
+<p>Before leaving, confirm:</p>
+<ul>
+<li>[ ] Problem 1 (<code>getActivity</code>): submitted to Grader, all visible tests pass</li>
+<li>[ ] Problem 2 (<code>computeRecord</code>): submitted to Grader, all visible tests pass</li>
+<li>[ ] Problem 3 (<code>buildResultsTable</code>): submitted to Grader, all visible tests pass</li>
+<li>[ ] Part 4 script ran without error: decision boundaries and accuracy printed, output block copied and saved</li>
+<li>[ ] Your name appears in <code>MY RECORDINGS</code> with correct/misclassified result shown</li>
+<li>[ ] Canvas Assignment open: Part 4 output pasted and W1 reflection drafted before leaving</li>
+</ul>
+<hr/>
+<h2>POST-LAB</h2>
+<p><strong>Complete within 24 hours of your lab session.</strong></p>
+<hr/>
+<h3>Submission 1: MATLAB Grader</h3>
+<p>All three problems are submitted directly in MATLAB Grader. Scores are recorded automatically once you click Submit; no further upload is needed.</p>
+<div aria-label="Submission 1: MATLAB Grader" class="table-wrapper" role="region" tabindex="0"><table><caption>Submission 1: MATLAB Grader</caption>
+<thead>
+<tr>
+<th scope="col">Problem</th>
+<th scope="col">Grader assignment</th>
+<th scope="col">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem 1: <code>getActivity</code></td>
+<td><em>MP6: Problem 1</em></td>
+<td>10</td>
+</tr>
+<tr>
+<td>Problem 2: <code>computeRecord</code></td>
+<td><em>MP6: Problem 2</em></td>
+<td>35</td>
+</tr>
+<tr>
+<td>Problem 3: <code>buildResultsTable</code></td>
+<td><em>MP6: Problem 3</em></td>
+<td>35</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h3>Submission 2: Canvas Assignment</h3>
+<p>Submit to <strong>Canvas &gt; Assignments &gt; MiniProject 6</strong> as a text entry. Your submission has two parts, written one after the other in the same text box.</p>
+<hr/>
+<p><strong>Part A: Class Data Output</strong></p>
+<p>Paste your complete Part 4 output block: everything printed from "Total recordings" through the final separator line. This is the evidence that your pipeline ran correctly on the real dataset.</p>
+<hr/>
+<p><strong>Part B: W1 — Classifier Reflection (20 points)</strong></p>
+<p>You just built and evaluated a single-feature classifier: the same basic approach behind the activity detection in consumer fitness devices, except those systems use many more features and more sophisticated classifiers. Reflect on what you found.</p>
+<p>Using your actual Part 4 numbers, answer the following:</p>
+<ul>
+<li>Which activity pair has the most overlap in peak values, and what does your accuracy breakdown suggest about that boundary?</li>
+<li>Where a recording is misclassified, what physical scenario could explain it?</li>
+<li>Peak acceleration is a single number computed per recording. Name one additional feature you could compute from the same raw data and explain specifically why it would help the classifier distinguish between activities it currently confuses.</li>
+</ul>
+<p><strong>Write 3-5 sentences. Reference at least two specific numbers from your Part 4 output.</strong></p>
+<blockquote>
+<p><strong>How this is graded:</strong> Responses are assessed on three criteria: whether your claims are grounded in specific numbers from your own output rather than general observations; whether your physical reasoning connects what the sensor actually measures to the activity being performed; and whether your proposed feature is motivated by the specific confusion your classifier showed, not suggested generically. Saying more is not the same as saying something better.</p>
+</blockquote>
+<hr/>
+<h3>Post-Lab Checklist</h3>
+<p>Before the deadline, confirm:</p>
+<ul>
+<li>[ ] Submission 1 (MATLAB Grader): all three problems submitted and showing a passing score</li>
+<li>[ ] Submission 2 (Canvas Assignment): text entry submitted with both parts</li>
+<li>[ ] Part A: complete Part 4 output pasted</li>
+<li>[ ] Part B, W1: 3-5 sentences, two specific numbers cited, activity overlap addressed, one additional feature proposed with reasoning</li>
+</ul>
+<hr/>
+<blockquote>
+<p><strong>Academic integrity:</strong> Your Part 4 output must come from running your own completed functions on the actual class dataset your TA posted. Submitted output that is inconsistent with your Grader solutions or that does not match the class dataset will be investigated.</p>
+</blockquote>
+<hr/>
+<p><em>ENG 6 Spring 2026 | MiniProject 6 | Activity Classification from Labeled Sensor Data</em></p>
+  </main>
+</body>
+</html>
