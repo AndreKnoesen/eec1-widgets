@@ -387,22 +387,31 @@
 - Debugging, Testing, and Edge-Case Handling — empty/singleton/NaN inputs, breakpoints, infinite-loop prevention; <em>defensive loop design requires thinking about failure modes up front, not after</em></p>
 <hr/>
 <h2>Lecture 12 — Essential Skills</h2>
-<p><em>Structures: creating, indexing, and designing hierarchical data.</em></p>
+<p><em>Structures and tables: creating, indexing, and choosing the right container for mixed data.</em></p>
 <hr/>
 <p><strong>Build fluency with these:</strong><br/>
 - Creating Structures — <code>struct</code> and dot notation, valid field-name rules, <code>isstruct</code><br/>
 - Accessing and Assigning Fields — <code>s.field</code>, nested <code>s.sub.field</code>, guard against missing fields with <code>isfield</code><br/>
-- Common Structure Utilities — <code>fieldnames</code>, <code>isfield</code>, <code>rmfield</code>, <code>orderfields</code></p>
+- Common Structure Utilities — <code>fieldnames</code>, <code>isfield</code>, <code>rmfield</code>, <code>orderfields</code><br/>
+- Creating Tables — <code>table(var1, var2, ...)</code> from workspace variables (column names come from variable names); <code>readtable("file.csv")</code> to import from a file<br/>
+- Inspecting Tables — <code>size</code>, <code>summary</code> (shows per-column stats and missing counts), <code>head</code>, <code>tail</code><br/>
+- Named Column Extraction — <code>T.ColumnName</code> returns the column as its native type (string, double, logical); <code>T.ColumnName(i:j)</code> for a row subset</p>
 <p><strong>Expect to think harder here:</strong><br/>
 - Structure Arrays and Indexing — <code>s(1)</code>, <code>s(2).field</code>, extracting fields across elements; <em>understanding when you get a numeric array vs a cell array from field extraction is a common source of confusion</em><br/>
 - Dynamic Field Names and Programmatic Creation — <code>s.(fname)</code>, validate with <code>isvarname</code>; <em>easy to write, easy to break with invalid or unexpected names</em><br/>
-- Converting Between Containers — <code>struct2cell</code>, <code>cell2struct</code>, <code>struct2table</code>, <code>table2struct</code>; <em>ordering and dimensional implications need attention</em><br/>
+- Converting Between Containers — <code>struct2cell</code>, <code>cell2struct</code>, <code>struct2table</code>, <code>table2struct</code>, <code>table2array</code>; <em>ordering and dimensional implications need attention</em><br/>
 - Passing and Returning Structures in Functions — optional fields, <code>isstruct</code>/<code>isfield</code> validation, documenting expected fields; <em>flexible struct API design requires care</em><br/>
 - Efficient Preallocation and Bulk Assignment — <code>s(n) = struct(...)</code> before loops; <em>growing struct arrays inside loops is a common performance mistake</em><br/>
-- Logical Selection and Aggregation — <code>[s.value] &gt; thr</code>, <code>arrayfun</code>/<code>cellfun</code>; <em>type and shape surprises are frequent</em></p>
+- Logical Selection and Aggregation — <code>[s.value] &gt; thr</code>, <code>arrayfun</code>/<code>cellfun</code>; <em>type and shape surprises are frequent</em><br/>
+- Table Indexing — <code>T(rows, cols)</code> with numeric, logical, or string-array column selectors returns a subtable; dot notation <code>T.Col</code> returns an array; <em>the difference between <code>T.Col</code> and <code>T(:,"Col")</code> — one is an array, the other a table — is a persistent source of confusion</em><br/>
+- Logical Row Selection — build a mask with <code>T.Col == value</code>, apply as <code>T(mask, :)</code>; use <code>table2array(T(mask, cols))</code> when a numeric matrix is needed for computation<br/>
+- Missing Data — <code>ismissing</code>, <code>rmmissing</code> to drop incomplete rows; <code>any(ismissing(T), 2)</code> to isolate the bad rows for separate handling; <em>NaN propagates silently into calculations if rows are not cleaned first</em><br/>
+- Modifying Tables — <code>T.NewCol = expr</code> adds a column in place; <code>T.Properties.VariableNames("OldName") = "NewName"</code> to rename</p>
 <p><strong>Conceptually demanding — start early:</strong><br/>
 - Designing Nested/Hierarchical Data Layouts — model hierarchical data, traverse/flatten nested fields, know when tables or classes are a better fit; <em>good design here requires thinking about the entire data lifecycle</em><br/>
-- Robustness and Edge-Case Handling — empty structs, missing or heterogeneous fields, defaults, reliable comparison with <code>isequal</code>; <em>handling missing or inconsistent fields defensively is harder than it looks</em></p>
+- Robustness and Edge-Case Handling — empty structs, missing or heterogeneous fields, defaults, reliable comparison with <code>isequal</code>; <em>handling missing or inconsistent fields defensively is harder than it looks</em><br/>
+- Choosing the Right Container — table beats struct array when data is CSV-origin, has mixed types with meaningful column names, or needs row-level operations; struct beats table when fields are heterogeneous in shape or the data is deeply nested; <em>picking the wrong container early costs a full rewrite later</em><br/>
+- Row Names as an Index — <code>T.Properties.RowNames = ids</code> enables <code>T("id", :)</code> lookup; useful but adds a constraint that all row labels must be unique strings; <em>weigh this against keeping an ID column, which is easier to filter and export</em></p>
 <hr/>
 <h2>Lecture 13 — Essential Skills</h2>
 <p><em>Workshop:  Advanced GUI for Project.</em></p>
