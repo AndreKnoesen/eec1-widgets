@@ -6,12 +6,12 @@
 %
 % Usage:
 %   run("class_files.m")
-%   T = buildResultsTable(files, 12);
+%   run("mp6_part4.m")
 
 % ---------------------------------------------------------------
 % Configuration -- set by TA before posting
 % ---------------------------------------------------------------
-REPO_RAW  = "https://raw.githubusercontent.com/aknoesen/ENG6_MP6/main/";
+REPO_RAW  = "https://aknoesen.github.io/eec1-widgets/";
 LOCAL_DIR = fullfile(userpath, "MiniProject6", "data");
 % ---------------------------------------------------------------
 
@@ -53,4 +53,4 @@ activities = extractBefore(names, "_");
 for act = ["walk", "run", "jump"]
     fprintf("  %-6s  %d files\n", act, sum(activities == act));
 end
-fprintf("\nNext step:  T = buildResultsTable(files, 12);\n");
+fprintf("\nNext step:  run(""mp6_part4.m"");\n");
