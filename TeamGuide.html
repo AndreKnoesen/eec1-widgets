@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Working in an Engineering Team: A Guide for ECE Emerge</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 95%;   /* hard cap — inline style controls actual width */
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+
+    /* ── CC license footer ── */
+    .cc-footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 2px solid #cccccc;
+      font-size: 0.85rem;
+      color: #555555;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .cc-footer img {
+      width: 88px;
+      height: auto;
+      display: inline;
+      margin: 0;
+      flex-shrink: 0;
+    }
+    .cc-footer a {
+      color: #00008B;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$',  right: '$$',  display: true},
+        {left: '$',   right: '$',   display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>Working in an Engineering Team: A Guide for ECE Emerge</h1>
+<h2>Why This Is Different</h2>
+<p>In Labs 1–7 you worked alone. Your results were yours; if something went wrong, it was yours to fix. Lab 8 changes that. The ECE Emerge project runs in teams of four, and the entire signal conditioning chain — hardware, MATLAB, and the milestone report — is a shared deliverable.</p>
+<p>That shift is intentional. Most engineering work happens in teams. Learning to coordinate technical work with other people is as much a part of this course as learning to set an INA125 gain.</p>
+<p>This guide covers two things: how to choose your team, and how to actually function as one.</p>
+<hr/>
+<h2>Choosing Your Team</h2>
+<h3>Think about skills, not just friendships</h3>
+<p>Your instinct will be to team up with people you already know. That's understandable, but it often produces a team that is strong in one area and weak in others. A team of four people who are all comfortable with MATLAB but none of whom have touched a breadboard before is going to have a difficult Stage 1.</p>
+<p>For this project, four skill areas matter:</p>
+<div aria-label="Think about skills, not just friendships" class="table-wrapper" role="region" tabindex="0"><table><caption>Think about skills, not just friendships</caption>
+<thead>
+<tr>
+<th scope="col">Skill area</th>
+<th scope="col">Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hardware / breadboard</strong></td>
+<td>Stages 1–4 are all hands-on analog circuit work</td>
+</tr>
+<tr>
+<td><strong>MATLAB / programming</strong></td>
+<td>Stage 5, the calibration routine, and the GUI (Phases 2 and 3)</td>
+</tr>
+<tr>
+<td><strong>Technical writing</strong></td>
+<td>The Milestone Report and the Final Report are graded deliverables</td>
+</tr>
+<tr>
+<td><strong>Organization / coordination</strong></td>
+<td>Five stages across multiple lab sections will fail without someone tracking the plan</td>
+</tr>
+</tbody>
+</table></div>
+<p>You don't need one specialist per area — many people have overlapping strengths. But before you commit to a team, take ten minutes and honestly ask: does our group have at least some coverage in each of these areas? If two of your four are strong on the hardware side and two are stronger on the software side, that is a good starting point.</p>
+<h3>Check your schedules first</h3>
+<p>This project explicitly allows teams to work across multiple lab sections. That flexibility is useful — but only if your team has actually talked about which stages will happen when, and who will be where.</p>
+<p>Before finalizing your team, compare your lab section assignments and your general availability outside of lab. A team where three members share a lab section and one is always in a different slot can work fine — but it requires more deliberate communication planning. Know what you're signing up for.</p>
+<h3>Have a short conversation before you commit</h3>
+<p>You don't need a formal interview. But before agreeing to form a team, spend five minutes answering these questions together:</p>
+<ol>
+<li><em>How much time can each of us realistically commit each week?</em></li>
+<li><em>What do you feel most and least confident about in this project?</em></li>
+<li><em>What do you expect from teammates when someone falls behind?</em></li>
+</ol>
+<p>Mismatched expectations about effort are the most common source of team conflict. Surface them early, when they're easy to discuss, rather than in week three, when they're not.</p>
+<hr/>
+<h2>Getting Started: The First Meeting</h2>
+<p>Before any lab work begins, your team submits a written <strong>Team Coordination Plan</strong> (Prelab Deliverable #1). Don't treat this as a form to fill out — treat it as the agenda for your first real team meeting.</p>
+<p>Come to that meeting prepared to decide:</p>
+<ul>
+<li><strong>Who takes primary responsibility for each bring-up stage</strong>, and in which lab section they'll complete it. Primary responsibility means leading the task, not doing it alone. Everyone should be present or actively informed.</li>
+<li><strong>Who writes the first draft of each section of the Milestone Report.</strong> Writing assignments made in advance prevent the last-night scramble where no one is sure who is doing what.</li>
+<li><strong>How you will communicate in real time.</strong> Decide on one shared channel (a group chat, a shared folder, whatever the team agrees on) and commit to using it. The rule is simple: if you complete a stage or take a measurement, you post the result and a photograph before you leave the bench. Your teammates may need that information to continue work in a different lab section.</li>
+</ul>
+<hr/>
+<h2>During the Project</h2>
+<h3>Divide the work — but understand all of it</h3>
+<p>Splitting stages across team members is efficient and necessary. But there is a critical constraint: <strong>the evaluator at the project check-offs will ask questions of any team member, not only the person who performed the measurement.</strong> If you cannot explain a result that your teammate produced, that is a team failure.</p>
+<p>In practice, this means two things. First, whoever documents a stage needs to document it well enough that a teammate who wasn't there can understand what happened. Second, all team members should read the milestone report sections written by others before the team submits — not to edit for style, but to check that you understand and agree with what is written.</p>
+<h3>Stay coordinated across lab sections</h3>
+<p>Because your team may complete different stages in different lab sections, the risk is that information stays with the person who was there. Fight this actively. Use your agreed communication channel. Share M2K screenshots and photographs the same day. If a stage produces an unexpected result, flag it to the team immediately — don't wait until the milestone report deadline to surface a discrepancy that could have been resolved during the lab week.</p>
+<h3>Keep meetings short and purposeful</h3>
+<p>A weekly ten-minute check-in is more useful than a two-hour meeting the night before the deadline. Brief, regular communication keeps everyone aware of where the project stands and catches coordination problems before they become emergencies.</p>
+<hr/>
+<h2>When Things Get Hard</h2>
+<h3>Uneven workload</h3>
+<p>It is normal for some stages to take longer than expected, and for some team members to end up doing more in a given week. What is not acceptable is for one or two members to carry the full load while others disengage. If the distribution of work is becoming lopsided, name it early and redistribute before resentment builds.</p>
+<p>The individual exit survey at the end of the project asks you to describe your personal contributions and to evaluate your teammates' contributions. Vague answers are not accepted. The record you build during the project is the basis for that survey.</p>
+<h3>Disagreements about the design</h3>
+<p>Engineering teams disagree. That is a feature, not a failure — disagreement means people are thinking. When the team cannot reach consensus on a design decision (gain split, filter cutoff, resistor values), use the project document and the reader as the reference. If the technical answer is not clear from the material, bring the question to a TA or to office hours. Don't let an unresolved technical disagreement stall the team.</p>
+<h3>A teammate who is falling behind</h3>
+<p>If a team member misses a deliverable or consistently does not follow through, address it directly and early. Start with a private conversation, not a group accusation. Most problems at this stage are caused by confusion or overcommitment, not bad faith. If a direct conversation does not resolve the issue, involve the course staff.</p>
+<hr/>
+<h2>What Separates Teams That Succeed</h2>
+<p>The teams that complete this project successfully tend to have a few things in common. They communicate in real time rather than catching up at the end. They treat the coordination plan as a living document, not a one-time submission. They know what every team member is working on at any given point. And they treat a stuck teammate as a team problem to solve, not an individual problem to ignore.</p>
+<p>The teams that struggle tend to assume coordination will happen on its own. It won't.</p>
+<hr/>
+<p><em>Good luck. The project is genuinely challenging — and genuinely rewarding when the scale reads correctly.</em></p>
+<footer aria-label="License information" class="cc-footer" role="contentinfo">
+<img alt="Creative Commons Attribution-NonCommercial 4.0 International License badge" src="../media/by_nc.png"/>
+<span>
+    This work is licensed under a
+    <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener noreferrer" target="_blank">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+    Please attribute this work to André Knoesen.
+  </span>
+</footer>
+
+  </main>
+</body>
+</html>
