@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fundamental Programming Concepts: Study Mindmap</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 70%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>Fundamental Programming Concepts: Study Mindmap</h1>
+<p><strong>ENG 6 Cumulative Assessment | Companion to the Lecture Essentials Files</strong></p>
+<hr/>
+<h2>How to Use This Document</h2>
+<p>The Lecture Essentials files (one per lecture) tell you <em>what was covered</em>. This document tells you <em>what it adds up to</em>. The Cumulative Assessment is built around a small set of fundamental programming concepts that recur across nearly every problem in this course. This mindmap names those concepts, points to where you have already practiced them in lecture and lab, and gives you self-check questions that force you to put each idea in your own words.</p>
+<p>Use this document the way you would use a coach, not the way you would use a checklist. For each of the seven nodes below, work through the self-check questions out loud or on paper. If your answer feels confident and specific, move on. If it feels vague, or if you find yourself reaching for a function name you have memorized rather than an idea you can explain, that node is where your study time will pay off most. The Lecture Essentials files and your Mini-Project work give you the worked examples; this document gives you the questions to ask yourself about them.</p>
+<p>A note on the assessment itself: you have access to the full MATLAB documentation during the exam. The point of that access is not to make the exam easier. It is to make a specific kind of preparation futile. Memorizing function names will not help you. Recognizing the shape of a problem will.</p>
+<hr/>
+<h2>Node 1. What kind of problem am I being asked to solve?</h2>
+<p><strong>Why this matters.</strong> Every solution starts with reading. Before you can write a single line of code, you have to know what the inputs are, what the outputs should look like, what counts as a valid input, and what the program is supposed to do at the boundaries (empty input, no matches, extreme values). Most exam-time mistakes are not coding mistakes; they are reading mistakes. A student who solves the wrong problem perfectly still gets zero.</p>
+<p><strong>Where you have practiced this.</strong> Every Mini-Project handout begins with a specification: the function signature, the expected behavior, the test cases, and the edge cases. Pre-Lab and Post-Lab phases of MP1 through MP4 all start with the same skill of translating prose into a precise plan. The validation block in <code>detectRapidAcceleration</code> was written from a specification that listed exactly what counted as bad input.</p>
+<p><strong>Self-check.</strong></p>
+<ul>
+<li>Pick any Mini-Project function you wrote. Without looking at your code, write the function specification in three sentences: what it takes in, what it returns, and what makes an input invalid. Then compare to the actual handout.</li>
+<li>Given a problem you have not seen before, what is the first thing you do <em>before</em> opening MATLAB? What questions do you answer first?</li>
+<li>A specification says a function should return "the average of qualifying values." What questions do you ask before writing any code?</li>
+</ul>
+<hr/>
+<h2>Node 2. What data am I working with?</h2>
+<p><strong>Why this matters.</strong> Data has <em>type</em> and <em>structure</em>. A scalar behaves differently from an array; a logical behaves differently from a double; a row vector behaves differently from a column vector when you try to combine it with something else. Most "I don't understand why this errors" moments come from a mismatch between the type or shape of what you have and the type or shape that the operation expects. Floating-point arithmetic is also not exact, which creates a second class of surprises that look like bugs but are actually properties of the number system.</p>
+<p><strong>Where you have practiced this.</strong> The L1 floating-point trap (<code>sqrt(2)^2 == 2</code> returning false), the question of what <code>true + true</code> returns, the L4 difference between <code>data(:,1)</code> (a column) and <code>data(1,:)</code> (a row), and the L5 trap where <code>length(R)</code> returns the column count for a wide matrix instead of the row count you wanted. The MP2 resultant calculation only works because each variable is a column vector of the same length, and a tiny shape mismatch produces an error that looks confusing but is fundamentally a data-shape problem.</p>
+<p><strong>Self-check.</strong></p>
+<ul>
+<li>Why is <code>==</code> almost never the right way to compare two computed floating-point numbers? Give one example where it gives the wrong answer, and explain in one sentence what you should use instead.</li>
+<li>If you have a 500-by-4 matrix and you want a 1-D array containing just the third column, what shape is the result and how do you get it? What if you wanted the third <em>row</em> instead? What is the shape of <em>that</em> result?</li>
+<li>What is the difference between a <code>logical</code> value and the integer <code>1</code>? When does the distinction matter, and when does MATLAB quietly convert between them?</li>
+<li>A function expects a column vector and you accidentally pass a row vector. What kinds of failures might result, and which of them are silent (wrong answer, no error)?</li>
+</ul>
+<hr/>
+<h2>Node 3. How do I get the pieces I need from a larger collection?</h2>
+<p><strong>Why this matters.</strong> Programs spend most of their time picking out parts of a larger thing: one element, a contiguous range, an end-relative position, an entire row or column, every element that satisfies some condition. The mental model is that a collection is an addressable sequence of values. The address can be a single number, a list of numbers, an entire dimension, or a logical condition that selects elements without naming positions explicitly. Once you have the right model, the syntax for any specific extraction is something you can look up.</p>
+<p><strong>Where you have practiced this.</strong> The MP2 <code>dataAnalysis.m</code> script extracts four signals from a sensor matrix using the column-extraction pattern (<code>data(:,1)</code>, <code>data(:,2)</code>, etc). The <code>detectRapidAcceleration</code> function in MP3 uses a logical mask to extract just the timestamps and magnitudes that exceed a threshold. The MP3 reflection asks why no single threshold works for every scenario, which is fundamentally a question about how predicate-based selection responds to changes in the threshold value.</p>
+<p><strong>Self-check.</strong></p>
+<ul>
+<li>Without using a <code>for</code> loop, how would you extract every element of a vector that is greater than the mean? Then, separately, how would you extract the corresponding <em>positions</em> rather than the values?</li>
+<li>Given a 2-D matrix, how do you select the rows where the first column meets a condition, keeping all columns? Why does the same approach fail if you use the first row instead of the first column to define the condition?</li>
+<li>When is the result of a selection a fixed size, and when does it depend on the data? What does that imply about how the next step in your code should be written?</li>
+<li>A teammate writes <code>data(data(:,1) &gt; 2)</code> intending to get the matching rows. Why does this not work, and what is the correct expression?</li>
+</ul>
+<hr/>
+<h2>Node 4. How do I combine pieces into an answer?</h2>
+<p><strong>Why this matters.</strong> Most useful programs are short pipelines of three universal operations. <em>Transform</em> applies an operation to each element of a collection and produces a collection of the same shape. <em>Filter</em> keeps only the elements that satisfy a condition. <em>Reduce</em> collapses many values into a single summary (a sum, a maximum, a count, an average). Counting events is filter then reduce. Computing the average of qualifying values is filter then reduce. Computing a peak time is reduce. Computing a running integral is transform then reduce. Recognizing the pipeline shape of a problem is the difference between a clear three-line solution and a tangled loop.</p>
+<p><strong>Where you have practiced this.</strong> The MP2 resultant computation is a transform: <code>sqrt(Ax.^2 + Ay.^2 + Az.^2)</code> applies the same operation at every position. Counting threshold-exceedances with <code>sum(R &gt; threshold)</code> is filter followed by reduce. Finding the peak time with <code>[~,idx] = max(R); peakTime = t(idx)</code> is a reduce that produces both a value and a location. The dead-reckoning pipeline in MP4 (acceleration to velocity to displacement via two integrations) is two transforms in sequence. The <code>detectRapidAcceleration</code> body is a transform (compute the resultant), then a filter (keep events above the threshold), then a reduce (compute the average of those events).</p>
+<p><strong>Self-check.</strong></p>
+<ul>
+<li>Given a vector of measurements, describe in one sentence each how you would (a) double every value, (b) keep only the positive values, (c) compute the largest of the positive values, (d) count how many were positive. Which of those is a transform, which is a filter, which is a reduce, and which combines two of them?</li>
+<li>A teammate writes a <code>for</code> loop that walks through a vector and adds up every element greater than zero. What is a one-line version of the same operation, and why is it easier to read and to verify?</li>
+<li>When does the order of operations in a pipeline matter? Find an example where doing the filter before the transform gives a different result than doing the transform first.</li>
+<li>Why is the two-output form of <code>max</code> (<code>[val, idx] = max(R)</code>) a more reliable way to find the time of a peak than locating the peak by value comparison?</li>
+</ul>
+<hr/>
+<h2>Node 5. How do I express decisions in code?</h2>
+<p><strong>Why this matters.</strong> Programs make decisions: if this, do that, otherwise do something else. The skill is twofold. First, building a correct <em>condition</em> (often by combining several simpler conditions with AND, OR, NOT, and parentheses). Second, picking the right <em>control structure</em> (binary branch, multi-way exclusive branch, dispatch on a discrete value, nested versus sequential checks). Most logic bugs are not syntax bugs. They are condition bugs (wrong combination, wrong operator, wrong boundary) or structure bugs (two checks that should have been one chain, or a single check that should have been two independent ones).</p>
+<p><strong>Where you have practiced this.</strong> The L6 boundary discussion (<code>&lt;</code> versus <code>&lt;=</code>) showed how a one-character change can put a value into the wrong category. The <code>getColumn</code> switch dispatch in L6 Activity 2 is a clean example of mapping a discrete input to a discrete output. The <code>detectRapidAcceleration</code> validation prologue chains several independent failure conditions, each with its own message and safe return. The <code>avgA</code> guard (<code>if isempty(A); avgA = 0.0; else; avgA = mean(A); end</code>) makes a binary decision based on whether anything was found.</p>
+<p><strong>Self-check.</strong></p>
+<ul>
+<li>What is the difference between two separate <code>if</code> blocks and a single <code>if</code>-<code>elseif</code> chain? Construct an example where they produce different behavior, and explain when you would want each.</li>
+<li>In a condition that combines several tests, when must you use the short-circuit version (so that the right side is not evaluated when the left side already determines the answer)? Give an example where using the wrong form throws an error rather than producing a wrong answer.</li>
+<li>A condition that uses an array where MATLAB expects a scalar is a common silent bug. Why is <code>if R &gt; threshold</code> (where <code>R</code> is an array) almost never what you intend, and what should you write instead?</li>
+<li>A specification says: "If the input is invalid, return safely. Otherwise, if the result is empty, return zero. Otherwise, return the mean." Sketch the control flow in plain English first, then in code. Are these checks dependent (nested) or independent (chained)?</li>
+</ul>
+<hr/>
+<h2>Node 6. How do I package a solution that others (including future-me) can use?</h2>
+<p><strong>Why this matters.</strong> A program is not just code that runs. It is code with a clear interface. <em>Functions</em> are the primary unit of packaging: inputs come in, outputs go out, and nothing else (no hidden coupling to whatever variables happen to be sitting in the workspace). A well-designed function is replaceable: if someone rewrites its body, code that calls it should not need to change. Object-oriented programming extends this idea by bundling related state with the methods that operate on it, and by deciding what is part of the public contract and what is private implementation. Both function design and class design are about <em>boundaries</em>: what is inside, what is outside, and what crosses the line.</p>
+<p><strong>Where you have practiced this.</strong> The L4 introduction of custom functions established the pattern: signature, doc comment listing inputs and outputs with size and type, body, <code>end</code>. The MP3 <code>detectRapidAcceleration</code> is a function with a clear contract: give me a sensor matrix and a threshold, get back timestamps, magnitudes, and an average. The MP4 <code>SensorDataAnalyzer</code> class shows the OOP version of the same idea: <code>mobiledevConnection</code> and <code>rawData</code> are private (no script can break them), <code>TargetSignal</code> and <code>TargetSignalTs</code> are public (scripts can read them safely without violating any invariant).</p>
+<p><strong>Self-check.</strong></p>
+<ul>
+<li>For any function you have written, list its inputs and outputs in plain language without looking at the code. Could a teammate use it correctly from your description alone? If not, your interface is unclear and the documentation in the function header is doing the wrong job.</li>
+<li>Why is it bad practice for a function to read or modify variables that were not passed in as arguments? Construct a short example of a bug that this practice would cause.</li>
+<li>For an object that represents accumulating state across multiple operations (a logger that records messages over time, a clock that ticks, a sensor analyzer that integrates twice), what goes wrong if the class is written so every method returns a new copy of the object instead of modifying the existing one? When <em>would</em> the copy-on-modification model actually be the right design?</li>
+<li>For any non-trivial class, some properties should be private and some can be public. What is the question you ask yourself to decide which is which?</li>
+</ul>
+<hr/>
+<h2>Node 7. How do I make my solution robust and know that it works?</h2>
+<p><strong>Why this matters.</strong> A solution that produces the right answer on the input you happened to test is not a finished solution. The same code needs to behave predictably on inputs the writer did not anticipate: empty inputs, inputs containing <code>NaN</code> or <code>Inf</code>, inputs that violate a precondition, inputs at the boundary between two cases. Robust code either rejects invalid inputs with a clear message or returns a safe default that downstream code can recognize. Verification is the other half of the same skill: you do not actually know your code works until you have tested it against an independent reference, ideally one you computed by hand or analytically.</p>
+<p><strong>Where you have practiced this.</strong> The validation prologue in <code>detectRapidAcceleration</code> checks that the threshold is positive and finite, and that the sensor matrix has the right number of columns, exiting early with safe outputs if any check fails. The <code>avgA = 0.0</code> contract on empty results is a deliberate design decision: <code>NaN</code> would propagate silently through downstream calculations, while <code>0.0</code> is the mathematically correct mean of zero events and is something callers can test for. The L8 <code>cumtrapz</code> verification (integrating a constant acceleration and checking that <code>v(end)</code> matches the analytical answer of <code>2 * t_end</code>) is a model for how to build trust in a numerical pipeline before applying it to real sensor data.</p>
+<p><strong>Self-check.</strong></p>
+<ul>
+<li>For a function you have written, list at least three inputs that would be invalid (wrong type, wrong size, out of range, special values like <code>NaN</code> or <code>Inf</code>). What does your function do for each of them? Does it fail loudly with a clear message, or does it produce a wrong answer silently?</li>
+<li>Why is returning <code>NaN</code> to indicate "no answer was meaningful" usually a worse design than returning a documented safe default? When might <code>NaN</code> actually be the correct choice?</li>
+<li>Pick a numerical operation you have used in a Mini-Project. How would you verify that it produced the correct answer, using an example where you can compute the answer by hand or by a known formula? What test data would you choose?</li>
+<li>If two integrations of a constant bias produce a result that grows quadratically over time, is that a bug in your code or a property of the method? How would you tell the difference?</li>
+</ul>
+<hr/>
+<h2>A Final Word</h2>
+<p>The seven nodes above are not a list of topics to memorize. They are a list of questions you should be able to answer, in your own words, about your own work. If you can take any Mini-Project function you have written and walk through it using these questions ("here is the spec I was reading; here is the data I was working with; here is how I got the pieces I needed; here is how I combined them; here is how I expressed the decisions; here is the contract I exposed to the caller; here is how I made it robust"), you have internalized the structure that this assessment is built to measure.</p>
+<p>The exam will not ask you to remember a function name. It will ask you to recognize the shape of a problem, choose an approach, and implement it cleanly. The Lecture Essentials files give you the raw material. This document gives you the questions to ask about that material. Together, they are the preparation.</p>
+<hr/>
+<p><em>ENG 6 Spring 2026 | Cumulative Assessment Preparation | Companion to the Lecture Essentials Files</em></p>
+  </main>
+</body>
+</html>
