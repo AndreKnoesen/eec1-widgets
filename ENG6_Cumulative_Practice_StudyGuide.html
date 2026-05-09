@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENG 6 Cumulative Assessment: Practice Study Guide</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 70%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>ENG 6 Cumulative Assessment: Practice Study Guide</h1>
+<hr/>
+<h2>Assessment Structure and Grading</h2>
+<p>The assessment has two stages. Stage 1 is required; Stage 2 is optional.</p>
+<p><strong>Stage 1 — Week 8 (Tuesday–Thursday, before Memorial Weekend)</strong><br/>
+A 50-minute proctored session in MATLAB Grader. The assessment covers lectures 1 through 10 (see the Lecture Essentials document for the detailed topic breakdown per lecture). The one exception is Lecture 9 (GUI): you will not be asked to create a graphical user interface. The format is otherwise the same as other assessments in the course.</p>
+<p>Two submission attempts per problem. First-attempt feedback is visible; use it to refine your work before your second submission. Full credit is available on both attempts. The last submission is the one that is graded.</p>
+<p>The assessment is closed book with no notes. MATLAB documentation is available inside the lockdown browser. While you may see an indication of your score at the end of the session, final grades are determined on Friday.</p>
+<p><strong>Stage 2 — Finals Week (Optional Retake)</strong><br/>
+A different, cumulative exam covering the original 6 lectures plus Weeks 8–9 material in equal proportion. One submission attempt, no feedback. Maximum score: 80%. Sign-up required one week in advance.</p>
+<p><strong>Final grade = the higher of your two scores</strong> (80% cap applied to Stage 2 only). Taking the retake cannot lower your grade.</p>
+<div aria-label="Assessment Structure and Grading" class="table-wrapper" role="region" tabindex="0"><table><caption>Assessment Structure and Grading</caption>
+<thead>
+<tr>
+<th scope="col">Scenario</th>
+<th scope="col">Stage 1</th>
+<th scope="col">Stage 2</th>
+<th scope="col">Final Grade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Did well on Stage 1</td>
+<td>95%</td>
+<td>—</td>
+<td>95%</td>
+</tr>
+<tr>
+<td>Strong comeback</td>
+<td>45%</td>
+<td>90% → capped</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Slight boost</td>
+<td>72%</td>
+<td>85% → capped</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Off day on retake</td>
+<td>75%</td>
+<td>60%</td>
+<td>75%</td>
+</tr>
+</tbody>
+</table></div>
+<p>An A requires a strong Week 8 performance. The retake exists so that one difficult day cannot prevent you from earning a B−; the single blind attempt ensures it measures genuine understanding, not trial-and-error. Prepare for Week 8. If it goes poorly, use Weeks 8–9 to solidify your understanding and sign up for the retake.</p>
+<p>There is no compulsory final.</p>
+<hr/>
+<h2>What the Assessment Looks Like</h2>
+<p>The assessment is fifty minutes long, one hundred points total. It has three sections:</p>
+<p><strong>Section A.</strong> Five multiple choice questions, twenty-five points. Three OOP items (about classes, value vs handle behavior, public vs private access) and two conceptual probes (about floating-point comparison and short-circuit evaluation). Each question has four answer options. Canvas shuffles the answer order, so the position of the correct answer varies for each student.</p>
+<p><strong>Section B.</strong> Three short coded problems in MATLAB Grader, fifty points total. Each problem is a function with a clear specification and three to five test cases. You write the body of the function. The function signature, doc comment, and a placeholder line are pre-filled in the editor.</p>
+<p><strong>Section C.</strong> One longer integrative problem in MATLAB Grader, twenty-five points. The function involves input validation, a multi-step computation, and an edge-case contract. Same editor format as Section B.</p>
+<p>A student who knows the material well should pass Sections A and B comfortably and earn the seventy-five percent threshold from those alone. Section C is where strong students push from the C+/B- range into the higher grades.</p>
+<hr/>
+<h2>Logistics on Exam Day</h2>
+<p>Arrive at least ten minutes before the scheduled start time; check-in begins ten minutes before the assessment opens. Bring nothing extra to the exam. No additional materials are permitted. All personal items, including cellphones, must be left at the front of the room.</p>
+<p><strong>Develop and test your code in the MATLAB live environment before you paste it into MATLAB Grader.</strong> This is the single most important strategic point in this document. Read it twice. The MATLAB Grader window inside the lockdown browser is for verification, not development. By the time you press Submit, you should already know your function works.</p>
+<p>When you submit a coded problem, MATLAB Grader runs every test independently and shows you the result of each one. The test names tell you what each test is checking (for example, "below threshold", "boundary value", "non-finite input", "validation, non-numeric data", "no qualifying columns"). Nothing is hidden; you see exactly which tests passed and which failed.</p>
+<p>The grading rule is that your <strong>last submission counts</strong>. If you submit a first version that passes most tests, then edit and submit a second version that breaks something, the second version is what gets graded. Even if it scores lower. Even if you panicked and just wanted to try one more thing.</p>
+<p>In practice this gives you exactly <strong>one useful submission</strong> plus <strong>one final submission</strong>. If you treat MATLAB Grader as a development environment and iterate inside it, you will burn your first attempt on discovery and have only one chance to fix what you found. If you treat it as verification, you submit once, you see the test results, and you only submit a second time if you are genuinely confident the fix improves the score.</p>
+<p>The workflow:</p>
+<ol>
+<li>Read the problem statement carefully in the lockdown browser.</li>
+<li>Open MATLAB (the live environment is available in the lockdown browser alongside MATLAB Grader). Write your function there. Try it on a few sample inputs in the command window. Verify outputs by hand for at least one case.</li>
+<li>Use the documentation viewer when you need to look up a function. The full MATLAB documentation is inside the lockdown browser; the AI assistant is not.</li>
+<li>When your function works in MATLAB, paste it into MATLAB Grader and submit.</li>
+<li>Read the test results. If a test failed, the test name tells you what was checked. Decide whether you understand the failure well enough to fix it. If yes, fix in MATLAB first, retest, then submit. If no, leave the first submission as your final answer.</li>
+</ol>
+<p><strong>The trap to avoid: do not submit the same problem more than twice.</strong> A third submission overwrites the second. Submit, observe, decide. If you really did improve the code, submit. Otherwise, walk away.</p>
+<p>The assessment runs in a lockdown browser. Inside that browser you have access to the MATLAB live environment, MATLAB Grader, and the full MATLAB documentation. The MATLAB AI assistant (Copilot) is blocked. Other browser tabs, notes, and external resources are blocked. Plan to use the documentation; it is there for you.</p>
+<p>Time. Fifty minutes total. The exam is designed so a prepared student finishes in about forty minutes, leaving ten minutes of buffer for documentation lookups, MATLAB-side testing, and any last edits.</p>
+<hr/>
+<h2>How to Use This Document</h2>
+<p>This is not a practice exam. It is a guided walk through the patterns the assessment will test. Each worked example below shows a small problem, a complete solution, and a paragraph explaining why the solution looks the way it does. The live exam will ask you to recognize these same patterns in problems you have not seen, with different surface stories and slightly different shapes.</p>
+<p>If you can read each worked example, close the document, and reproduce the solution from scratch in MATLAB, you are well prepared. If you cannot, that is the exact area to study before the exam.</p>
+<p>The Lecture Essentials document and the Fundamental Concepts Mindmap are your reference companions. This document points to the patterns; those documents explain the underlying concepts in depth.</p>
+<hr/>
+<h2>Worked Example 1: Predict the Output (Floating-Point)</h2>
+<p><strong>Mindmap Node 2: data and types.</strong></p>
+<p>What does the following MATLAB code print?</p>
+<pre><code class="language-matlab">a = 0.1 + 0.2;
+if a == 0.3
+    disp('match')
+else
+    disp('no match')
+end
+</code></pre>
+<p><strong>Answer:</strong> <code>no match</code>.</p>
+<p><strong>Why.</strong> In IEEE 754 double precision, the decimal values <code>0.1</code>, <code>0.2</code>, and <code>0.3</code> cannot be represented exactly in binary. The stored approximations of <code>0.1</code> and <code>0.2</code> sum to a value that is slightly different from the stored approximation of <code>0.3</code>. The <code>==</code> operator compares the exact bit patterns and returns false.</p>
+<p>The reliable replacement on computed floating-point values is a tolerance comparison:</p>
+<pre><code class="language-matlab">if abs(a - 0.3) &lt; 1e-9
+    disp('close enough')
+end
+</code></pre>
+<p>The Section A MCQs include items in this style. Reading code that uses <code>==</code> on a computed float and predicting the result is a routine question.</p>
+<hr/>
+<h2>Worked Example 2: Filter Then Reduce with an Empty Guard</h2>
+<p><strong>Mindmap Node 4: combining pieces; Node 7: robustness.</strong></p>
+<p>Write a function that takes a vector of student scores and returns the average of the passing scores (those greater than or equal to 60). Return zero if no scores pass.</p>
+<pre><code class="language-matlab">function avg = passingAverage(scores)
+    passing = scores(scores &gt;= 60);
+    if isempty(passing)
+        avg = 0;
+    else
+        avg = mean(passing);
+    end
+end
+</code></pre>
+<p><strong>Why this shape.</strong> The first line is a filter: a logical expression <code>scores &gt;= 60</code> produces a mask the same size as <code>scores</code>, and the indexed assignment <code>scores(...)</code> returns just the elements where the mask is true. The <code>isempty</code> check is the empty-result guard: <code>mean</code> of an empty vector returns <code>NaN</code>, which is rarely what the caller wants. Returning a documented safe default (zero) is the kind of contract design the assessment expects.</p>
+<p>The Section C integrative problem uses this same filter-then-reduce-with-empty-guard structure on a 2-D matrix instead of a 1-D vector. The shape is bigger but the logic is the same.</p>
+<hr/>
+<h2>Worked Example 3: Multi-Way Branching with Boundaries</h2>
+<p><strong>Mindmap Node 5: decisions; Node 7: edges.</strong></p>
+<p>Write a function that takes a temperature in degrees Celsius and returns a label: <code>"freezing"</code> if below 0, <code>"cold"</code> if at or above 0 but below 15, <code>"moderate"</code> if between 15 and 25 inclusive, <code>"warm"</code> if above 25 but at or below 35, <code>"hot"</code> if above 35. Return <code>"invalid"</code> if the input is not finite.</p>
+<pre><code class="language-matlab">function label = classifyTemperature(tempC)
+    if ~isfinite(tempC)
+        label = "invalid";
+    elseif tempC &lt; 0
+        label = "freezing";
+    elseif tempC &lt; 15
+        label = "cold";
+    elseif tempC &lt;= 25
+        label = "moderate";
+    elseif tempC &lt;= 35
+        label = "warm";
+    else
+        label = "hot";
+    end
+end
+</code></pre>
+<p><strong>Why this shape.</strong> A multi-way exclusive branching problem is solved with one <code>if</code>/<code>elseif</code>/<code>else</code> chain, not multiple independent <code>if</code> blocks. The not-finite case must come first, before any arithmetic comparison, because <code>NaN &lt; 0</code> and <code>NaN &lt; 15</code> and similar comparisons all return false, which would silently fall into the <code>else</code> branch and produce a wrong label.</p>
+<p>Notice the boundary semantics. The specification says the moderate range is inclusive on both ends (15 to 25), warm is exclusive low and inclusive high (above 25, at or below 35). The code reflects that: <code>tempC &lt;= 25</code> for the moderate branch and <code>tempC &lt;= 35</code> for the warm branch. Choose your <code>&lt;</code> and <code>&lt;=</code> carefully and read the specification carefully.</p>
+<p>The Section B branching problem uses the same control-structure pattern with different threshold semantics. Read the boundary rule each time you write one of these; do not assume.</p>
+<hr/>
+<h2>Worked Example 4: Position Recovery from a Predicate</h2>
+<p><strong>Mindmap Node 3: addressing positions.</strong></p>
+<p>Write a function that takes a vector of measurements and a threshold, and returns the position of the first measurement that is strictly greater than the threshold. Return -1 if no measurement exceeds the threshold.</p>
+<pre><code class="language-matlab">function pos = firstAbove(measurements, threshold)
+    above = measurements &gt; threshold;
+    indices = find(above);
+    if isempty(indices)
+        pos = -1;
+    else
+        pos = indices(1);
+    end
+end
+</code></pre>
+<p><strong>Why this shape.</strong> A predicate over a vector produces a logical mask. To get the <em>positions</em> of the elements that satisfy the predicate (rather than the values), use <code>find</code>. The result is a vector of indices in ascending order; the first one is the position of the first match. The empty case (no matches) is handled with the same <code>isempty</code> guard as Worked Example 2.</p>
+<p>The Section B top-N problem uses this same pattern with one extra step: after finding the matching positions, sort them by some other criterion. The single-output version above is the cleanest demonstration of position recovery.</p>
+<hr/>
+<h2>Worked Example 5: Validation Prologue and Multi-Output Function</h2>
+<p><strong>Mindmap Node 6: function packaging; Node 7: defensive programming.</strong></p>
+<p>Write a function that takes a vector and returns three counts: how many elements are positive, how many are negative, how many are exactly zero. If the input is not a numeric vector, return <code>-1</code> for all three counts.</p>
+<pre><code class="language-matlab">function [pos, neg, zero] = countSigns(values)
+    if ~isnumeric(values) || ~isvector(values)
+        pos = -1;
+        neg = -1;
+        zero = -1;
+        return
+    end
+    pos = sum(values &gt; 0);
+    neg = sum(values &lt; 0);
+    zero = sum(values == 0);
+end
+</code></pre>
+<p><strong>Why this shape.</strong> The validation prologue uses a sentinel-return contract: instead of throwing an error, the function returns documented invalid values that the caller can detect. This is the pattern the assessment uses everywhere; do not use <code>error()</code> calls because the autograder treats those as failures rather than as a contract.</p>
+<p>Each count is a <code>sum</code> of a logical mask. <code>values &gt; 0</code> produces a mask the same size as <code>values</code>; <code>sum</code> on a logical mask returns the count of true entries. This is the cleanest one-line filter-and-count.</p>
+<p>Note the multi-output signature <code>[pos, neg, zero] = ...</code> and the use of <code>return</code> to exit the function early after the validation failure. Both patterns appear in Section C of the assessment.</p>
+<hr/>
+<h2>NaN Essentials</h2>
+<p><strong>Mindmap Node 2: data and types; Node 7: edges and missing values.</strong></p>
+<p>NaN handling appears in roughly a third of the graded tests across Sections B and C. The rules are short but non-obvious, and a student who is solid on every other concept can lose real points by missing them. Learn these four facts cold.</p>
+<p><strong>1. Comparisons involving NaN are always false.</strong></p>
+<p>Every comparison operator (<code>==</code>, <code>~=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>) returns <code>false</code> when either operand is <code>NaN</code>. In particular, <code>NaN == NaN</code> is <code>false</code>. The practical consequence: an expression like <code>find(x &gt; threshold)</code> silently excludes positions where <code>x</code> is <code>NaN</code>, because the comparison there is false. That can be exactly what you want, or it can hide a bug. Know which case you are in.</p>
+<p><strong>2. NaN propagates through arithmetic.</strong></p>
+<p>Any operation that touches <code>NaN</code> produces <code>NaN</code>: <code>1 + NaN</code>, <code>0 * NaN</code>, <code>NaN / 5</code>. If a single element of an aggregate input is <code>NaN</code>, the result of the aggregate is <code>NaN</code> unless you tell MATLAB otherwise.</p>
+<p><strong>3. <code>isnan</code> and <code>isfinite</code> answer different questions.</strong></p>
+<p><code>isnan(x)</code> returns <code>true</code> only for <code>NaN</code>. <code>isfinite(x)</code> returns <code>true</code> only for ordinary numbers, that is, not <code>NaN</code>, not <code>+Inf</code>, and not <code>-Inf</code>. If your specification says "valid value" or "finite value", <code>isfinite</code> is the right predicate. If it says "missing value", <code>isnan</code> is the right predicate. Read the spec; pick the right one.</p>
+<p><strong>4. Aggregations accept an <code>'omitnan'</code> option.</strong></p>
+<p><code>mean</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>std</code>, <code>median</code>, and similar functions accept <code>'omitnan'</code> as a final argument. With that option they ignore <code>NaN</code> values in the input rather than propagating them. For matrices, the form is <code>mean(M, 1, 'omitnan')</code>: operate down columns (the <code>1</code>), ignore <code>NaN</code>. Without <code>'omitnan'</code>, a single <code>NaN</code> anywhere in the input produces <code>NaN</code> in the output. One edge case to remember: if a column or vector is <em>all</em> <code>NaN</code>, then <code>mean(x, 'omitnan')</code> still returns <code>NaN</code>, because there are no values to average.</p>
+<p>You will see all four of these come up in the assessment. The Section C integrative problem in particular relies on points 2 and 4.</p>
+<hr/>
+<h2>Two Additional Specifics</h2>
+<p><strong>1. MATLAB's <code>sort</code> is stable.</strong></p>
+<p>When two elements compare equal, <code>sort</code> preserves their original relative order. The permutation index that <code>sort</code> returns will pair each tied value with the earliest position it came from. The assessment exercises this: when ties exist among the top values, the expected position output is the one that pairs each tied value with the earliest original index. Your natural solution path will produce this for free. Do not add extra "tie breaking" logic on top.</p>
+<p><strong>2. The autograder is strict about shape, including for empty results.</strong></p>
+<p>MATLAB has more than one kind of empty array. <code>[]</code> is a 0x0 double; <code>zeros(1,0)</code> is a 1x0 row vector. The autograder uses <code>isequal</code>, which treats them as different. When a test expects an empty result, the shape has to match.</p>
+<p>You usually do not have to think about this. If you write the algorithm in the natural way, your empty-output shape will match what the test expects. The trap is when you try to "help" by hand-coding the empty case: writing <code>topVals = []</code> as a defensive default at the top of your function, or substituting <code>[]</code> for an empty value the natural path already produced, can give you a 0x0 where the test expects 1x0. Trust the natural path. If the specification's empty-case prose is satisfied by what your code already returns, do not change it.</p>
+<hr/>
+<h2>What This Guide Does Not Cover</h2>
+<p>OOP coding. The Section A MCQs include three OOP questions about classdef behavior. Those test concepts you practiced in the team project; you should be able to read a small classdef and predict what a sequence of method calls produces. Mini-Project 4 is the best preparation for those items.</p>
+<p>Specific live-exam problem statements. The live exam uses different domains, different variable names, and different specific problem shapes than these worked examples. The patterns are the same; the surface is different.</p>
+<hr/>
+<h2>A Final Note</h2>
+<p>The Cumulative Assessment is built on a few fundamental programming concepts that were threaded through every lecture and every Mini-Project. The five worked examples above sample those concepts. The Mindmap document organizes them under seven meta-questions you should be able to ask of your own code. Read the Mindmap once before the exam, even if you have read it before. The goal is not to memorize the worked examples; it is to recognize the patterns when you see them in a problem you have not seen.</p>
+<p>Good luck.</p>
+  </main>
+</body>
+</html>
