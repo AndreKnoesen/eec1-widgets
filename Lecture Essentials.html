@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lecture Essentials</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 70%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>Lecture Essentials</h1>
+<hr/>
+<h2>Lecture 1 — Essential Skills</h2>
+<p><em>MATLAB fundamentals: variables, expressions, scripts, and your first functions.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- Command Window and Interpreter Basics — enter expressions, read errors, use semicolons to suppress output<br/>
+- Command History and Rapid Iteration — reuse and edit previous commands with the up-arrow to accelerate debugging<br/>
+- Variable Creation, Assignment, and Workspace Inspection — create variables, use <code>who</code>/<code>whos</code>/<code>clear</code> to manage state<br/>
+- Identifier Rules and Naming Best Practices — valid names, no leading digits or spaces, avoid shadowing built-ins<br/>
+- Common Constants and Built-In Math Functions — <code>pi</code>, <code>eps</code>, <code>sin</code>, <code>cos</code>, <code>sqrt</code>, <code>exp</code>, <code>abs</code>, <code>round</code></p>
+<p><strong>Expect to think harder here:</strong><br/>
+- Translating Problems Into MATLAB Workflows — break an engineering problem into steps: variables, computation, results; <em>requires planning before writing a single line of code</em><br/>
+- Numeric Types, Literals, and Expression Evaluation — operator precedence and type conversion; <em>subtle precedence rules can cause silent errors</em><br/>
+- Text Basics: String Scalars and Character Vectors — distinguish <code>"..."</code> from <code>'...'</code>, concatenation, <code>isstring</code>/<code>ischar</code>; <em>two similar types with different behaviors trip up most beginners</em><br/>
+- Scripts, Comments, and Reproducible Code Style — clear structure, <code>clc</code>/<code>clear</code>, avoid relying on persistent workspace state; <em>discipline required, not just syntax</em><br/>
+- Simple Functions and Basic User Input — function files, calling from scripts, <code>input</code>, input validation; <em>file structure and I/O together in one topic</em></p>
+<p><strong>Conceptually demanding — start early:</strong><br/>
+- Basic Number Representation Concepts — binary/finite-precision, rounding, <code>dec2bin</code>/<code>bin2dec</code>; <em>counterintuitive: <code>0.1 + 0.2 ~= 0.3</code> in MATLAB surprises almost everyone</em></p>
+<hr/>
+<h2>Lecture 2 — Essential Skills</h2>
+<p><em>Logical values, vectors, and array indexing fundamentals.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- Logical Scalars and Boolean Variables — create, assign, and inspect <code>true</code>/<code>false</code> values<br/>
+- Relational Operators for Comparisons — <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>==</code>, <code>~=</code> on scalars<br/>
+- Row and Column Vector Concepts — create vectors, query <code>size</code>/<code>length</code>/<code>numel</code>, understand orientation<br/>
+- Vector Construction Methods — literals, concatenation, colon notation, <code>linspace</code><br/>
+- Array Creation Utilities — <code>zeros</code>, <code>ones</code>, <code>rand</code>, <code>eye</code>, and similar constructors</p>
+<p><strong>Expect to think harder here:</strong><br/>
+- Logical Operators and Compound Tests — <code>&amp;</code>, <code>|</code>, <code>~</code>, <code>xor</code>; <em>operator precedence and short-circuiting cause subtle bugs</em><br/>
+- Elementwise Logical Operations on Arrays — apply relational/logical operators to vectors; <em>must track shapes and elementwise semantics</em><br/>
+- Integer (Subscript) Indexing of Arrays — select, reorder, and repeat elements with numeric index vectors; <em>bounds errors and ordering mistakes are common</em><br/>
+- Logical (Mask) Indexing of Arrays — extract or modify elements using logical masks; <em>mask dimensions must match the array, and results can reshape unexpectedly</em><br/>
+- Resizing and Assignment to Arrays — grow/shrink via indexed assignment and <code>end</code>; <em>implicit array growth confuses beginners and quietly hurts performance</em></p>
+<p><strong>Conceptually demanding — start early:</strong><br/>
+- Numeric Comparison Nuances and Tolerances — compare floating-point arrays with <code>abs(a-b) &lt;= tol</code>; <em>direct <code>==</code> comparison of floats almost never does what you expect</em></p>
+<hr/>
+<h2>Lecture 3 — Essential Skills</h2>
+<p><em>Vector arithmetic, operations, and basic visualization.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- Elementwise Arithmetic on Vectors — <code>+</code>, <code>-</code>, <code>.*</code>, <code>./</code>, <code>.^</code>; understand the <code>.</code> distinction from matrix operations<br/>
+- Elementwise Relational Operations — <code>&lt;</code>, <code>&gt;</code>, <code>==</code>, <code>~=</code> on vectors to produce logical masks<br/>
+- Aggregation and Cumulative Operations — <code>sum</code>, <code>prod</code>, <code>cumsum</code>, <code>diff</code>; global totals vs running results<br/>
+- Numeric Utilities and Elementwise Transforms — <code>round</code>, <code>floor</code>, <code>ceil</code>, <code>mod</code>/<code>rem</code> applied to vectors<br/>
+- Simple 2-D Plotting of 1-D Data — <code>plot</code>/<code>stem</code>, axis labels, titles, legends, saving figures programmatically</p>
+<p><strong>Expect to think harder here:</strong><br/>
+- Elementwise Logical Operations and Mask Combination — <code>&amp;</code>, <code>|</code>, <code>~</code>, <code>xor</code> on logical vectors; <em>precedence and parentheses must be deliberate</em><br/>
+- Logical (Mask) Indexing and Modification — select, assign, and remove elements using masks; <em>mask shape and assignment effects are subtle</em><br/>
+- Common Vector Functions and Shape-Aware Usage — <code>sum</code>, <code>cumsum</code>, <code>diff</code>, <code>conv</code>; <em>output shapes differ by function — always check</em><br/>
+- Random Number Generation and Reproducibility — <code>rng</code> seeds for repeatable experiments; <em>easy to use, easy to misuse when writing tests</em></p>
+<p><strong>Conceptually demanding — start early:</strong><br/>
+- Complex-Valued Vectors and Basic Statistics — <code>real</code>, <code>imag</code>, <code>abs</code>, <code>angle</code>, <code>mean</code>/<code>std</code>; <em>phase and magnitude interpretation is a new abstraction for most students</em></p>
+<hr/>
+<h2>Lecture 4 — Essential Skills</h2>
+<p><em>2-D arrays (matrices): construction, indexing, and shape manipulation.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- Creating and Inspecting 2-D Arrays — construct matrices, <code>size</code>/<code>ndims</code>/<code>numel</code>, understand column-major memory layout<br/>
+- Element Access and Assignment with <code>(row,col)</code> Indexing — read/write <code>A(i,j)</code>, handle out-of-range errors<br/>
+- Row/Column Slicing with the Colon Operator — <code>A(:,j)</code>, <code>A(i,:)</code>, <code>A(i,1:3)</code>; returned shapes are predictable<br/>
+- Using <code>end</code> in Index Expressions — size-robust slices like <code>A(end,:)</code>, <code>A(1:end-1,end)</code></p>
+<p><strong>Expect to think harder here:</strong><br/>
+- Linear Indexing and Conversions — <code>A(k)</code>, <code>A(:)</code>, <code>sub2ind</code>/<code>ind2sub</code>; <em>requires mapping between linear and subscript views in column-major order</em><br/>
+- Concatenation of Matrices — <code>[A,B]</code> and <code>[A;B]</code>; <em>dimension mismatches are the most common error here</em><br/>
+- Multi-Element Indexing with Integer Index Vectors — <code>A(rows,cols)</code> including repeated/reordered indices; <em>powerful but easy to get wrong</em><br/>
+- Logical Masks for Selection and Assignment — <code>A &gt; v</code>, <code>A == v</code>; <em>extraction follows column-major order, which surprises most students</em><br/>
+- Constructing Logical Index Expressions — combine relational and logical operators for conditional selection; <em>parentheses required for correct precedence</em><br/>
+- Reshaping and Linear View Operations — <code>reshape</code>, <code>A(:)</code>, transpose (<code>.'</code> vs <code>'</code>); <em>column-major ordering and conjugation are non-obvious</em><br/>
+- Safe Shape Manipulation and Error Avoidance — use <code>size</code>/<code>length</code> to guide operations, check compatibility before indexing; <em>defensive habits that prevent hard-to-debug errors</em></p>
+<hr/>
+<h2>Lecture 5 — Essential Skills</h2>
+<p><em>Matrix manipulation: construction, reshaping, sorting, and reduction.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- Inspecting Array Dimensions and Sizes — <code>size</code>, <code>ndims</code>, <code>numel</code>, <code>length</code>, <code>isequal(size(A),[m n])</code><br/>
+- Creating Common Matrices — <code>zeros</code>, <code>ones</code>, <code>eye</code>, <code>diag</code>, <code>magic</code>; default numeric class</p>
+<p><strong>Expect to think harder here:</strong><br/>
+- Concatenation and Block Construction — <code>[A,B]</code>, <code>[A;B]</code>; <em>dimension mismatches are frequent and the error message isn't always obvious</em><br/>
+- Replication and Tiling — <code>repmat</code> and implicit expansion; <em>easy to invoke, requires shape reasoning to use correctly</em><br/>
+- Reshaping and Permuting Arrays — <code>reshape</code>, <code>.^'</code>, <code>permute</code>; <em>column-major ordering is the hidden trap</em><br/>
+- Linear Indexing and <code>find</code> — <code>A(:)</code>, <code>A(k)</code>, <code>find</code>, <code>sub2ind</code>/<code>ind2sub</code>; <em>mapping between linear and subscript views requires deliberate thought</em><br/>
+- Logical Masking and Element Selection — relational expressions, <code>isnan</code>, <code>isfinite</code>, <code>ismissing</code>; <em>NaN/missing handling is subtle and important</em><br/>
+- Combining Masks and Logical Functions — <code>&amp;</code>, <code>|</code>, <code>~</code> for conditional selection/cleansing; <em>correct parenthesization matters</em><br/>
+- Sorting and Reordering Data — <code>sort</code>/<code>sortrows</code>, apply permutation indices; <em>consistently reordering rows and columns with the same permutation is error-prone</em><br/>
+- Elementwise Operations and Implicit Expansion — <code>.*</code>, <code>./</code>, <code>.^</code>; <em>implicit expansion can silently produce unexpectedly large arrays</em><br/>
+- Array Manipulation Utilities and Reduction Functions — <code>flipud</code>/<code>fliplr</code>, <code>circshift</code>, <code>sum</code>/<code>mean</code>/<code>max</code>/<code>min</code> with dimension arguments; <em>forgetting the dimension argument is a common mistake</em></p>
+<hr/>
+<h2>Lecture 6 — Essential Skills</h2>
+<p><em>Conditional logic: if/else, switch, and defensive branching.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- If-Else Structure and Syntax — <code>if … elseif … else … end</code> blocks; mutually exclusive branches<br/>
+- Relational Operators for Branching — <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>==</code>, <code>~=</code> in conditional expressions<br/>
+- <code>switch</code>/<code>case</code> and Discrete Selection — clean selection among discrete alternatives including strings</p>
+<p><strong>Expect to think harder here:</strong><br/>
+- Multiway Branching with <code>elseif</code> — ordered multi-branch logic for graded decisions; <em>wrong ordering silently misprioritizes checks</em><br/>
+- Logical Operators in Conditions — <code>&amp;</code>, <code>|</code>, <code>~</code>, <code>xor</code> with parentheses; <em>precedence errors produce conditions that look right but aren't</em><br/>
+- Using <code>any</code>/<code>all</code> and Logical Masks for Branch Decisions — make branching decisions from elementwise comparisons; <em><code>any</code> vs <code>all</code> is easy to mix up</em><br/>
+- Nested Conditionals and Structured Control Flow — readable, testable nested <code>if</code>/<code>switch</code>; <em>deep nesting makes logic hard to verify or debug</em></p>
+<p><strong>Conceptually demanding — start early:</strong><br/>
+- Short-Circuit vs Elementwise Logical Operators — <code>&amp;&amp;</code>/<code>||</code> vs <code>&amp;</code>/<code>|</code>; <em>using the wrong form in array contexts causes runtime errors, not just wrong answers</em><br/>
+- Array Conditions: <code>any</code>/<code>all</code> and Truthiness Rules — arrays cannot be directly used as <code>if</code> conditions; <em>the rules are non-obvious and the error message explains what, not why</em><br/>
+- Input Validation and Defensive Branching — validate types/sizes/ranges, issue informative errors, provide safe defaults; <em>designing genuinely robust validation takes more thought than the syntax suggests</em><br/>
+- Edge-Case Handling: Empty, <code>NaN</code>, and <code>Inf</code> — <code>isempty</code>, <code>isnan</code>, <code>isfinite</code>; <em>special values interact with logical and branching semantics in non-obvious ways</em></p>
+<hr/>
+<h2>Lecture 7 — Essential Skills</h2>
+<p><em>Object-oriented programming: classes, properties, methods, and inheritance.</em></p>
+<hr/>
+<p><strong>Expect to think harder here:</strong><br/>
+1. Class Definition and Basic Constructor — <code>classdef</code> file, constructor that initializes properties from inputs; <em>new file structure and syntax to learn together</em><br/>
+2. Declaring and Using Properties — define properties, <code>Constant</code>/<code>Dependent</code> attributes; <em>basic declarations are easy; attributes and validation add complexity</em><br/>
+3. Instance and Static Methods — operate on object data vs callable without an object; <em>knowing when to use static requires design judgment</em><br/>
+4. Simple Operator Overloading — overload <code>plus</code>, <code>eq</code>, etc. for intuitive object operations; <em>mechanical once the pattern is clear, but consistent semantics need testing</em><br/>
+5. Arrays of Objects and Indexing — create, index, and concatenate object arrays; <em>handle vs value behavior can produce surprising results</em></p>
+<p><strong>Conceptually demanding — start early:</strong><br/>
+- Access Control for Encapsulation — <code>public</code>, <code>protected</code>, <code>private</code> attributes; <em>visibility design requires thinking about API boundaries up front</em><br/>
+- Getters and Setters (Property Accessors) — <code>set</code>/<code>get</code> methods or <code>Dependent</code> properties; <em>accessor semantics differ between value and handle classes in subtle ways</em><br/>
+- Handle vs Value Class Semantics — reference vs copy behavior on assignment; <em>this is the single most common source of OOP logic bugs for beginners</em><br/>
+- Designing Stateful Classes (Mutating Behavior) — manage internal state with methods enforcing valid transitions; <em>state invariants are easy to break and hard to diagnose</em><br/>
+- Inheritance and Method Overriding — subclass, override methods, call superclass constructors; <em>constructor chaining and correct overriding require careful design</em></p>
+<hr/>
+<h2>Lecture 8 — Essential Skills</h2>
+<p><em>Numerical methods: fitting, integration, differentiation, and root finding.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- Numerical Integration: Discrete Data — <code>trapz</code>/<code>cumtrapz</code>; account for nonuniform spacing and sampling resolution</p>
+<p><strong>Expect to think harder here:</strong><br/>
+- 1-D Interpolation Fundamentals — <code>interp1</code> with <code>'linear'</code>/<code>'spline'</code>/<code>'pchip'</code>; <em>choosing the right method requires judgment about smoothness vs local accuracy</em><br/>
+- Linear Least Squares Regression — <code>A\b</code> for overdetermined systems, residuals, test data evaluation; <em>the solution is easy; deciding whether the model is actually good is not</em><br/>
+- Numerical Integration: Functions — <code>integral</code>/<code>integral2</code>, tolerances, singularities; <em>singularity handling and tolerance settings require care</em><br/>
+- Root Finding for Scalar Equations — <code>fzero</code> and safeguarded Newton-Raphson; <em><code>fzero</code> is easy to call; implementing Newton robustly with convergence safeguards is not</em></p>
+<p><strong>Conceptually demanding — start early:</strong><br/>
+- Extrapolation Handling and Domain Guards — detect out-of-range queries, specify safe behavior; <em>extrapolation silently produces wrong results — you won't always know it happened</em><br/>
+- Polynomial Fitting and Limitations — <code>polyfit</code>/<code>polyval</code>, Runge phenomenon; <em>high-degree polynomials can look great on training data and fail badly outside it</em><br/>
+- Nonlinear Curve Fitting — <code>nlinfit</code>/<code>lsqcurvefit</code>, initial guesses, residual diagnostics; <em>optimizer behavior depends heavily on the initial guess you provide</em><br/>
+- Numerical Differentiation and Finite Differences — forward/central/backward differences, <code>gradient</code>; <em>noise amplification makes this fundamentally different from analytic differentiation</em><br/>
+- Solving Nonlinear Systems — <code>fsolve</code>, initial guesses, convergence diagnostics; <em>multiple solutions may exist and the solver may find the wrong one</em><br/>
+- Validation, Error Quantification, and Tolerance Selection — absolute/relative errors, tolerant comparisons; <em>choosing a meaningful tolerance is a judgment call, not a formula you can look up</em></p>
+<hr/>
+<h2>Lecture 9 — Essential Skills</h2>
+<p><em>Graphical user interfaces: building interactive apps and event-driven code.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- Message and Alert Dialogs — <code>msgbox</code>/<code>warndlg</code>/<code>errordlg</code>/<code>uialert</code>; predictable behavior for simple user feedback</p>
+<p><strong>Expect to think harder here:</strong><br/>
+- Creating Figures and Basic UI Components — buttons, labels, sliders; <code>Position</code>/<code>String</code>/<code>Value</code> properties; <em>coordinate-based positioning takes practice</em><br/>
+- Collecting and Validating User Input — <code>inputdlg</code> or edit fields, type/range validation, clear feedback; <em>validation logic inside UI code requires discipline</em><br/>
+- Converting Scripts to Simple Interactive Apps — restructure procedural code for Live Scripts or simple GUIs; <em>requires rethinking code flow, not just adding UI calls</em><br/>
+- Dynamic UI Updates and Control Flow — enable/disable controls, update labels/plots dynamically; <em>timing and consistency of updates is easy to get wrong</em><br/>
+- Embedding and Updating Plots and Tables — <code>axes</code>/<code>uitable</code> inside GUIs, update from callbacks; <em>correct data binding and redraw handling is required</em><br/>
+- Input Validation and Immediate User Feedback — validation inside callbacks, UI gating to prevent invalid operations; <em>responsive validation is important and moderately tricky</em><br/>
+- App Designer Basics and Component APIs — <code>ValueChangedFcn</code>/callback wiring, design and code views; <em>the component API takes time to internalize</em></p>
+<p><strong>Conceptually demanding — start early:</strong><br/>
+- Event-Driven Callbacks — callbacks execute on user interaction, not sequentially; <em>switching from procedural to event-driven thinking is the biggest mental shift in this lecture</em><br/>
+- State Management Across Callbacks — share state with <code>guidata</code>/app properties, not globals; <em>incorrect state sharing produces bugs that appear to occur randomly</em><br/>
+- Timers, Asynchronous Tasks, and Clean Cancellation — <code>timer</code>, background tasks, progress feedback, safe cleanup; <em>concurrency is genuinely hard; cancellation logic is almost always forgotten</em></p>
+<hr/>
+<h2>Lecture 10 — Essential Skills</h2>
+<p><em>Text and string processing in MATLAB.</em></p>
+<hr/>
+<p><strong>Build fluency with these:</strong><br/>
+- Creating and Distinguishing Text Types — <code>string</code> scalars/arrays vs char vectors; <code>isstring</code>/<code>ischar</code>/<code>isStringScalar</code><br/>
+- Text Concatenation and Appending — <code>+</code>, <code>append</code>, <code>strcat</code>; know what type the result will be<br/>
+- Measuring and Validating Text Objects — <code>strlength</code>, <code>numel</code>, scalar vs array checks<br/>
+- Case, Whitespace, and Character Property Handling — <code>lower</code>/<code>upper</code>/<code>strtrim</code>, <code>isstrprop</code>/<code>isletter</code>/<code>isspace</code></p>
+<p><strong>Expect to think harder here:</strong><br/>
+- Converting Between Text and Numeric/Container Types — <code>string</code>/<code>char</code>/<code>cellstr</code>, <code>str2double</code>/<code>sscanf</code>, <code>num2str</code>/<code>sprintf</code>; <em>choosing the right conversion and handling errors takes care</em><br/>
+- Text Comparison and Logical Masks — <code>==</code>, <code>strcmp</code>/<code>strcmpi</code>, <code>contains</code>, <code>startsWith</code>, <code>endsWith</code>, <code>matches</code>; <em>many APIs with subtle type differences between them</em><br/>
+- Finding and Locating Substrings — <code>strfind</code>/<code>contains</code>/<code>matches</code>; <em>different functions return different output types and shapes</em><br/>
+- Extracting, Replacing, and Editing Text — <code>extractBetween</code>/<code>Before</code>/<code>After</code>, <code>replace</code>, <code>strrep</code>; <em>many specialized functions — choosing the right one and preserving types is key</em><br/>
+- Splitting, Joining, and Tokenization — <code>split</code>/<code>strsplit</code>, <code>join</code>/<code>strjoin</code>; <em>delimiter edge cases and token-list shapes require attention</em></p>
+<p><strong>Conceptually demanding — start early:</strong><br/>
+- Robust Formatting and Parsing of Text Data — <code>sprintf</code>/<code>compose</code>, <code>sscanf</code>/<code>textscan</code>; <em>handling mixed or invalid input requires deliberate validation logic</em><br/>
+- Pattern Matching and Regular Expressions — we will not cover regular expressions in the course in any depth, yet they are used quite often in programming. <code>regexp</code>/<code>regexpi</code>; <em>crafting correct patterns is a skill in itself, separate from MATLAB syntax</em></p>
+  </main>
+</body>
+</html>
