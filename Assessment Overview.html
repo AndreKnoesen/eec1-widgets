@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cumulative Assessment Overview</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 70%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>Cumulative Assessment Overview</h1>
+<p>ENG 6 Spring 2026</p>
+<hr/>
+<h2>When and Where</h2>
+<p>Stage 1 takes place during Week 8 (Tuesday–Thursday, before Memorial Weekend) as a 50-minute proctored session in MATLAB Grader. Arrive at least 10 minutes before your scheduled start time; check-in begins 10 minutes before the assessment opens. Leave all personal items, including cellphones, at the front of the room. No additional materials are permitted.</p>
+<hr/>
+<h2>What is Covered</h2>
+<p>Lectures 1 through 10. Lecture 9 (GUI) is excluded: you will not be asked to create a graphical user interface. For the detailed topic list per lecture, see <strong>Lecture Essentials</strong>.</p>
+<p>The assessment is closed book with no notes. The full MATLAB documentation is available inside the lockdown browser. The MATLAB AI assistant is not.</p>
+<hr/>
+<h2>Format (100 points, 50 minutes)</h2>
+<div aria-label="Format (100 points, 50 minutes)" class="table-wrapper" role="region" tabindex="0"><table><caption>Format (100 points, 50 minutes)</caption>
+<thead>
+<tr>
+<th scope="col">Section</th>
+<th scope="col">Content</th>
+<th scope="col">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>5 multiple-choice questions: 3 OOP + 2 conceptual probes</td>
+<td>25</td>
+</tr>
+<tr>
+<td>B</td>
+<td>3 short MATLAB Grader coding problems</td>
+<td>50</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1 integrative MATLAB Grader coding problem</td>
+<td>25</td>
+</tr>
+</tbody>
+</table></div>
+<p>Sections A and B together reach the 75-point pass threshold. Section C is the differentiator for higher grades.</p>
+<p>Two submission attempts per problem in Sections B and C. First-attempt feedback is visible. The last submission is the one that is graded. Develop and test your code in MATLAB before submitting to MATLAB Grader.</p>
+<p>Final grades are determined on Friday of Week 8.</p>
+<hr/>
+<h2>Grading and Retake Policy</h2>
+<p>This assessment has two stages. Stage 1 is required; Stage 2 is optional.</p>
+<p><strong>Stage 2 — Finals Week (Optional Retake).</strong> A different, cumulative exam covering the original 6 lectures plus Weeks 8–9 material in equal proportion. One submission attempt, no feedback. Maximum score: 80%. Sign-up required one week in advance.</p>
+<p><strong>Final grade = the higher of your two scores</strong> (80% cap applied to Stage 2 only). Taking the retake cannot lower your grade.</p>
+<div aria-label="Grading and Retake Policy" class="table-wrapper" role="region" tabindex="0"><table><caption>Grading and Retake Policy</caption>
+<thead>
+<tr>
+<th scope="col">Scenario</th>
+<th scope="col">Stage 1</th>
+<th scope="col">Stage 2</th>
+<th scope="col">Final Grade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Did well on Stage 1</td>
+<td>95%</td>
+<td>—</td>
+<td>95%</td>
+</tr>
+<tr>
+<td>Strong comeback</td>
+<td>45%</td>
+<td>90% → capped</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Slight boost</td>
+<td>72%</td>
+<td>85% → capped</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Off day on retake</td>
+<td>75%</td>
+<td>60%</td>
+<td>75%</td>
+</tr>
+</tbody>
+</table></div>
+<p>There is no compulsory final.</p>
+<hr/>
+<h2>How to Prepare</h2>
+<p>Three documents, in this order:</p>
+<ol>
+<li><strong>Fundamental Concepts Mindmap</strong> — start here. Seven concepts that run through every lecture and every Mini-Project. Work through the self-check questions actively.</li>
+<li><strong>Lecture Essentials</strong> — use alongside the Mindmap to identify specific gaps per lecture.</li>
+<li><strong>Practice Study Guide</strong> — worked MATLAB examples and exam-day mechanics. Use once you have worked through the Mindmap.</li>
+</ol>
+  </main>
+</body>
+</html>
