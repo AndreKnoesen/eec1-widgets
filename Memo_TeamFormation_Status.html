@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENG 6 Final Project: Team Formation Status</title>
+  <style>
+    /* ── Skip navigation (ADA requirement) ── */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      display: block;
+      padding: 8px 16px;
+      background: #005a9c;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* ── Base typography ── */
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* ── Headings ── */
+    h1 {
+      font-size: 1.75rem;
+      border-bottom: 3px solid #005a9c;
+      padding-bottom: 0.4rem;
+      color: #003366;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 2.25rem;
+      color: #003366;
+      border-left: 5px solid #005a9c;
+      padding-left: 0.6rem;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin-top: 1.5rem;
+      color: #003366;
+    }
+
+    /* ── Blockquote (callout boxes) ── */
+    blockquote {
+      border-left: 4px solid #6699cc;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f5ff;
+      color: #1a1a1a;
+    }
+
+    /* ── Inline code ── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.9em;
+      background: #f4f4f4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a1a1a;
+    }
+
+    /* ── Code blocks ── */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.45;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: #1a1a1a;
+    }
+
+    /* ── Images ── */
+    img {
+      max-width: 70%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+    }
+
+    /* ── Horizontal rule ── */
+    hr {
+      border: none;
+      border-top: 1px solid #cccccc;
+      margin: 1.5rem 0;
+    }
+
+    /* ── Responsive table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #aaaaaa;
+      border-radius: 4px;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      background: #003366;
+      color: #ffffff;
+    }
+    th {
+      background: #005a9c;
+      color: #ffffff;
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid #dddddd;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+    tr:hover td {
+      background: #eef3ff;
+    }
+
+    /* ── Strong / emphasis ── */
+    strong {
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
+    }
+    em {
+      color: #555555;
+    }
+
+    /* ── Focus visible for keyboard navigation ── */
+    a:focus, button:focus, [tabindex]:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <main id="main-content" role="main">
+    <h1>ENG 6 Final Project: Team Formation Status</h1>
+<p><strong>To:</strong> ENG 6 Students<br/>
+<strong>From:</strong> Andre Knoesen<br/>
+<strong>Date:</strong> May 7, 2026<br/>
+<strong>Subject:</strong> Confirmed teams posted — action required if your name is missing or incorrect</p>
+<hr/>
+<p>The confirmed team list has been posted. Please read this memo carefully and take any required action <strong>by 5:00 PM today</strong>.</p>
+<h2>Check the posted team list</h2>
+<p>The confirmed team list is posted here: <a href="https://aknoesen.github.io/eec1-widgets/team_report_public.txt">https://aknoesen.github.io/eec1-widgets/team_report_public.txt</a></p>
+<p>Look for your name. There are two possible situations:</p>
+<hr/>
+<h3>Your name is on the list</h3>
+<p>Good — your team declaration was received and confirmed. Please verify that your team members and project track are recorded correctly.</p>
+<ul>
+<li><strong>If everything looks correct:</strong> no further action is needed.</li>
+<li><strong>If anything is wrong</strong> (wrong teammate, wrong track, or wrong role): all three team members must resubmit the team declaration survey. In the final question ("Any questions or concerns?") write <strong>"CORRECTION"</strong> and briefly describe what needs to change. The last submission received before the deadline is what counts.</li>
+</ul>
+<hr/>
+<h3>Your name is not on the list</h3>
+<p>Your team was not successfully confirmed. This happens for one of two reasons:</p>
+<ol>
+<li>
+<p><strong>Your team was not fully mutual.</strong> A team is only confirmed when all three members have each other listed in their submissions. If even one member listed different teammates, or left a field blank, the team cannot be confirmed.</p>
+</li>
+<li>
+<p><strong>You have not yet submitted</strong> the team declaration survey.</p>
+</li>
+</ol>
+<p>In either case, <strong>you must act now.</strong> Form or reconfirm your team and submit the survey before <strong>5:00 PM today</strong>:</p>
+<blockquote>
+<p><strong>Survey link:</strong> https://forms.gle/FgbUYtN1uFU9TQGA7<br/>
+(Sign in with your UC Davis account.)</p>
+</blockquote>
+<p><strong>Reminder:</strong> Teams must be exactly three members. Four-member teams are permitted only in exceptional circumstances and must be approved. Single- and two-person teams are not allowed under any circumstances.</p>
+<hr/>
+<h2>Deadline</h2>
+<p><strong>5:00 PM today, Wednesday May 7.</strong> Students who do not have a confirmed team by the deadline will be assigned to a team by the instructional staff. Students who are assigned rather than self-selected may have less flexibility in track and role preference.</p>
+<hr/>
+<p>Andre</p>
+<hr/>
+<p><em>Questions? Post on the course forum or bring them to your lab section.</em></p>
+  </main>
+</body>
+</html>
