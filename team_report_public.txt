@@ -1,0 +1,287 @@
+======================================================================
+ENG 6  -  Confirmed Team Assignments
+As of: 2026-05-12 07:41
+======================================================================
+Teams are numbered for reference only.
+
+----------------------------------------------------------------------
+Track A: Kemper Hall Indoor and Outdoor Tracker  (30 teams)
+----------------------------------------------------------------------
+
+Team 01
+    Ahmer, Syed Ali                     A05     Cloud & Data Layer
+    Golan, Daniel                       A05     Cloud & Data Layer
+    Letona, Balam                       A05     Sensor Signal Processing & Event Detection
+    Rodriguez, Aram                     A05     App Designer & Live UI
+
+Team 02
+    Amezcua, Bryan                      A01     Sensor Signal Processing & Event Detection
+    Mahmoodi, Mohammad                  A01     Cloud & Data Layer
+    Naveed, Sufyan                      A02     Cloud & Data Layer
+    Safi, Sahil                         A01     App Designer & Live UI
+
+Team 03
+    Antonopoulos, Anthony               A04     Cloud & Data Layer
+    Macias Flores, Emily                A08     App Designer & Live UI
+    Shu, Camryn                         A08     Sensor Signal Processing & Event Detection
+
+Team 04
+    Arrigui, Sebastian                  A02     Sensor Signal Processing & Event Detection
+    Lucero, Diego                       A08     Cloud & Data Layer
+    Rojas, Miguel                       A04     App Designer & Live UI
+
+Team 05
+    Bae, Jeongpin                       A09     Cloud & Data Layer
+    Kang, Minjae                        A09     App Designer & Live UI
+    Lee, Youngseo                       A09     Sensor Signal Processing & Event Detection
+
+Team 06
+    Baek, Eojin                         A09     Sensor Signal Processing & Event Detection
+    Kim, Kiwoong                        A09     App Designer & Live UI
+    Yu, Sungjun                         A09     Cloud & Data Layer
+
+Team 07
+    Bak, Yujun                          A09     Sensor Signal Processing & Event Detection
+    Kim, Seungjoo                       A09     App Designer & Live UI
+    Lee, Jihoon                         A09     Cloud & Data Layer
+
+Team 08
+    Bassett, Aiden                      A03     Sensor Signal Processing & Event Detection
+    Lopez, Angie                        A11     App Designer & Live UI
+    Sierra, Melisa                      A01     Cloud & Data Layer
+
+Team 09
+    Caban, Rommel                       A05     Cloud & Data Layer
+    Rodriguez-Perez, Francisco          A05     App Designer & Live UI
+    Varner, Jeffrey                     A07     Sensor Signal Processing & Event Detection
+
+Team 10
+    Carvajal, Nayeli                    A08     Sensor Signal Processing & Event Detection
+    Jaballas, Joseph                    A04     App Designer & Live UI
+    Papedis, Chloe                      A08     Cloud & Data Layer
+
+Team 11
+    Chen, Francisco                     A02     Cloud & Data Layer
+    Ramirez, Jessica                    A04     App Designer & Live UI
+    Vong, Tyler                         A11     Sensor Signal Processing & Event Detection
+
+Team 12
+    Cloyd, Oliver                       A08     Sensor Signal Processing & Event Detection
+    Pedrotti, Benjamin                  A04     Cloud & Data Layer
+    Peringelil, Johan                   A08     App Designer & Live UI
+
+Team 13
+    Coraza, Erick                       A11     Cloud & Data Layer
+    Romero, David                       A11     App Designer & Live UI
+    Salvador, David                     A08     Sensor Signal Processing & Event Detection
+
+Team 14
+    Diaz, Emma Victoria                 A05     Cloud & Data Layer
+    Elgheriani, Shamss                  A04     Sensor Signal Processing & Event Detection
+    Liu, Caden                          A05     App Designer & Live UI
+
+Team 15
+    Duarte-Baird, Daniel                A07     Cloud & Data Layer
+    Sheppard, Wendy                     A05     App Designer & Live UI
+    Sidhu, Ronika                       A08     Sensor Signal Processing & Event Detection
+
+Team 16
+    Durgaraju, Kousthubh                A04     Sensor Signal Processing & Event Detection
+    Pratt-Dermer, Adam                  A08     Cloud & Data Layer
+    Saguiped, Marc Ethan                A08     App Designer & Live UI
+
+Team 17
+    Eom, Jiseok                         A09     Cloud & Data Layer
+    Hwang, Eungyeol                     A09     App Designer & Live UI
+    Kim, Yuchan                         A09     Sensor Signal Processing & Event Detection
+
+Team 18
+    Ferrer, Isaiah                      A04     Sensor Signal Processing & Event Detection
+    Galgano, Donatello                  A01     App Designer & Live UI
+    Gonzalez, Eric                      A04     Cloud & Data Layer
+    Haro-Estrada, Sergio                A02     Sensor Signal Processing & Event Detection
+
+Team 19
+    Gajarampalli, Nikunj                A04     App Designer & Live UI
+    Nguyen, Nam                         A01     Cloud & Data Layer
+    Rowing, Sean                        A01     Sensor Signal Processing & Event Detection
+
+Team 20
+    Go, Seongmin                        A09     Cloud & Data Layer
+    Kang, Minsoo                        A09     Sensor Signal Processing & Event Detection
+    Lee, Chungseok                      A09     App Designer & Live UI
+
+Team 21
+    Gu, Hanchu                          A05     Cloud & Data Layer
+    Hon, Katie                          A05     Cloud & Data Layer
+    Wu, Bessy                           A05     App Designer & Live UI
+    Zhu, Yuanning                       A05     Sensor Signal Processing & Event Detection
+
+Team 22
+    Han, Seonggwang                     A09     App Designer & Live UI
+    Kim, Changyu                        A09     Sensor Signal Processing & Event Detection
+    Kim, Dohyun                         A09     Cloud & Data Layer
+
+Team 23
+    Hobbs, Nathaniel                    A04     Sensor Signal Processing & Event Detection
+    Reyes, Isaac                        A03     Cloud & Data Layer
+    Warden, Jack                        A08     App Designer & Live UI
+
+Team 24
+    Huang, Lucas                        A07     Cloud & Data Layer
+    Shah, Krish                         A03     App Designer & Live UI
+    Thomason, Lucas                     A03     Sensor Signal Processing & Event Detection
+
+Team 25
+    Jegorovs, Max                       A04     Cloud & Data Layer
+    Quezada, Jesus                      A04     App Designer & Live UI
+    Zhu, Hancheng                       A05     Sensor Signal Processing & Event Detection
+
+Team 26
+    Kim, Jiwan                          A09     App Designer & Live UI
+    Kim, Juno                           A09     Sensor Signal Processing & Event Detection
+    Lee, Minjun                         A09     Cloud & Data Layer
+
+Team 27
+    Kim, Sejeong                        A09     App Designer & Live UI
+    Ryu, Chaeeun                        A09     Sensor Signal Processing & Event Detection
+    Yun, Rayoung                        A09     Cloud & Data Layer
+
+Team 28
+    Kremliovsky, Sasha                  A02     App Designer & Live UI
+    Mkrtichyan, John                    A02     Sensor Signal Processing & Event Detection
+    Qin, Wenchao                        A01     Cloud & Data Layer
+
+Team 29
+    Leung, Caleb                        A07     App Designer & Live UI
+    Martin Sigala, Kevin                A05     Sensor Signal Processing & Event Detection
+    Wiggs, Bradley                      A07     Cloud & Data Layer
+
+Team 30
+    Mehrotra, Bhavya                    A11     Sensor Signal Processing & Event Detection
+    Mitra, Rimli                        A11     App Designer & Live UI
+    Ngo, Lindsey                        A11     Cloud & Data Layer
+
+----------------------------------------------------------------------
+Track B: Networked Sensor-Controlled Game  (22 teams)
+----------------------------------------------------------------------
+
+Team 31
+    Abbott, Hayden                      A07     App Designer & Live UI
+    Conner, Brett                       A08     Sensor Signal Processing & Event Detection
+    Sochur, Michal                      A11     Cloud & Data Layer
+
+Team 32
+    Aggarwal, Om                        A07     Sensor Signal Processing & Event Detection
+    Huey, Benji                         A04     Cloud & Data Layer
+    Sheshadri, Pranav                   A07     App Designer & Live UI
+
+Team 33
+    An, Hyunjun                         A09     Cloud & Data Layer
+    Im, Dongwon                         A09     App Designer & Live UI
+    Son, Hojin                          A09     Sensor Signal Processing & Event Detection
+
+Team 34
+    Anchalia, Urshita                   A03     App Designer & Live UI
+    Her, Katelyn                        A04     Sensor Signal Processing & Event Detection
+    Monclus, Emma                       A03     Cloud & Data Layer
+
+Team 35
+    Anderson, Taylor                    A11     App Designer & Live UI
+    Cohen, Sean                         A11     Cloud & Data Layer
+    Stuman, Elise                       A01     Sensor Signal Processing & Event Detection
+
+Team 36
+    Arambula, Felipe                    A08     Cloud & Data Layer
+    Arellano, Adrian                    A08     App Designer & Live UI
+    Tadesse, Kedamawi                   A05     Sensor Signal Processing & Event Detection
+
+Team 37
+    Castillo, Joseph                    A02     Cloud & Data Layer
+    Ebert, Dominic                      A01     App Designer & Live UI
+    Squires, Jacob                      A01     Sensor Signal Processing & Event Detection
+
+Team 38
+    Chan, Zoe                           A04     App Designer & Live UI
+    Phan, Kien                          A04     Cloud & Data Layer
+    Vital, Anthony                      A07     Sensor Signal Processing & Event Detection
+
+Team 39
+    Chang, Jinyoung                     A09     Cloud & Data Layer
+    Cho, Hyeonbin                       A09     Sensor Signal Processing & Event Detection
+    Kim, Donghyuk                       A09     App Designer & Live UI
+
+Team 40
+    Chen, Kaiqing                       A01     Sensor Signal Processing & Event Detection
+    Lin, Runxiang                       A08     Cloud & Data Layer
+    Wang, Yitao                         A04     App Designer & Live UI
+
+Team 41
+    Chen, Yucheng                       A01     Cloud & Data Layer
+    Hsieh, Alex                         A01     App Designer & Live UI
+    Xu, Muyang                          A04     Sensor Signal Processing & Event Detection
+
+Team 42
+    Dass, Nikhita                       A11     Sensor Signal Processing & Event Detection
+    Nguyen, Kristen                     A11     App Designer & Live UI
+    Yadav, Arushi                       A11     Cloud & Data Layer
+
+Team 43
+    De La Cruz Segundo, Oscar           A01     App Designer & Live UI
+    Lee, Milan                          A04     Sensor Signal Processing & Event Detection
+    Santacruz Santoyo, Margarito        A08     Cloud & Data Layer
+
+Team 44
+    Effinger, Jade                      A05     App Designer & Live UI
+    Ly, Alan                            A04     Cloud & Data Layer
+    Park, Sanghyun                      A05     Sensor Signal Processing & Event Detection
+
+Team 45
+    Garcia, Giovanni                    A08     App Designer & Live UI
+    Lopez, Jonathan                     A08     Cloud & Data Layer
+    Salcedo, Daniel                     A08     Sensor Signal Processing & Event Detection
+
+Team 46
+    Glover, Savannah                    A04     App Designer & Live UI
+    Robinson, Kiera                     A04     Sensor Signal Processing & Event Detection
+    Son, Lisa                           A04     Cloud & Data Layer
+
+Team 47
+    Gonzalez Escobedo, Antonio          A05     Sensor Signal Processing & Event Detection
+    Lopez, Cristian                     A01     Cloud & Data Layer
+    Zeledon, Brian                      A04     App Designer & Live UI
+
+Team 48
+    Hernandez Moya, Angel               A08     Cloud & Data Layer
+    Hu, Yuze                            A04     Sensor Signal Processing & Event Detection
+    Vue, Sam                            A08     App Designer & Live UI
+
+Team 49
+    Kallstrom, Gracie                   A03     Cloud & Data Layer
+    Lokhande, Suravi                    A07     App Designer & Live UI
+    Paran, Lavenia                      A03     Sensor Signal Processing & Event Detection
+
+Team 50
+    Kang, Noa                           A03     Cloud & Data Layer
+    Margeson, Tyler                     A04     Sensor Signal Processing & Event Detection
+    Pineda, John                        A03     App Designer & Live UI
+
+Team 51
+    Ling, Yichen                        A03     Cloud & Data Layer
+    Wong, Elson                         A08     Sensor Signal Processing & Event Detection
+    Zagal-Flores, Diego                 A05     App Designer & Live UI
+
+Team 52
+    Merritt, Eben                       A01     Sensor Signal Processing & Event Detection
+    Obeso Gallegos, Luna                A08     Cloud & Data Layer
+    Shekhar, Unnati                     A08     App Designer & Live UI
+
+======================================================================
+TRACK SELECTION SUMMARY
+======================================================================
+  Track A  (Kemper Hall Indoor and Outdoor Tracker)
+            30 teams,   94 students
+  Track B  (Networked Sensor-Controlled Game)
+            22 teams,   66 students
+  TOTAL     52 teams,  160 students
+======================================================================
