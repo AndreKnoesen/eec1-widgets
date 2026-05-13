@@ -26,16 +26,6 @@
       text-decoration: none;
     }
 
-    /* ── Course banner ── */
-    .course-banner {
-      background: #003366;
-      color: #ffffff;
-      padding: 0.45rem 1.25rem;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.04em;
-    }
-
     /* ── Base typography ── */
     body {
       font-family: Georgia, "Times New Roman", serif;
@@ -91,32 +81,31 @@
       color: #1a1a1a;
     }
 
-    /* ── Fenced code / output blocks ── */
+    /* ── Code blocks ── */
     pre {
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.9em;
       background: #f4f4f4;
-      color: #1a1a1a;
-      padding: 0.75rem 1rem;
-      border-left: 4px solid #6699cc;
-      border-radius: 3px;
+      border: 1px solid #cccccc;
+      border-left: 4px solid #005a9c;
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
       overflow-x: auto;
+      margin: 1rem 0;
       line-height: 1.45;
-      margin: 0.75rem 0;
     }
     pre code {
-      background: transparent;
+      background: none;
       padding: 0;
       border-radius: 0;
-      font-size: 1em;
+      font-size: 0.88em;
+      color: #1a1a1a;
     }
 
     /* ── Images ── */
     img {
-      max-width: 100%;
+      max-width: 70%;
       height: auto;
       display: block;
-      margin: 1rem 0;
+      margin: 1rem auto;
     }
 
     /* ── Horizontal rule ── */
@@ -182,12 +171,19 @@
       outline-offset: 2px;
     }
   </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$',  right: '$',  display: false}
+      ],
+      throwOnError: false
+    });"></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
-  <header role="banner" class="course-banner">
-    ENG6 &nbsp;&bull;&nbsp; Spring 2026 &nbsp;&bull;&nbsp; UC Davis
-  </header>
   <main id="main-content" role="main">
     <h1>MiniProject 6: Building Your First Activity Classifier</h1>
 <hr/>
@@ -238,7 +234,7 @@ Right-click each link below, choose <em>Save Link As</em> (or <em>Download</em> 
 </tr>
 <tr>
 <td><code>data.zip</code></td>
-<td><a href="https://canvas.ucdavis.edu/courses/1078677/files/31131502?wrap=1">Canvas &gt; MiniProject 6 &gt; Files</a></td>
+<td><a href="https://canvas.ucdavis.edu/courses/1078677/files/31149839?wrap=1">Canvas &gt; MiniProject 6 &gt; Files</a></td>
 <td>~2 MB archive containing every student's recordings</td>
 </tr>
 <tr>
