@@ -159,7 +159,7 @@
 
     /* ── Strong / emphasis ── */
     strong {
-      color: #8b0000;
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
     }
     em {
       color: #555555;
@@ -226,10 +226,10 @@
 <p><strong>Start and Stop controls.</strong> A <strong>Start Activity</strong> button begins acquiring GPS (latitude, longitude, altitude, speed, horizontalAccuracy) and accelerometer data simultaneously from <code>mobiledev</code>. A corresponding <strong>Stop Activity</strong> button ends data collection and finalizes the workout.</p>
 </li>
 <li>
-<p><strong>Live outdoor view.</strong> While GPS is reporting a good fix, the app displays a map (using <code>geoaxes</code> and <code>geoplot</code>) with the walk path drawn as new GPS points arrive. The user's current position is kept visible in the view.</p>
+<p><strong>Live outdoor view.</strong> While GPS is reporting a good fix, the app displays a map with the walk path drawn as new GPS points arrive. The user's current position is kept visible in the view.</p>
 </li>
 <li>
-<p><strong>Automatic regime switch.</strong> The app monitors the GPS horizontal accuracy returned by <code>poslog</code>. When the reported accuracy degrades past a threshold your team chooses (typical indoor values are 30 meters or worse), the app switches its main display from the outdoor map to an indoor floor-plan view. When outdoor accuracy returns, the app switches back. The current regime (Outdoor GPS, Indoor Sensors) is visible to the user at all times.</p>
+<p><strong>Automatic regime switch.</strong> The app monitors the GPS horizontal accuracy. When the reported accuracy degrades past a threshold your team chooses (typical indoor values are 30 meters or worse), the app switches its main display from the outdoor map to an indoor floor-plan view. When outdoor accuracy returns, the app switches back. The current regime (Outdoor GPS, Indoor Sensors) is visible to the user at all times.</p>
 </li>
 <li>
 <p><strong>Floor detection indoors.</strong> The app reports which floor of Kemper Hall the user is currently on (1 through 4). Floor changes are detected from accelerometer patterns: stair climbing and elevator rides each leave distinctive signatures (see Appendix A). You start the walk on the floor the user selects; the floor counter increments or decrements as transitions are detected.</p>
