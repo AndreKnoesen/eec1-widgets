@@ -1,0 +1,245 @@
+<!DOCTYPE html><html><head>
+      <title>19_11_name_value_arguments</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\admin-aknoesen\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.26\crossnote\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-details{margin:0;padding:0;border:none}.markdown-preview .md-toc summary.md-toc-link-wrapper{cursor:pointer;list-style-position:outside}.markdown-preview .md-toc summary.md-toc-link-wrapper::marker{font-size:.85em}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='0']{margin-left:12px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='1']{margin-left:28px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='2']{margin-left:44px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='3']{margin-left:60px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='4']{margin-left:76px}.markdown-preview .md-toc .md-toc-link-wrapper[data-level='5']{margin-left:80px}.markdown-preview a.tag,.markdown-preview a.tag:active,.markdown-preview a.tag:link,.markdown-preview a.tag:visited,.markdown-preview span.tag:not(.token){display:inline-block;background-color:var(--vscode-badge-background,rgba(127,127,127,.18));color:var(--vscode-badge-foreground,currentColor);border-radius:2em;font-size:.85em;font-weight:500;padding:.05em .55em;line-height:1.5;white-space:nowrap;text-decoration:none;text-shadow:none;box-shadow:none;transition:background-color .12s ease,opacity .12s ease}.markdown-preview a.tag{cursor:pointer}.markdown-preview a.tag:focus,.markdown-preview a.tag:hover{background-color:var(--vscode-badge-background,rgba(127,127,127,.32));color:var(--vscode-badge-foreground,currentColor);opacity:.85;text-decoration:none;outline:0}.markdown-preview .wikilink-embed-content{border-left:3px solid var(--vscode-textBlockQuote-border,rgba(128,128,128,.3));background:var(--vscode-textBlockQuote-background,rgba(128,128,128,.05));margin:.5em 0;padding:.5em .75em;border-radius:0 3px 3px 0}.markdown-preview .wikilink-embed-content.wikilink-embed-error{border-left-color:var(--vscode-errorForeground,#cf222e);color:var(--vscode-errorForeground,#cf222e);font-style:italic;opacity:.8}.markdown-preview .wikilink-embed-content h1:first-child,.markdown-preview .wikilink-embed-content h2:first-child,.markdown-preview .wikilink-embed-content h3:first-child,.markdown-preview .wikilink-embed-content h4:first-child,.markdown-preview .wikilink-embed-content h5:first-child,.markdown-preview .wikilink-embed-content h6:first-child{margin-top:.25em}.markdown-preview .wikilink-embed-content .wikilink-embed-content{margin:.25em 0;padding:.25em .5em}.markdown-preview .block-id{display:none}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-details{margin:0;padding:0;border:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='0']{padding-left:0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='1']{padding-left:16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='2']{padding-left:32px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='3']{padding-left:48px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='4']{padding-left:64px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper[data-level='5']{padding-left:80px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script>
+    </head>
+    <body for="html-export">
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="1911-name-value-arguments">19.11 Name-value arguments </h1>
+<h2 id="motivation">Motivation </h2>
+<p>When a function has more than two or three optional inputs, positional<br>
+calls become hard to read. Consider a function that plots a signal with<br>
+options for color, line width, marker, and title. A positional call<br>
+might look like:</p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> "red"<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> "o"<span class="token punctuation">,</span> "Demo"<span class="token punctuation">)</span>
+</code></pre><p>A reader cannot tell at a glance which number is the line width and<br>
+which is the marker size. Worse, if a caller wants to set only the<br>
+title, they still have to fill in every preceding argument with a<br>
+placeholder.</p>
+<p><strong>Name-value arguments</strong> solve this by associating each value with a<br>
+name. The caller specifies only the options they care about, in any<br>
+order, and each value is paired with a meaningful name in the call.</p>
+<h2 id="declaring-name-value-arguments">Declaring name-value arguments </h2>
+<p>Inside a function, an <code>arguments</code> block declares the inputs. Required<br>
+and optional positional inputs are listed first. Name-value inputs are<br>
+gathered into a structure whose name appears in the function signature.</p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token keyword keyword-function">function</span> <span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> opts<span class="token punctuation">)</span>
+    arguments
+        <span class="token function">t</span>                <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">:</span><span class="token punctuation">)</span> double
+        <span class="token function">y</span>                <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">:</span><span class="token punctuation">)</span> double
+        opts<span class="token punctuation">.</span>Color       string         <span class="token operator">=</span> "blue"
+        opts<span class="token punctuation">.</span><span class="token function">LineWidth</span>   <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> double   <span class="token operator">=</span> <span class="token number">1</span>
+        opts<span class="token punctuation">.</span>Title       string         <span class="token operator">=</span> ""
+    <span class="token keyword keyword-end">end</span>
+
+    <span class="token function">plot</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> Color<span class="token operator">=</span>opts<span class="token punctuation">.</span>Color<span class="token punctuation">,</span> LineWidth<span class="token operator">=</span>opts<span class="token punctuation">.</span>LineWidth<span class="token punctuation">)</span>
+    <span class="token function">title</span><span class="token punctuation">(</span>opts<span class="token punctuation">.</span>Title<span class="token punctuation">)</span>
+<span class="token keyword keyword-end">end</span>
+</code></pre><p>Three points to notice:</p>
+<ol>
+<li>The name <code>opts</code> is just an identifier chosen by the function author.<br>
+You could use <code>nv</code>, <code>options</code>, <code>kw</code>, or anything else. Inside the<br>
+function, <code>opts</code> is a <strong>structure</strong> with one field for each<br>
+name-value input.</li>
+<li>Each name-value input is given a <strong>default value</strong> with <code>=</code>. If the<br>
+caller omits the argument, the default is used.</li>
+<li>The size and type specifications such as <code>(1,:) double</code> are optional<br>
+but catch mistakes early and document the function's expectations.</li>
+</ol>
+<h2 id="calling-the-function">Calling the function </h2>
+<p>Two equivalent syntaxes are accepted.</p>
+<p><strong>Equals form (recommended for new code):</strong></p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">)</span>                              <span class="token comment">% all defaults</span>
+<span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> Color<span class="token operator">=</span>"red"<span class="token punctuation">)</span>                 <span class="token comment">% one option</span>
+<span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> LineWidth<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> Color<span class="token operator">=</span>"red"<span class="token punctuation">)</span>    <span class="token comment">% any order, any subset</span>
+</code></pre><p><strong>Comma form (used in older code and required in some legacy contexts):</strong></p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> "Color"<span class="token punctuation">,</span> "red"<span class="token punctuation">)</span>
+<span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> "LineWidth"<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> "Color"<span class="token punctuation">,</span> "red"<span class="token punctuation">)</span>
+</code></pre><p>Both produce the same result. The function definition does not change<br>
+based on which syntax the caller chooses.</p>
+<h2 id="three-rules-to-remember">Three rules to remember </h2>
+<p><strong>Rule 1. Name-value arguments come last.</strong> All positional arguments<br>
+must appear before any name-value pair. This call is an error:</p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token function">plotSignal</span><span class="token punctuation">(</span>Color<span class="token operator">=</span>"red"<span class="token punctuation">,</span> t<span class="token punctuation">,</span> y<span class="token punctuation">)</span>   <span class="token comment">% invalid: name-value before positional</span>
+</code></pre><p><strong>Rule 2. Order does not matter among name-value pairs.</strong> These two<br>
+calls do the same thing:</p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> Color<span class="token operator">=</span>"red"<span class="token punctuation">,</span> LineWidth<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> LineWidth<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> Color<span class="token operator">=</span>"red"<span class="token punctuation">)</span>
+</code></pre><p><strong>Rule 3. Names must be valid identifiers.</strong> A name-value argument<br>
+called <code>allow-empty</code> works with the comma form <code>"allow-empty", true</code><br>
+but not with <code>allow-empty=true</code>, because the equals form requires the<br>
+name to be a legal MATLAB variable name.</p>
+<h2 id="why-this-style-is-worth-learning">Why this style is worth learning </h2>
+<p>Most built-in MATLAB plotting and analysis functions accept name-value<br>
+arguments (<code>plot</code>, <code>histogram</code>, <code>xline</code>, <code>legend</code>, <code>scatter</code>, and many<br>
+others). Writing your own functions the same way makes them:</p>
+<ul>
+<li><strong>Readable.</strong> Each value is labeled at the call site.</li>
+<li><strong>Order-independent.</strong> Callers do not have to memorize argument<br>
+positions.</li>
+<li><strong>Extensible.</strong> New options can be added later without breaking<br>
+existing callers, because old calls simply omit the new argument and<br>
+receive the default.</li>
+</ul>
+<h2 id="section-summary">Section summary </h2>
+<ul>
+<li>Name-value arguments associate a value with a name at the call site.</li>
+<li>They are declared inside an <code>arguments</code> block, gathered into a<br>
+structure such as <code>opts</code>.</li>
+<li>Each name-value argument should have a default value.</li>
+<li>They are called using either <code>Name=Value</code> or <code>"Name", Value</code>.</li>
+<li>Name-value arguments must follow all positional arguments.</li>
+</ul>
+<h2 id="participation-activity-19111-concept-check">Participation Activity 19.11.1 (concept check) </h2>
+<p>Given this function definition:</p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token keyword keyword-function">function</span> <span class="token function">plotSignal</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> opts<span class="token punctuation">)</span>
+    arguments
+        <span class="token function">t</span>                <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">:</span><span class="token punctuation">)</span> double
+        <span class="token function">y</span>                <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">:</span><span class="token punctuation">)</span> double
+        opts<span class="token punctuation">.</span>Color       string         <span class="token operator">=</span> "blue"
+        opts<span class="token punctuation">.</span><span class="token function">LineWidth</span>   <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> double   <span class="token operator">=</span> <span class="token number">1</span>
+        opts<span class="token punctuation">.</span>Title       string         <span class="token operator">=</span> ""
+    <span class="token keyword keyword-end">end</span>
+    <span class="token function">plot</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> y<span class="token punctuation">,</span> Color<span class="token operator">=</span>opts<span class="token punctuation">.</span>Color<span class="token punctuation">,</span> LineWidth<span class="token operator">=</span>opts<span class="token punctuation">.</span>LineWidth<span class="token punctuation">)</span>
+    <span class="token function">title</span><span class="token punctuation">(</span>opts<span class="token punctuation">.</span>Title<span class="token punctuation">)</span>
+<span class="token keyword keyword-end">end</span>
+</code></pre><p>Which of the following calls are valid? For each invalid call, identify<br>
+the rule that is violated.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Call</th>
+<th>Valid?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td><code>plotSignal(t, y)</code></td>
+<td></td>
+</tr>
+<tr>
+<td>b</td>
+<td><code>plotSignal(t, y, "red", 2)</code></td>
+<td></td>
+</tr>
+<tr>
+<td>c</td>
+<td><code>plotSignal(t, y, LineWidth=2)</code></td>
+<td></td>
+</tr>
+<tr>
+<td>d</td>
+<td><code>plotSignal(LineWidth=2, t, y)</code></td>
+<td></td>
+</tr>
+<tr>
+<td>e</td>
+<td><code>plotSignal(t, y, Title="Run 1", Color="green")</code></td>
+<td></td>
+</tr>
+<tr>
+<td>f</td>
+<td><code>plotSignal(t, y, Color="green", LineWidth=1.5, Title="Run 2")</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Answer key:</strong></p>
+<ul>
+<li>(a) Valid. All name-value arguments use their defaults.</li>
+<li>(b) Invalid. <code>"red"</code> and <code>2</code> are passed positionally, but only <code>t</code><br>
+and <code>y</code> are declared as positional inputs.</li>
+<li>(c) Valid. Only <code>LineWidth</code> is specified; the rest use defaults.</li>
+<li>(d) Invalid. A name-value argument appears before positional<br>
+arguments. Rule 1.</li>
+<li>(e) Valid. Order among name-value pairs is free.</li>
+<li>(f) Valid.</li>
+</ul>
+<h2 id="participation-activity-19112-code-completion">Participation Activity 19.11.2 (code completion) </h2>
+<p><strong>Goal.</strong> Write a function <code>summarize(x, opts)</code> that returns the mean<br>
+of vector <code>x</code>, with two name-value options:</p>
+<ul>
+<li><code>Trim</code>: a fraction of values to drop from each end of the sorted<br>
+vector before averaging. Default <code>0</code>.</li>
+<li><code>Round</code>: the number of decimal places to round the result to.<br>
+Default <code>2</code>.</li>
+</ul>
+<p><strong>What is given.</strong> The function signature and the <code>arguments</code> block<br>
+are written for you. Your task is to fill in the function body so the<br>
+sample calls below produce the expected results.</p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token keyword keyword-function">function</span> m <span class="token operator">=</span> <span class="token function">summarize</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> opts<span class="token punctuation">)</span>
+    arguments
+        <span class="token function">x</span>          <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">:</span><span class="token punctuation">)</span> double
+        opts<span class="token punctuation">.</span><span class="token function">Trim</span>  <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> double <span class="token operator">=</span> <span class="token number">0</span>
+        opts<span class="token punctuation">.</span><span class="token function">Round</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> double <span class="token operator">=</span> <span class="token number">2</span>
+    <span class="token keyword keyword-end">end</span>
+
+    <span class="token comment">% ----- YOUR CODE HERE -----</span>
+    <span class="token comment">% 1. Sort x in ascending order.</span>
+    <span class="token comment">% 2. Drop floor(numel(x) * opts.Trim) values from each end.</span>
+    <span class="token comment">% 3. Compute the mean of what remains.</span>
+    <span class="token comment">% 4. Round the result to opts.Round decimal places.</span>
+    <span class="token comment">% 5. Assign the result to m.</span>
+
+<span class="token keyword keyword-end">end</span>
+</code></pre><p><strong>Sample calls and expected results.</strong> Use these to check your<br>
+function:</p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token function">summarize</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">10</span><span class="token punctuation">)</span>                       <span class="token comment">% expected: 5.50</span>
+<span class="token function">summarize</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">:</span><span class="token number">10</span><span class="token punctuation">,</span> Round<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>              <span class="token comment">% expected: 6</span>
+<span class="token function">summarize</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">,</span> Trim<span class="token operator">=</span><span class="token number">0.2</span><span class="token punctuation">)</span>    <span class="token comment">% expected: 3.00  (drops 1 and 100, averages 2,3,4)</span>
+</code></pre><p><strong>Answer key:</strong></p>
+<pre data-role="codeBlock" data-info="matlab" class="language-matlab matlab"><code><span class="token keyword keyword-function">function</span> m <span class="token operator">=</span> <span class="token function">summarize</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> opts<span class="token punctuation">)</span>
+    arguments
+        <span class="token function">x</span>          <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">:</span><span class="token punctuation">)</span> double
+        opts<span class="token punctuation">.</span><span class="token function">Trim</span>  <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> double <span class="token operator">=</span> <span class="token number">0</span>
+        opts<span class="token punctuation">.</span><span class="token function">Round</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> double <span class="token operator">=</span> <span class="token number">2</span>
+    <span class="token keyword keyword-end">end</span>
+
+    xs      <span class="token operator">=</span> <span class="token function">sort</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    n       <span class="token operator">=</span> <span class="token function">numel</span><span class="token punctuation">(</span>xs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    k       <span class="token operator">=</span> <span class="token function">floor</span><span class="token punctuation">(</span>n <span class="token operator">*</span> opts<span class="token punctuation">.</span>Trim<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    trimmed <span class="token operator">=</span> <span class="token function">xs</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">+</span>k <span class="token operator">:</span> n<span class="token operator">-</span>k<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    m       <span class="token operator">=</span> <span class="token function">round</span><span class="token punctuation">(</span><span class="token function">mean</span><span class="token punctuation">(</span>trimmed<span class="token punctuation">)</span><span class="token punctuation">,</span> opts<span class="token punctuation">.</span>Round<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword keyword-end">end</span>
+</code></pre><h2 id="note-on-older-matlab-code">Note on older MATLAB code </h2>
+<p>When reading MATLAB code from textbooks, online examples, or legacy lab<br>
+scripts, you may see functions that handle optional inputs using<br>
+<code>varargin</code> and manual parsing, or using the <code>inputParser</code> class. These<br>
+older patterns achieve the same goal but require more code and are less<br>
+self-documenting. The <code>arguments</code> block is the preferred style for new<br>
+code.</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
