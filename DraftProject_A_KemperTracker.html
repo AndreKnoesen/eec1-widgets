@@ -199,7 +199,7 @@
 <p>The project builds directly on your Mini-Projects. Your Mini-Project 4 class <code>SensorDataAnalyzer</code> is the starting point for the analysis layer; your Mini-Project 5 app <code>SensorDashboard</code> is the starting point for the GUI. You will extend both. You are not expected to rebuild either from scratch.</p>
 <p>In addition to App Designer skills from MP5, this project will expose you to the following additional topics:</p>
 <ul>
-<li>Visualizing geospatial data on a live map using <code>geoaxes</code> and <code>geoplot</code>.</li>
+<li>Visualizing geospatial data on a live map.</li>
 <li>Running a live-updating GUI during continuous sensor acquisition.</li>
 <li>Detecting physical events (stair climbing, elevator use) from accelerometer signatures.</li>
 <li>Uploading structured data to a cloud platform (ThingSpeak) and reading it back.</li>
@@ -210,7 +210,7 @@
 <h2>How to Get Started</h2>
 <p>The project runs May 12 through June 4. Here is a recommended weekly rhythm. Do not try to do everything in the last week.</p>
 <p><strong>Week 1 (May 12 to 17).</strong> Attend both required workshops (Advanced GUI on May 12, ThingSpeak on May 14). Form your team's technical plan: decide which reach feature you will chase, sketch your ThingSpeak field layout (Appendix C is a starting point), and copy your <code>SensorDataAnalyzer</code> and <code>SensorDashboard.mlapp</code> from MP5 into your project folder.</p>
-<p><strong>Week 2 (May 18 to 24).</strong> Get three pieces working in isolation, not integrated yet: (1) the outdoor GPS live map (<code>geoaxes</code>/<code>geoplot</code>), (2) a first-pass indoor floor detector running on recorded accelerometer data, (3) a test write and read against your ThingSpeak channel. Working in isolation first is how you avoid week-3 tangled debugging. Also this week: stub the <code>analyzeReferenceWalk.m</code> function that the automated grading harness calls. See <code>FinalProject_TestHarness_Students.md</code> for the function signature, return format, and a copy-paste template. Building this stub now (rather than at submission) will surface separation-of-concerns issues while there is still time to fix them.</p>
+<p><strong>Week 2 (May 18 to 24).</strong> Get three pieces working in isolation, not integrated yet: (1) the outdoor GPS live map, (2) a first-pass indoor floor detector running on recorded accelerometer data, (3) a test write and read against your ThingSpeak channel. Working in isolation first is how you avoid week-3 tangled debugging. Also this week: stub the <code>analyzeReferenceWalk.m</code> function that the automated grading harness calls. See <code>FinalProject_TestHarness_Students.md</code> for the function signature, return format, and a copy-paste template. Building this stub now (rather than at submission) will surface separation-of-concerns issues while there is still time to fix them.</p>
 <p><strong>Week 3 (May 25 to 31).</strong> Integrate the three pieces into the App Designer app. Do your first full Kemper Evaluation Route walk (Appendix B) with the app running. Start drafting your Error Characterization Report. Do a practice run of your video.</p>
 <p><strong>Final days (June 1 to 4).</strong> Polish. Do a final walk for the report if needed. Record the video (6 minute hard limit). Submit by June 4 at 11:59 PM.</p>
 <p>If you schedule your first Kemper walk for submission week, you will not have time to fix what breaks.</p>
