@@ -159,7 +159,7 @@
 
     /* ── Strong / emphasis ── */
     strong {
-      color: #8b0000;
+      color: #8b0000;  /* dark red — passes 4.5:1 contrast on white */
     }
     em {
       color: #555555;
@@ -209,7 +209,7 @@
 <h2>How to Get Started</h2>
 <p>The project runs May 12 through June 4. Here is a recommended weekly rhythm. Do not try to do everything in the last week.</p>
 <p><strong>Week 1 (May 12 to 17).</strong> Attend both required workshops (Advanced GUI on May 12, ThingSpeak on May 14). Pick your game. <strong>Play it on paper first</strong> with real cards or dice; write down the rules; discover the edge cases (there are always edge cases) before any code is written. Copy your <code>SensorDataAnalyzer</code> from MP4 into your project folder.</p>
-<p><strong>Week 2 (May 18 to 24).</strong> Build a minimal end-to-end skeleton: one shake on Player 1's phone increments a counter on both Player 1's and Player 2's apps through a ThingSpeak channel, on two different machines. This is not the game yet. It is the proof that your turn-passing and your gesture detection both work. Do this before any game logic. Also this week: stub the <code>testGestureDetector.m</code> function that the automated grading harness calls, and confirm your <code>NetworkMessenger</code> class can be instantiated and exercised headless (without the game running). See <code>FinalProject_TestHarness_Students.md</code> for the function signature, return format, and a copy-paste template. Building these stubs now will surface separation-of-concerns issues while there is still time to fix them.</p>
+<p><strong>Week 2 (May 18 to 24).</strong> Build a minimal end-to-end skeleton: one shake on Player 1's phone increments a counter on both Player 1's and Player 2's apps through a ThingSpeak channel, on two different machines. This is not the game yet. It is the proof that your turn-passing and your gesture detection both work. Do this before any game logic. Also this week: stub the <code>testGestureDetector.m</code> function that the automated grading harness calls, and confirm your <code>NetworkMessenger</code> class can be instantiated and exercised headless (without the game running). See <a href="https://aknoesen.github.io/eec1-widgets/FinalProject_TestHarness_Students.html"><code>FinalProject_TestHarness_Students.md</code></a> for the function signature, return format, and a copy-paste template. Building these stubs now will surface separation-of-concerns issues while there is still time to fix them.</p>
 <p><strong>Week 3 (May 25 to 31).</strong> Wrap the real game around the working skeleton. Tune gesture thresholds on both phones. Draft your Design Memo. Do a practice run of your video.</p>
 <p><strong>Final days (June 1 to 4).</strong> Polish. Play a full game end to end on two machines with two team members. Record the video (6 minute hard limit). Submit by June 4 at 11:59 PM.</p>
 <p>The single biggest avoidable failure on this project is leaving "try it on two computers" for submission week.</p>
