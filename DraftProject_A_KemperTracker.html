@@ -186,9 +186,6 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <main id="main-content" role="main">
     <h1>Final Project Track A: Kemper Hall Indoor and Outdoor Tracker</h1>
-<blockquote>
-<p><strong>DRAFT — for student review only.</strong> Requirements, deadlines, and rubric details may change before finalization. The overall scope and deliverables are stable enough for team formation and early planning.</p>
-</blockquote>
 <h2>At a Glance</h2>
 <p><strong>In one sentence.</strong> Build a MATLAB app that tracks a walk from outdoors (using GPS) to indoors (using your phone's accelerometer) through all four floors of Kemper Hall, then uploads the walk to a cloud service so you can load and replay it later.</p>
 <p><strong>What stays from Mini-Projects 4 and 5.</strong> Your <code>SensorDataAnalyzer</code> class, your <code>SensorDashboard.mlapp</code>, and the separation-of-concerns discipline. You extend these; you do not rewrite them.</p>
@@ -310,22 +307,15 @@
 <ol>
 <li>Start outdoors at a marked location outside Kemper Hall's main entrance. Record your starting coordinates.</li>
 <li>Walk into the building through the main entrance.</li>
+<li>Take the circular staircase to the second floor in the lobby. The start of this staircase will serve as your first floor checkpoint.</li>
 <li>Take the stairs to the third floor.</li>
-<li>Walk to a designated landmark on the third floor (to be announced).</li>
+<li>Find the small hallway which leads to meeting rooms 3087 and 3089 and approach the wall, which serves as our thired floor checkpoint, and return to the main hall.</li>
 <li>Take the elevator to the first floor.</li>
-<li>Walk to a second designated landmark on the first floor.</li>
 <li>Exit the building through the main entrance.</li>
 <li>Return to the marked starting location outside.</li>
 </ol>
 <p>Landmarks will be designated with floor-plan coordinates and visible markers during the project period. Teams report their app's estimated position at each landmark, at the two floor transitions, and at the final outdoor return point.</p>
-<h3>Kemper Hall Floor Plans</h3>
-<p>Use these floor plans to plan your route, identify landmark coordinates, and as the background images for your indoor position overlay (core requirement 6).</p>
-<ul>
-<li><a href="https://canvas.ucdavis.edu/courses/1078677/files/31283115?wrap=1">Kemper Basement</a></li>
-<li><a href="https://canvas.ucdavis.edu/courses/1078677/files/31283112?wrap=1">Kemper - 1st Floor</a></li>
-<li><a href="https://canvas.ucdavis.edu/courses/1078677/files/31283113?wrap=1">Kemper - 2nd Floor</a></li>
-<li><a href="https://canvas.ucdavis.edu/courses/1078677/files/31283114?wrap=1">Kemper - 3rd Floor</a></li>
-</ul>
+<p>For your convenience, campus maps with added paths are included in the reference data folder in <a href="https://aknoesen.github.io/eec1-widgets/FinalProject_TestHarness_Students.html"><code>FinalProject_TestHarness_Students.md</code></a>.</p>
 <h2>Appendix C: ThingSpeak Field Layout (Suggested)</h2>
 <p>A team channel with the following field layout satisfies core functionality. Teams may extend this with additional fields as their reach features require.</p>
 <div aria-label="Appendix C: ThingSpeak Field Layout (Suggested)" class="table-wrapper" role="region" tabindex="0"><table><caption>Appendix C: ThingSpeak Field Layout (Suggested)</caption>
@@ -405,7 +395,7 @@ delete(app.UpdateTimer);
 <li><strong>Mini-Project 5</strong> gave you <code>SensorDashboard</code> and taught you separation of concerns. This project's scope makes that separation mandatory, not optional. Keep sensor acquisition, analysis, cloud I/O, and GUI in distinct classes.</li>
 </ul>
 <hr/>
-<p><em>Version 1.1</em></p>
+<p><em>Version 1.2</em></p>
   </main>
 </body>
 </html>
