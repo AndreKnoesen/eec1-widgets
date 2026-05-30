@@ -212,6 +212,7 @@
 <li><code>golden_accel.mat</code> (a single variable <code>accel_data</code>, a MATLAB <code>timetable</code> from <code>accellog</code>)</li>
 <li><code>golden_truth.json</code> (an annotation file you do not need to write your own parser for; you only consume the data files)</li>
 </ul>
+<p>The folder <a href="https://canvas.ucdavis.edu/courses/1078677/files/31322047?wrap=1"><code>Project A Reference Data.zip</code></a> contains reference data, along with path maps, which you can use to test your function and compare with the data from your own runs. Keep in mind that the harness will use different testing data.</p>
 <h3>What your function must do</h3>
 <ol>
 <li>Load the two <code>.mat</code> files.</li>
@@ -325,6 +326,7 @@ end
 <pre><code class="language-matlab">function fired = testGestureDetector(referenceStream)
 </code></pre>
 <p><code>referenceStream</code> is an Nx3 double matrix of accelerometer samples (X, Y, Z columns). N varies (90 seconds at typical mobile sample rates is roughly 4500 samples).</p>
+<p>In <a href="https://canvas.ucdavis.edu/courses/1078677/files/31322048?wrap=1"><code>Project B Reference Data.zip</code></a>, you can use <code>gesture_stream_1.mat</code>, and <code>gesture_stream_2.mat</code> to test your function in order to ensure it picks up motion and is resilient against false positives. <code>gesture_truth.json</code> will contain the times of expected motion for the former. Keep in mind that the harness will use different testing data.</p>
 <h3>What your function must do</h3>
 <p>Run your team's real gesture detector against the entire stream. Return a logical column vector of length N. The vector is <code>true</code> at each sample where your detector decides "a shake just fired here," and <code>false</code> elsewhere.</p>
 <h3>Important constraints</h3>
@@ -400,7 +402,7 @@ end
 <h2>Questions</h2>
 <p>Post on the course forum, tagged <code>[Cat 2]</code>. Rishad will field questions about the harness format. Your area-lead TAs (Elnaz for App Designer integration, Basheer for detector behavior, Rishad for cloud and harness) handle questions about how to make your existing code expose the required interface.</p>
 <hr/>
-<p><em>Version 1.1</em></p>
+<p><em>Version 1.2</em></p>
   </main>
 </body>
 </html>
