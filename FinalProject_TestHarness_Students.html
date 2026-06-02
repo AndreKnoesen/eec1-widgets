@@ -278,8 +278,8 @@
     accel_path = fullfile(referencePath, 'golden_accel.mat');
     truth_path = fullfile(referencePath, 'golden_truth.json');
 
-    S_gps   = load(gps_path);    gps_data   = S_gps.gps_data;
-    S_accel = load(accel_path);  accel_data = S_accel.accel_data;
+    S_gps   = load(gps_path);  
+    S_accel = load(accel_path);
     truth   = jsondecode(fileread(truth_path));
 
     % --- TEAM CODE: drive your real analysis pipeline on this data ---
@@ -368,17 +368,63 @@ end
 <p>The harness also tests your <code>NetworkMessenger</code> class for ThingSpeak round-trip behavior. There is no separate function to expose; the harness uses your class directly.</p>
 <p>So your <code>NetworkMessenger</code> must:</p>
 <ul>
-<li>Accept your team's ThingSpeak channel URL via constructor argument or public property.</li>
-<li>Expose public methods <code>sendMove(moveString)</code> and <code>checkForRemoteMoves()</code>.</li>
+<li>have your team's ThingSpeak channel ID, Write &amp; Read API keys as public properties.(As <code>ChannelID</code>, <code>WriteAPIKey</code>, and <code>ReadAPIKey</code> respectively)</li>
+<li>Expose public methods <code>sendMove(moveString)</code> and <code>checkForRemoteMoves(numPoints)</code>.</li>
 <li>Be instantiable and callable without a running game. The harness creates the class, sends a test move, and reads it back; that needs to work outside any game state.</li>
 </ul>
 <p>The harness will:</p>
 <ol>
 <li>Instantiate your class with your channel URL.</li>
 <li>Call <code>sendMove("HARNESS:tag")</code>. Verify the entry appears on your channel within 10 seconds.</li>
-<li>Write two distinct sequential moves to your channel directly (via the ThingSpeak REST API). Call your <code>checkForRemoteMoves()</code>. Verify both moves come back in the correct order with no duplicates.</li>
+<li>Write two distinct sequential moves to your channel directly (via the ThingSpeak REST API). Call your <code>checkForRemoteMoves(2)</code>. Verify both moves come back in the correct order with no duplicates.</li>
 </ol>
 <p>If your class can pass these two checks on a quiet channel by itself, it will pass during grading.</p>
+<h3>Template You Can Copy</h3>
+<pre><code class="language-matlab">classdef NetworkMessenger &lt; handle
+    % NETWORKMESSENGER Wrapper for ThingSpeak communication.
+
+    properties (Access = public)
+        % MUST FILL THESE IN: 
+        ChannelID = 12345    % The ID of the ThingSpeak channel
+        WriteAPIKey = 'YOUR_WRITE_API_KEY_HERE' 
+        ReadAPIKey  = 'YOUR_READ_API_KEY_HERE' 
+        % Typically, the keys would be encrypted in some .env file and decrypted in real time
+        % This ensures security of api keys - here we are just going to hardcode it
+    end
+
+    methods
+        function obj = NetworkMessenger()
+            % CONSTRUCTOR: Accepts the ThingSpeak channel ID
+            % Skip if you don't have initialization code
+
+        end
+
+        function sendMove(obj, moveString)
+            % sendMove: Posts a string directly to Field 1
+            % Your code goes here
+
+
+        end
+
+        function moves = checkForRemoteMoves(obj, numPoints)
+            % moves must return an array of strings the same length as numPoints
+            % Place your code after each hint
+            % Hint : Read from channel - using these these two key-value arguments
+            % NumPoints : to define the number of points; OutputFormat : Set this to 'table' to actually get strings
+
+
+            % Hint : thingSpeakRead should have 2 columns - TimeStamps and Field1's data. Use indexing to get the second column 
+            % Ensure that you get a Cell Array AND NOT A TABLE (Checks documentation on how to do this)
+
+
+            % Hint: Conver the Cell Array into a string array via the string( ) function &amp; make it a 1 x numPoints array
+            % Since we converted from a column, by default it will be a numPoints x 1 in shape
+
+        end
+    end
+end
+
+</code></pre>
 <hr/>
 <h2>Practical Advice</h2>
 <ol>
@@ -402,7 +448,7 @@ end
 <h2>Questions</h2>
 <p>Post on the course forum, tagged <code>[Cat 2]</code>. Rishad will field questions about the harness format. Your area-lead TAs (Elnaz for App Designer integration, Basheer for detector behavior, Rishad for cloud and harness) handle questions about how to make your existing code expose the required interface.</p>
 <hr/>
-<p><em>Version 1.1</em></p>
+<p><em>Version 1.3</em></p>
   </main>
 </body>
 </html>
